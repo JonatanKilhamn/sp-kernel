@@ -1,14 +1,13 @@
 % setup for experiments:
 
-cd ..
 path(path, genpath('borgwardt code'));
 path(path, genpath('images'));
 path(genpath('libsvm-3.18'), path);
 path(path, genpath('my_code'));
 path(path, genpath('sebastien code'));
-path(path, genpath('PrivacyKernelCode/road-data'));
-path(path, genpath('PrivacyKernelCode/graph_gen'));
-path(path, genpath('PrivacyKernelCode/graphsampling'));
+path(path, genpath('road-data'));
+path(path, genpath('graph_gen'));
+path(path, genpath('graphsampling'));
 
 
 
