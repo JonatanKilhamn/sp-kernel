@@ -2,7 +2,7 @@
 
 experiment_setup;
 
-filename = '~/dokument/exjobb/my_code/data/fake_result';
+filename = './my_code/data/fake_result';
 
 
 interval = 1;
