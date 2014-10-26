@@ -1,6 +1,6 @@
 % setup for experiments:
 
-cd('~/dokument/exjobb');
+cd ..
 path(path, genpath('borgwardt code'));
 path(path, genpath('images'));
 path(genpath('libsvm-3.18'), path);
