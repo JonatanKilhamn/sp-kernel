@@ -5,11 +5,11 @@ experiment_setup;
 filename = '~/dokument/exjobb/my_code/data/fake_result';
 
 
-interval = 20;
+interval = 1;
 
-maxHours = 48;
+maxMin = 0.5;
 
-nIntervals = maxHours*3600/interval;
+nIntervals = maxMin*60/interval;
 
 t = 0;
 
