@@ -8,7 +8,7 @@ sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 nSizes = length(sizes);
 %%
 
-paramsFilename = '~/dokument/exjobb/my_code/data/params_ROADS100';
+paramsFilename = './my_code/data/params_ROADS100';
 load(paramsFilename)
 % use any params because they are all the same; the matrices created by
 % this script are only possible if the same ms are used for all graph sizes

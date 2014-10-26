@@ -8,7 +8,7 @@ doTx = true;
 sampleCa = true;
 sampleTx = true;
 merge = true;
-filename = ['~/dokument/exjobb/my_code/data/ROADS' num2str(sizeOfSampled)];
+filename = ['./my_code/data/ROADS' num2str(sizeOfSampled)];
 
 %path(path, genpath('../'))
 
