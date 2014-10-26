@@ -8,7 +8,7 @@ sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 nSizes = length(sizes);
 %%
 
-paramsFilename = '~/dokument/exjobb/my_code/data/params_ROADS100';
+paramsFilename = './my_code/data/params_ROADS100';
 load(paramsFilename)
 % use any params because they are all the same; the matrices created by
 % this script are only possible if the same ms are used for all graph sizes
@@ -22,7 +22,7 @@ smpLstAccuracies = zeros(nMValues, nSizes);
 smpLstErrors = zeros(nMValues, nSizes);
 
 
-errAccFilename = '~/dokument/exjobb/my_code/data/errAcc_ROADS';
+errAccFilename = './my_code/data/errAcc_ROADS';
 load(errAccFilename)
 
 
@@ -38,24 +38,24 @@ for i = 1:4
     
     graphSize = sizes(i);
     
-    roadDataFilename = ['~/dokument/exjobb/my_code/data/ROADS' ...
+    roadDataFilename = ['./my_code/data/ROADS' ...
         num2str(graphSize)];
     load(roadDataFilename)
     % we now have ROADS and lroads loaded
-    smpFstFilename = ['~/dokument/exjobb/my_code/data/smpFstKrnVal_ROADS' ...
+    smpFstFilename = ['./my_code/data/smpFstKrnVal_ROADS' ...
         num2str(graphSize)];
     load(smpFstFilename)
     % we now have sampleFirstKernelValues and sampleFirstRunTimes loaded
-    smpLstFilename = ['~/dokument/exjobb/my_code/data/smpLstKrnVal_ROADS' ...
+    smpLstFilename = ['./my_code/data/smpLstKrnVal_ROADS' ...
         num2str(graphSize)];
     load(smpLstFilename)
     % we now have sampleLastKernelValues and sampleLastRunTimes loaded
-    stdKrnFilename = ['~/dokument/exjobb/my_code/data/stdKrnVal_ROADS' ...
+    stdKrnFilename = ['./my_code/data/stdKrnVal_ROADS' ...
         num2str(graphSize)];
     load(stdKrnFilename)
     % we now have standardKernelValues and standardKernelRuntime loaded
     paramsFilename = ...
-        ['~/dokument/exjobb/my_code/data/params_ROADS' ...
+        ['./my_code/data/params_ROADS' ...
         num2str(graphSize)];
     load(paramsFilename)
     % we now have nTrials, ms, and graphSize
