@@ -1,5 +1,8 @@
 % setup for experiments:
 
+[dir, ~, ~] = fileparts(mfilename('fullpath'));
+cd(dir)
+
 path(path, genpath('borgwardt code'));
 path(path, genpath('images'));
 path(genpath('libsvm-3.18'), path);

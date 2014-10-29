@@ -7,5 +7,3 @@ nGraphs = 100;
 for graphSize = sizes(1:2);
     CreateRoadData(graphSize, nGraphs)
 end
-
-
