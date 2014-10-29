@@ -2,7 +2,7 @@ experiment_setup;
 
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 
-sizesToRun = sizes(6);
+sizesToRun = sizes(1:2);
 
 
 for graphSize = sizesToRun
