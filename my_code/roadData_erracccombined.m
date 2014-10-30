@@ -6,6 +6,9 @@ experiment_setup;
 % 10 000, 20 000
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 nSizes = length(sizes);
+
+toRun = 1:3;
+
 %%
 
 paramsFilename = './my_code/data/params_ROADS100';
@@ -23,7 +26,7 @@ smpLstErrors = zeros(nMValues, nSizes);
 
 
 errAccFilename = './my_code/data/errAcc_ROADS';
-load(errAccFilename)
+%load(errAccFilename)
 
 
 %%%%%
@@ -33,7 +36,8 @@ load(errAccFilename)
 
 
 %%
-for i = 1:4
+
+for i = toRun
     %% Pick out the data
     
     graphSize = sizes(i);
