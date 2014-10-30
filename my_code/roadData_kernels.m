@@ -103,7 +103,7 @@ for graphSize = sizesToRun
             for j = 1:nTrials
                 t = cputime;
                 sampleFirstKernelValues{i, j} = ...
-                    sampleFirstKernel(Graphs, ms(i), 0);
+                    sampleFirstKernel(Graphs, ms(i));
                 disp(['Finished trial ' num2str(j) ' out of ' ...
                     num2str(nTrials) ' for m-value ' num2str(ms(i))])
                 sampleFirstRunTimes(i, j) = cputime - t;

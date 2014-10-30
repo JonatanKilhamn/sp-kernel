@@ -19,6 +19,7 @@ nPairs = nSamples - nDiagonalSamples;
 % found M non-Inf distances
 %pairs = sampleNodePairs(n, nPairs);
 
+
 % adjacencyMatrix = graph.am;
 % if (ismember('el', fieldnames(graph)))
 %     %TODO: handle graphs with distance labels, i.e. not all distances
@@ -40,18 +41,20 @@ shortestDistances = zeros(1, nSamples);
 %for i = 1:nSamples
 i = 1;
 while i < nPairs+1 % the remaining "samples" are treated as being drawn from
-                 % the diagonal elements, i.e. the distances are zero
-    
-    % Matlab implementation of dijkstra (slow):
-    %[~, shortestDistances(i), ~, ~] = dijkstra(n, costMatrix, ...
-    %    pairs(i, 1), pairs(i, 2), init, init);
+    % the diagonal elements, i.e. the distances are zero
     
     sampledPair = sampleNodePairs(n, 1);
     
-    % C implementation, (c) Sebastien Paris (faster):
-    [~, shortestDistances(i)] = dijkstra(costMatrix, ...
+    
+    % % C implementation, (c) Sebastien Paris (faster than the previous
+    % % matlab one):
+    % [~, shortestDistances(i)] = dijkstra(costMatrix, ...
+    %     sampledPair(1), sampledPair(2));
+    
+    
+    % C implementation using a heap (even faster?):
+    shortestDistances(i) = dijkstra_heap_m(costMatrix, ...
         sampledPair(1), sampledPair(2));
-        % pairs(i, 1), pairs(i, 2));
     
     if ~isinf(shortestDistances(i))
         i = i+1;
