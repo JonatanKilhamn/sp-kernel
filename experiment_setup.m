@@ -8,6 +8,7 @@ path(path, genpath('images'));
 path(genpath('libsvm-3.18'), path);
 path(path, genpath('my_code'));
 path(path, genpath('sebastien code'));
+path(path, genpath('dijkstra_heap'));
 path(path, genpath('road-data'));
 path(path, genpath('graph_gen'));
 path(path, genpath('graphsampling'));
