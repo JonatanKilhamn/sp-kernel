@@ -1,4 +1,5 @@
-function kernelValues = sampleFirstKernel(Graphs, nSamples)
+function kernelValues = sampleFirstKernel(Graphs, nSamples, ...
+    ~) %costMatrices)
 % Compute normalised shortest path length kernel for a set of graphs (by
 % sampling a number of node pairs, computing the shortest path lengths 
 % for those pairs, and using the results as an approximate distribution)
@@ -9,6 +10,11 @@ function kernelValues = sampleFirstKernel(Graphs, nSamples)
 %     have other fields, but they will not be considered by this script
 %   nSamples - optional; the number of samples to use; defaults to
 %     the value of getNSamples(0.1, 0.1) if left empty or given as 0.
+%   costMatrices - a 1xN array of cost matrices for the graphs; in the
+%   format where "no connection" is denoted by Inf. Needed for one
+%   implementation of Dijkstra's, but currently (2014-10-07) unused.
+%   dijkstra - a string denoting which implementation of dijkstra's
+%     algorithm to use. Alternatives are 'linear' and 'heap'
 % Output:
 %   kernelValues - nxn kernel matrix, often denoted K (or K*, in relation
 %     to the exact K)
@@ -21,6 +27,11 @@ N=size(Graphs,2);
 % Find the number of samples (if not supplied)
 if nargin < 2 || nSamples == 0
     nSamples = getNSamples();
+end
+
+% Find dijkstra implementation
+if nargin < 3
+    dijkstra = 'linear';
 end
 
 
@@ -69,7 +80,8 @@ for i=1:N
   
   % Using sparse cost matrices:
   shortestPathDistributions{i} = ...
-     sampleFirstShortestPathDistribution(Graphs(i).am, nSamples);
+     sampleFirstShortestPathDistribution(Graphs(i).am, nSamples, ...
+     dijkstra);
   
   disp(['Completed graph ' num2str(i) ' out of ' num2str(N)])
 end
