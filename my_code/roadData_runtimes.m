@@ -6,6 +6,9 @@ experiment_setup;
 % 10 000, 20 000
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 nSizes = length(sizes);
+
+toRun = 1:4;
+
 %%
 
 paramsFilename = './my_code/data/params_ROADS100';
@@ -27,7 +30,7 @@ runtimesFilename = '~/dokument/exjobb/my_code/data/runtimes_ROADS';
 load(runtimesFilename)
 
 %%
-for i = 1:4
+for i = toRun
     %% Pick out the data
     
     graphSize = sizes(i);
