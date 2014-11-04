@@ -12,7 +12,7 @@ doStandard = 1;
 doSampleLast = 1;
 doSampleFirst = 1;
 
-sizesToRun = sizes(1:4);
+sizesToRun = sizes(5);
 for graphSize = sizesToRun
     %% Pick out the data
     
