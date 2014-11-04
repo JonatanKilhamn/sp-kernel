@@ -2,7 +2,9 @@ experiment_setup;
 
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 
-sizesToRun = sizes(3:7);
+sizesToRun = sizes(6);
+
+section = 1;
 
 
 for graphSize = sizesToRun
@@ -13,10 +15,10 @@ for graphSize = sizesToRun
     nGraphs = size(ROADS, 2);
     
     fwFilename = ['./my_code/data/fw_ROADS' ...
-        num2str(graphSize)];
+        num2str(graphSize) '-' num2str(section)];
     fwRuntimeFilename = ...
         ['./my_code/data/fwRuntime_ROADS' ...
-        num2str(graphSize)];
+        num2str(graphSize) '-' num2str(section)];
     %load(fwFilename)
     %load(fwRuntimeFilename)
     % now we have fwROADS and fwRuntimesROADS
@@ -26,8 +28,8 @@ for graphSize = sizesToRun
     fwRuntimesROADS = zeros(1, nGraphs);
     
     
-    startInd = 1;
-    stopInd = nGraphs;
+    startInd = floor((section-1)*(nGraphs/8))+1;
+    stopInd = floor(section*(nGraphs/8));
     
     t = cputime; % for measuring runtime
     % compute shortest paths
