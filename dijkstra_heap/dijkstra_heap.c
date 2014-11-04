@@ -308,14 +308,14 @@ goalNode = mxGetScalar(prhs[3]);
 /* Get the input matrix */
 /*
 mxArray *mxAdj = mxDuplicateArray(prhs[0]); // does this work?
-int noOfEdges = mxGetN(mxAdj);
+int nEdges = mxGetN(mxAdj);
 */
-int noOfEdges = mxGetN(prhs[0]);
+int nEdges = mxGetN(prhs[0]);
 /*double *adj = mxGetPr(mxAdj);*/
 double *adj = mxGetPr(mxDuplicateArray(prhs[0]));
 
-int first[size+1], node[noOfEdges+1], next[noOfEdges+1], pi[size+1], handle[size+1], heap_index[size+1];
-double w[noOfEdges+1], d[noOfEdges+1];
+int first[size+1], node[nEdges+1], next[nEdges+1], pi[size+1], handle[size+1], heap_index[size+1];
+double w[nEdges+1], d[nEdges+1];
 
 int row, rowIndex, current, from, to, weight, previousFrom;
 
@@ -327,7 +327,7 @@ node[1] = adj[1]; /* row 1, col 2 (i.e. row 0, col 1) */
 w[1] = adj[2];
 
 
-for (row = 2; row <= noOfEdges; row++) {
+for (row = 2; row <= nEdges; row++) {
   rowIndex = row-1;
   from = adj[rowIndex*3];
   to = adj[rowIndex*3 + 1];
@@ -350,7 +350,7 @@ for (row = 2; row <= noOfEdges; row++) {
 
 /* Special case for last edge */
 
-next[noOfEdges] = 0;
+next[nEdges] = 0;
 
 
 
