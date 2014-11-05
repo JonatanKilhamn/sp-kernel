@@ -8,11 +8,11 @@ sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 
 %%
 
-doStandard = 1;
-doSampleLast = 1;
+doStandard = 0;
+doSampleLast = 0;
 doSampleFirst = 1;
 
-sizesToRun = sizes(5);
+sizesToRun = sizes(6:8);
 for graphSize = sizesToRun
     %% Pick out the data
     
