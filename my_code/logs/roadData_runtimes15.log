@@ -8,16 +8,4 @@
 To get started, type one of these: helpwin, helpdesk, or demo.
 For product information, visit www.mathworks.com.
  
->> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> {Error using load
-Unable to read file '~/dokument/exjobb/my_code/data/runtimes_ROADS': no such
-file or directory.
-} 
->> >> >> {Error using load
-Unable to read file '~/dokument/exjobb/my_code/data/ROADS100': no such file or
-directory.
-} 
->> >> {Error using save
-Cannot create 'runtimes_ROADS.mat' because
-'/home/jonkil/dokument/exjobb/my_code/data' does not exist.
-} 
->> >> 
+>> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> 
