@@ -52,7 +52,7 @@ for i = toRun
         % we now have fwROADS and fwRuntimesROADS loaded
     end
     
-    if doSampleLast
+    if doSampleFirst
         smpFstFilename = ['./my_code/data/smpFstKrnVal_ROADS' ...
             num2str(graphSize)];
         load(smpFstFilename)
@@ -66,7 +66,7 @@ for i = toRun
         % we now have sampleLastKernelValues and sampleLastRunTimes loaded
     end
     
-    if doSampleFirst
+    if doStandard
         stdKrnFilename = ['./my_code/data/stdKrnVal_ROADS' ...
             num2str(graphSize)];
         load(stdKrnFilename)
