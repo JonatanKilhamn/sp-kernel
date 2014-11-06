@@ -9,6 +9,11 @@ nSizes = length(sizes);
 
 toRun = 1:5;
 
+doStandard = 0;
+doSampleLast = 0;
+doSampleFirst = 1;
+
+
 %%
 
 paramsFilename = './my_code/data/params_ROADS100';
@@ -39,22 +44,35 @@ for i = toRun
         num2str(graphSize)];
     load(roadDataFilename)
     % we now have ROADS and lroads loaded
-    fwFilename = ['~/dokument/exjobb/my_code/data/fw_ROADS' ...
-        num2str(graphSize)];
-    load(fwFilename)
-    % we now have fwROADS and fwRuntimesROADS loaded
-    smpFstFilename = ['~/dokument/exjobb/my_code/data/smpFstKrnVal_ROADS' ...
-        num2str(graphSize)];
-    load(smpFstFilename)
-    % we now have sampleFirstKernelValues and sampleFirstRunTimes loaded
-    smpLstFilename = ['~/dokument/exjobb/my_code/data/smpLstKrnVal_ROADS' ...
-        num2str(graphSize)];
-    load(smpLstFilename)
-    % we now have sampleLastKernelValues and sampleLastRunTimes loaded
-    stdKrnFilename = ['~/dokument/exjobb/my_code/data/stdKrnVal_ROADS' ...
-        num2str(graphSize)];
-    load(stdKrnFilename)
-    % we now have standardKernelValues and standardKernelRuntime loaded
+    
+    if (doStandard || doSampleLast)
+        fwFilename = ['~/dokument/exjobb/my_code/data/fw_ROADS' ...
+            num2str(graphSize)];
+        load(fwFilename)
+        % we now have fwROADS and fwRuntimesROADS loaded
+    end
+    
+    if doSampleLast
+        smpFstFilename = ['~/dokument/exjobb/my_code/data/smpFstKrnVal_ROADS' ...
+            num2str(graphSize)];
+        load(smpFstFilename)
+        % we now have sampleFirstKernelValues and sampleFirstRunTimes loaded
+    end
+    
+    if doSampleLast
+        smpLstFilename = ['~/dokument/exjobb/my_code/data/smpLstKrnVal_ROADS' ...
+            num2str(graphSize)];
+        load(smpLstFilename)
+        % we now have sampleLastKernelValues and sampleLastRunTimes loaded
+    end
+    
+    if doSampleFirst
+        stdKrnFilename = ['~/dokument/exjobb/my_code/data/stdKrnVal_ROADS' ...
+            num2str(graphSize)];
+        load(stdKrnFilename)
+        % we now have standardKernelValues and standardKernelRuntime loaded
+    end
+    
     paramsFilename = ...
         ['~/dokument/exjobb/my_code/data/params_ROADS' ...
         num2str(graphSize)];
@@ -70,15 +88,20 @@ for i = toRun
     
     nMValues = length(ms);
     
-    stdPrepRuntimes(i) = sum(fwRuntimesROADS);
-    stdQueryRuntimes(i) = standardKernelRuntime;
+    if doStandard
+        stdPrepRuntimes(i) = sum(fwRuntimesROADS);
+        stdQueryRuntimes(i) = standardKernelRuntime;
+    end
     
-    smpFstPrepRuntimes(:, i) = 0;
-    smpFstQueryRuntimes(:, i) = mean(sampleFirstRunTimes, 2);
+    if doSampleFirst
+        smpFstPrepRuntimes(:, i) = 0;
+        smpFstQueryRuntimes(:, i) = mean(sampleFirstRunTimes, 2);
+    end
     
-    smpLstPrepRuntimes(:, i) = sum(fwRuntimesROADS);
-    smpLstQueryRuntimes(:, i) = mean(sampleLastRunTimes, 2);
-
+    if doSampleLast
+        smpLstPrepRuntimes(:, i) = sum(fwRuntimesROADS);
+        smpLstQueryRuntimes(:, i) = mean(sampleLastRunTimes, 2);
+    end
     
 end
 
