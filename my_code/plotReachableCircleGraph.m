@@ -25,11 +25,12 @@ end
 
 
 
-degs = (1:N)*360/N;
+degs = (1:N)*(2*pi)/N;
 xs = cos(degs);
 ys = sin(degs);
 figure(1)
 clf
+plot(xs, ys, 'k.');
 hold on
 for i = 1:length(row)
     xsToDraw = [xs(row(i)), xs(col(i))];
