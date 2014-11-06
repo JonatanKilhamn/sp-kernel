@@ -62,7 +62,7 @@ for graphSize = sizesToRun
     paramsFilename = ...
         ['./my_code/data/params_ROADS' ...
         num2str(graphSize)];
-    save(paramsFilename, 'graphSize', 'nTrials', 'ms');
+    save(paramsFilename, 'graphSize', 'nTrials', 'ms', 'nGraphs');
     
     
     sampleLastKernelValues = cell(nMValues, nTrials);
