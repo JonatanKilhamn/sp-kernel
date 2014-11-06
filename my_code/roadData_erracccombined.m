@@ -41,51 +41,43 @@ for i = toRun
     %% Pick out the data
     
     graphSize = sizes(i);
-    
-    roadDataFilename = ['./my_code/data/ROADS' ...
-        num2str(graphSize)];
-    load(roadDataFilename)
+
+%     roadDataFilename = ['./my_code/data/ROADS' ...
+%         num2str(graphSize)];
+%     load(roadDataFilename)
     % we now have ROADS and lroads loaded
-    smpFstFilename = ['./my_code/data/smpFstKrnVal_ROADS' ...
+    errFilename = ['./my_code/data/errVal_ROADS' ...
         num2str(graphSize)];
-    load(smpFstFilename)
-    % we now have sampleFirstKernelValues and sampleFirstRunTimes loaded
-    smpLstFilename = ['./my_code/data/smpLstKrnVal_ROADS' ...
+    load(errFilename)
+    % we now have smpFstAvgError and smpLstAvgError loaded
+    accFilename = ['./my_code/data/accVal_ROADS' ...
         num2str(graphSize)];
-    load(smpLstFilename)
-    % we now have sampleLastKernelValues and sampleLastRunTimes loaded
-    stdKrnFilename = ['./my_code/data/stdKrnVal_ROADS' ...
+    load(accFilename)
+    % we now have smpFstAvgAccuracy and smpLstAvgAccuracy loaded
+    stdAccFilename = ['./my_code/data/stdAcc_ROADS' ...
         num2str(graphSize)];
-    load(stdKrnFilename)
-    % we now have standardKernelValues and standardKernelRuntime loaded
+    load(stdAccFilename)
+    % we now have stdKrnAccuracy loaded
     paramsFilename = ...
         ['./my_code/data/params_ROADS' ...
         num2str(graphSize)];
     load(paramsFilename)
-    % we now have nTrials, ms, and graphSize
+    % we now have nTrials, ms, graphSize and nGraphs loaded
 
     
-    nGraphs = size(ROADS, 2);
-    
-    Graphs = ROADS;
-    labels = lroads;
-    shortestPathMatrices = fwROADS;
     
     nMValues = length(ms);
+    %%
     
-    stdPrepRuntimes(i) = sum(fwRuntimesROADS);
-    stdQueryRuntimes(i) = standardKernelRuntime;
+    stdAccuracy(i) = stdKrnAccuracy;
+    smpFstAccuracies(:, i) = smpFstAvgAccuracy;
+    smpFstErrors(:, i) = smpFstAvgError;
+    smpLstAccuracies(:, i) = smpLstAvgAccuracy;
+    smpLstErrors(:, i) = smpLstAvgError;
     
-    smpFstPrepRuntimes(:, i) = 0;
-    smpFstErrors(:, i) = mean(sampleFirstRunTimes, 2);
-    
-    smpLstAccuracies(:, i) = sum(fwRuntimesROADS);
-    smpLstErrors(:, i) = mean(sampleLastRunTimes, 2);
-
     
 end
 
-save(errAccFilename, 'stdPrepRuntimes', 'stdQueryRuntimes', ...
-    'smpFstPrepRuntimes', 'smpFstQueryRuntimes', 'smpLstPrepRuntimes', ...
-    'smpLstQueryRuntimes')
+save(errAccFilename, 'stdAccuracy', 'smpFstAccuracies', ...
+    'smpFstErrors', 'smpLstAccuracies', 'smpLstErrors');
 
