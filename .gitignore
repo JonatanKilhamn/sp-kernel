@@ -1,3 +1,8 @@
 # Matlab data files #
 #####################
 *.mat
+
+# But include the runtime data #
+################################
+!*runtimes_ROADS.mat
+!*params_ROADS100.mat
