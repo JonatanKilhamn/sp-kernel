@@ -29,7 +29,7 @@ smpLstPrepRuntimes = zeros(nMValues, nSizes);
 smpLstQueryRuntimes = zeros(nMValues, nSizes);
 
 
-runtimesFilename = '~/dokument/exjobb/my_code/data/runtimes_ROADS';
+runtimesFilename = './my_code/data/runtimes_ROADS';
 load(runtimesFilename)
 
 %%
@@ -38,41 +38,41 @@ for i = toRun
     
     graphSize = sizes(i);
     
-    roadDataFilename = ['~/dokument/exjobb/my_code/data/ROADS' ...
+    roadDataFilename = ['./my_code/data/ROADS' ...
         num2str(graphSize)];
     load(roadDataFilename)
     % we now have ROADS and lroads loaded
     
     if (doStandard || doSampleLast)
-        fwFilename = ['~/dokument/exjobb/my_code/data/fw_ROADS' ...
+        fwFilename = ['./my_code/data/fw_ROADS' ...
             num2str(graphSize)];
         load(fwFilename)
         % we now have fwROADS and fwRuntimesROADS loaded
     end
     
     if doSampleLast
-        smpFstFilename = ['~/dokument/exjobb/my_code/data/smpFstKrnVal_ROADS' ...
+        smpFstFilename = ['./my_code/data/smpFstKrnVal_ROADS' ...
             num2str(graphSize)];
         load(smpFstFilename)
         % we now have sampleFirstKernelValues and sampleFirstRunTimes loaded
     end
     
     if doSampleLast
-        smpLstFilename = ['~/dokument/exjobb/my_code/data/smpLstKrnVal_ROADS' ...
+        smpLstFilename = ['./my_code/data/smpLstKrnVal_ROADS' ...
             num2str(graphSize)];
         load(smpLstFilename)
         % we now have sampleLastKernelValues and sampleLastRunTimes loaded
     end
     
     if doSampleFirst
-        stdKrnFilename = ['~/dokument/exjobb/my_code/data/stdKrnVal_ROADS' ...
+        stdKrnFilename = ['./my_code/data/stdKrnVal_ROADS' ...
             num2str(graphSize)];
         load(stdKrnFilename)
         % we now have standardKernelValues and standardKernelRuntime loaded
     end
     
     paramsFilename = ...
-        ['~/dokument/exjobb/my_code/data/params_ROADS' ...
+        ['./my_code/data/params_ROADS' ...
         num2str(graphSize)];
     load(paramsFilename)
     % we now have nTrials, ms, and graphSize
