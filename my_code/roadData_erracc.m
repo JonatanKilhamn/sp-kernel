@@ -57,8 +57,12 @@ for graphSize = sizesToRun
     K = cell(1,1);
     K{1} = standardKernelValues;
     
-    [standardKernelSvmRes] = runsvm(K,labels);
-    stdKrnAccuracy = standardKernelSvmRes.mean_acc;
+    stdTrialAcc = zeros(1,j);
+    for j = 1:nTrials
+        [standardKernelSvmRes] = runsvm(K,labels);
+        stdTrialAcc(j) = standardKernelSvmRes.mean_acc;
+    end
+    stdKrnAccuracy = mean(stdTrialAcc);
     
     refAccFilename = ...
         ['./my_code/data/stdAcc_ROADS' ...
