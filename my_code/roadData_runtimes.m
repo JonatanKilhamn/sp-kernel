@@ -7,10 +7,12 @@ experiment_setup;
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 nSizes = length(sizes);
 
-toRun = 1:4;
+toRun = 1:5;
+
 doStandard = 0;
 doSampleLast = 0;
 doSampleFirst = 1;
+
 
 %%
 
