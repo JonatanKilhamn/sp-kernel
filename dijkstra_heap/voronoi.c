@@ -1,26 +1,30 @@
 /*
- * dijkstra_matlab.c.  C code to run Dijkstra's algorithm on a small
-   directed graph.  Uses a min-heap as the priority queue.
+ * voronoi.c.  C code to create the voronoi graph using a modified
+ * Dijkstra's algorithm. Uses a min-heap as the priority queue.
  *
  *
  * The calling syntax is:
  *
- *		[length, path] = dijkstra_heap(adj, size, sourceNode, goalNode)
+ *		[grouping, vorAdj] = voronoi(adj, size, vorNodes)
  *
  *
  * Input:
  *  adj - 3-row matrix; representation of a sparse adjacency matrix;
  *    transpose of the "natural" 3-column representation
  *  size - integer; number of nodes
- *  sourceNode, goalNode - integers, between 1 and size inclusive
+ *  vorNodes - integer vector containing the indices of the nodes
+ *    chosen to be voronoi nodes
  *
  * Output:
- *  length - the length of the shortest path between source and goal
- *  path - a vector of node indices starting with goal and ending with
- *    path
+ *  grouping: vector of length [size], assigning each node in the original
+ *    graph to one of the voronoi nodes
+ *  vorAdj: the voronoi adjacency matrix, i.e. the distances between the
+ *    connected voronoi nodes
  *
- * Precondition: the graph must be connected, or rather, every node
- * must have at least one edge.
+ * Preconditions:
+ *  - the graph must be connected, or rather, every node
+ *    must have at least one edge.
+ *  - all edges must have positive, non-zero weights
  *
  * This is a MEX-file for MATLAB.
 */
@@ -134,36 +138,43 @@ void insert(double key[], int handle[], int heap_index[],
 }
 
 /* Relax edge (u, v) with weight w. */
-void relax(int u, int v, double w,
-	   double key[], int handle[], int heap_index[], int size, int pi[]) {
+void relax(int u, int v, double w, double key[], int handle[], int heap_index[], int size, int pi[], double dist[], double grouping[]) {
   if (key[heap_index[v]] > key[heap_index[u]] + w) {
     decrease_key(key, handle, heap_index, heap_index[v], size, key[heap_index[u]] + w);
     pi[v] = u;
+    dist[v] = dist[u] + w;
+    grouping[v] = grouping[u];
   }
 }
 
-/* Initialize a single-source shortest-paths computation. */
-void initialize_single_source(double key[], int handle[], int heap_index[],
-			      int pi[], int s, int n) {
+/* Initialize a multi-source shortest-paths computation. */
+void initialize_multi_source(double key[], int handle[], int heap_index[],
+			      int pi[], double dist[], double grouping[], int vor[], int n, int nVor) {
   int i;
   for (i = 1; i <= n; ++i) {
     key[i] = 1000000000.0;
+    dist[i] = 1000000000.0;
     handle[i] = i;
     heap_index[i] = i;
     pi[i] = 0;
   }
 
-  key[s] = 0.0;
+  for (i = 1; i <= nVor; ++i) {
+    key[vor[i]] = 0.0;
+    dist[vor[i]] = 0.0;
+    grouping[vor[i]] = (double) i; /*vor[i];*/
+  }
+  
   build_heap(key, handle, heap_index, n);
 }
 
-/* Run Dijkstra's algorithm from vertex s.  Fills in arrays d and pi. */
-void dijkstra_heap(int first[], int node[], int next[], double w[], double d[],
-	      int pi[], int s, int n, int handle[], int heap_index[]) {
+/* Run Voronoi-Dijkstra from voronoi vertices vor.  Fills in arrays d and pi. */
+void vor_dijkstra(int first[], int node[], int next[], double w[], double d[],
+	      int pi[], double dist[], double grouping[], int vor[], int n, int nVor, int handle[], int heap_index[]) {
   int size = n;
   int u, v, i;
 
-  initialize_single_source(d, handle, heap_index, pi, s, n);
+  initialize_multi_source(d, handle, heap_index, pi, dist, grouping, vor, n, nVor);
   while (size > 0) {
     u = handle[1];
     extract_min(d, handle, heap_index, size);
@@ -171,12 +182,11 @@ void dijkstra_heap(int first[], int node[], int next[], double w[], double d[],
     i = first[u];
     while (i > 0) {
       v = node[i];
-      relax(u, v, w[i], d, handle, heap_index, size, pi);
+      relax(u, v, w[i], d, handle, heap_index, size, pi, dist, grouping);
       i = next[i];
     }
   }
 }
-
 
 
 /* The gateway function */
@@ -185,9 +195,9 @@ void mexFunction(int nlhs, mxArray *plhs[],
 {
 
 
-if(nrhs!=4) {
+if(nrhs!=3) {
     mexErrMsgIdAndTxt("MyToolbox:dijkstra_matlab:nrhs",
-                      "Four inputs required.");
+                      "Three inputs required.");
 }
 if(nlhs!=2) {
     mexErrMsgIdAndTxt("MyToolbox:dijkstra_matlab:nlhs",
@@ -195,68 +205,74 @@ if(nlhs!=2) {
 }
 
 
-/* make sure the first argument is a matrix */
+/* make sure the first argument (adj) is a 3-row matrix */
 if( !mxIsDouble(prhs[0]) || 
      mxIsComplex(prhs[0])) {
     mexErrMsgIdAndTxt("MyToolbox:dijkstra_matlab:notDouble",
-        "Input matrix must be type double.");
+        "Input matrix 'adj' must be type double.");
 }
 if ( mxGetM(prhs[0]) != 3) {
     mexErrMsgIdAndTxt("MyToolbox:dijkstra_matlab:wrongNbrRows",
         "Input matrix must have three rows.");
 }
-
-
-/* make sure input arguments 2, 3, 4 are scalar */
+/* make sure the second argument (size) is scalar */
 if( !mxIsDouble(prhs[1]) || 
      mxIsComplex(prhs[1]) ||
      mxGetNumberOfElements(prhs[1])!=1 ) {
     mexErrMsgIdAndTxt("MyToolbox:dijkstra_matlab:notScalar",
                       "Input size must be a scalar.");
 }
+/* make sure the third argument (vorNodes) is a matrix */
 if( !mxIsDouble(prhs[2]) || 
-     mxIsComplex(prhs[2]) ||
-     mxGetNumberOfElements(prhs[2])!=1 ) {
-    mexErrMsgIdAndTxt("MyToolbox:dijkstra_matlab:notScalar",
-                      "Input sourceNode must be a scalar.");
-}
-if( !mxIsDouble(prhs[3]) || 
-     mxIsComplex(prhs[3]) ||
-     mxGetNumberOfElements(prhs[3])!=1 ) {
-    mexErrMsgIdAndTxt("MyToolbox:dijkstra_matlab:notScalar",
-                      "Input goalNode must be a scalar.");
+     mxIsComplex(prhs[2])) {
+    mexErrMsgIdAndTxt("MyToolbox:dijkstra_matlab:notDouble",
+        "Input matrix 'voronoi_nodes' must be type double.");
 }
 
 
-/* Get the scalar inputs */
-int size, sourceNode, goalNode;
+/* Get the 'size' input */
+int size;
 size = mxGetScalar(prhs[1]);
-sourceNode = mxGetScalar(prhs[2]);
-goalNode = mxGetScalar(prhs[3]);
 
-/* Get the input matrix */
 
+/* Get the input matrices */
 int nEdges = mxGetN(prhs[0]);
-double *adj = mxGetPr(mxDuplicateArray(prhs[0]));
+mxArray *adjArray = mxDuplicateArray(prhs[0]);
+double *adj = mxGetPr(adjArray);
 
-int first[size+1], node[nEdges+1], next[nEdges+1], pi[size+1], handle[size+1], heap_index[size+1];
-double w[nEdges+1], d[nEdges+1];
+int nVorNodes = mxGetN(prhs[2]);
+int vorNodes[nVorNodes+1];
 
-int row, rowIndex, current, from, to, weight, previousFrom;
+mxArray *vorNodesArray = mxDuplicateArray(prhs[2]);
+double *vorNodesDouble = mxGetPr(vorNodesArray);
+
+int i;
+for (i = 0; i < nVorNodes; i++) {
+  vorNodes[i+1] = (int) vorNodesDouble[i];
+}
 
 
 /* output */
-plhs[0] = mxCreateDoubleMatrix(1, 1, mxREAL);
-double *out1 = mxGetPr(plhs[0]);
-plhs[1] = mxCreateDoubleMatrix(size, 1, mxREAL);
-double *out2 = mxGetPr(plhs[1]);
+plhs[0] = mxCreateDoubleMatrix(size, 1, mxREAL);
+plhs[1] = mxCreateDoubleMatrix(nVorNodes, nVorNodes, mxREAL);
 
+/*double *grouping = mxGetPr(plhs[0]);*/
+double *vorAdj = mxGetPr(plhs[1]);
+
+
+
+
+int first[size+1], node[nEdges+1], next[nEdges+1], pi[size+1], handle[size+1], heap_index[size+1];
+double w[nEdges+1], d[size+1], grouping[size+1], dist[size+1];
+
+int row, rowIndex, current, from, to, weight, previousFrom;
 
 /* Special cases for first edge */
 current = 1;
 first[1] = 1;
 node[1] = adj[1]; /* row 1, col 2 (i.e. row 0, col 1) */
 w[1] = adj[2];
+
 
 
 for (row = 2; row <= nEdges; row++) {
@@ -285,22 +301,48 @@ for (row = 2; row <= nEdges; row++) {
 next[nEdges] = 0;
 
 
-
 /* Call dijkstra */
-  dijkstra_heap(first, node, next, w, d, pi, sourceNode, size, handle, heap_index);
+vor_dijkstra(first, node, next, w, d, pi, dist, grouping, vorNodes, size, nVorNodes, handle, heap_index);
 
-  
-out1[0] = d[heap_index[goalNode]];
+/* We now have the correct values in 'grouping'. Now to find the lengths:*/
 
-int prev, ii;
-prev = goalNode;
-for(ii = 0; ii < size; ii++) {
-  mexPrintf("\n%f", ii);
-  mexPrintf("\n Prev: %f", prev);
-  prev = pi[prev];
-  mexPrintf("\n Next: %f", prev);
+for (i = 0; i < (nVorNodes*nVorNodes); i++) {
+   vorAdj[i] = 1000000000.0;
+}
+
+double *out1 = mxGetPr(plhs[0]);
+for (i = 1; i <= size; i++) {
+  out1[i-1] = grouping[i];
 }
 
 
+double distance;
+int fromVor, toVor, matIndex, matInvIndex;
+
+for (row = 1; row <= nEdges; row++) {
+  rowIndex = row-1;
+  from = adj[rowIndex*3];
+  to = adj[rowIndex*3 + 1];
+  weight = adj[rowIndex*3 + 2];
+  fromVor = (int) grouping[from];
+  toVor = (int) grouping[to];
+  if (fromVor != toVor) {
+    distance = dist[from] + dist[to] + weight;
+    matIndex = (nVorNodes * (fromVor - 1)) + toVor - 1;
+    matInvIndex = (nVorNodes * (toVor - 1)) + fromVor - 1;
+    if (distance < vorAdj[matIndex]) {
+      vorAdj[matIndex] = distance;
+      vorAdj[matInvIndex] = distance;
+    }
+  }
 }
+
+
+mxDestroyArray(adjArray);
+mxDestroyArray(vorNodesArray);
+
+}
+
+
+
 

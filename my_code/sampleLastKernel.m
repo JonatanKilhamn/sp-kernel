@@ -5,7 +5,7 @@ function kernelValues = sampleLastKernel(Graphs, nSamples, ...
 % distribution by sampling from them)
 %
 % Input:
-%   Graphs - a 1xN array of graphs represented just with adjacency
+%   Graphs - a 1xN array of graphs represented by with adjacency
 %     matrices. Graphs(i).am is the i'th adjacency matrix. Graphs(i) may
 %     have other fields, but they will not be considered by this script
 %   shortestPathMatrices - optional; a 1xN array of shortest path matrices

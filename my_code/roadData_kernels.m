@@ -10,9 +10,10 @@ sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 
 doStandard = 0;
 doSampleLast = 0;
-doSampleFirst = 1;
+doSampleFirst = 0;
+doVoronoi = 1;
 
-sizesToRun = sizes(6:8);
+sizesToRun = sizes(1:1);
 for graphSize = sizesToRun
     %% Pick out the data
     
@@ -71,6 +72,9 @@ for graphSize = sizesToRun
     sampleFirstKernelValues = cell(nMValues, nTrials);
     sampleFirstRunTimes = zeros(nMValues, nTrials);
     
+    voronoiKernelValues = cell(nMValues, nTrials);
+    voronoiRunTimes = zeros(nMValues, nTrials);
+    
     %%
     if doSampleLast
         disp('SampleLast kernel:')
@@ -115,6 +119,27 @@ for graphSize = sizesToRun
             num2str(graphSize)];
         save(sampFstValuesFilename, 'sampleFirstKernelValues', ...
             'sampleFirstRunTimes');
+    end
+    
+    if doVoronoi
+        disp('Voronoi kernel:')
+        % compute Voronoi kernel
+        for i = 1:nMValues
+            for j = 1:nTrials
+                t = cputime;
+                voronoiKernelValues{i, j} = ...
+                    voronoiKernel(Graphs, ms(i), ?, ?);
+                disp(['Finished trial ' num2str(j) ' out of ' ...
+                    num2str(nTrials) ' for m-value ' num2str(ms(i))])
+                voronoiRunTimes(i, j) = cputime - t;
+            end
+        end
+        
+        vorValuesFilename = ...
+            ['./my_code/data/smpFstKrnVal_ROADS' ...
+            num2str(graphSize)];
+        save(vorValuesFilename, 'voronoiKernelValues', ...
+            'voronoiRunTimes');
     end
     
 end

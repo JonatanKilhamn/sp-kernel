@@ -1,5 +1,6 @@
 function sampledDistribution = ...
-    sampleFirstShortestPathDistribution(costMatrix, nSamples)
+    sampleFirstShortestPathDistribution(costMatrix, nSamples, voronoi, ...
+    grouping, voronoiAdjacencyMatrix)
 % takes a graph, i.e. an adjacency matrix
 % and a wanted number of samples
 % returns a distribution P of sampled shortest path lengths
@@ -8,6 +9,11 @@ function sampledDistribution = ...
 if (nargin < 2)
     nSamples = getNSamples();
 end
+if (nargin < 3)
+    voronoi = 0;
+end
+
+
 
 n = size(costMatrix, 1);
 %n = size(graph.nl.values, 1);
@@ -15,23 +21,7 @@ n = size(costMatrix, 1);
 nDiagonalSamples = ceil(nSamples/n);
 nPairs = nSamples - nDiagonalSamples;
 
-% this version sampled M pairs, but we need to keep sampling until we've
-% found M non-Inf distances
-%pairs = sampleNodePairs(n, nPairs);
 
-
-% adjacencyMatrix = graph.am;
-% if (ismember('el', fieldnames(graph)))
-%     %TODO: handle graphs with distance labels, i.e. not all distances
-%     % are 1
-% end
-% 
-% costMatrix = Inf(n,n); % If A(i,j)==0 and i~=j D(i,j)=Inf;
-% filter = adjacencyMatrix~=0; % if A(i,j)=1...
-% costMatrix(filter) = adjacencyMatrix(filter); % ... then D(i,j)=w(i,j);
-% for i=1:n
-%     costMatrix(i,i)=0; % set the diagonal to zero
-% end
 
 
 if (~issparse(costMatrix))
@@ -51,13 +41,18 @@ while i < nPairs+1 % the remaining "samples" are treated as being drawn from
     % [~, shortestDistances(i)] = dijkstra(costMatrix, ...
     %     sampledPair(1), sampledPair(2));
     
-    
-    % C implementation using a heap (even faster?):
-    shortestDistances(i) = dijkstra_heap_m(costMatrix, ...
-        sampledPair(1), sampledPair(2));
-    
-    if ~isinf(shortestDistances(i))
-        i = i+1;
+    if voronoi
+        shortestDistances(i) = dijkstra_voronoi(costMatrix, ...
+            sampledPair(1), sampledPair(2), grouping, ...
+            voronoiAdjacencyMatrix);
+    else
+        % C implementation using a heap (even faster?):
+        shortestDistances(i) = dijkstra_heap_m(costMatrix, ...
+            sampledPair(1), sampledPair(2));
+        
+        if ~isinf(shortestDistances(i))
+            i = i+1;
+        end
     end
 end
 
