@@ -2,9 +2,10 @@ experiment_setup;
 
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 
-sizesToRun = sizes(6);
+sizesToRun = sizes(3);
 
-section = 8;
+section = 1;
+noOfSections = 1;
 disp('Cleared the section assignment');
 
 for graphSize = sizesToRun
@@ -14,11 +15,19 @@ for graphSize = sizesToRun
     % we now have ROADS and lroads loaded
     nGraphs = size(ROADS, 2);
     
-    fwFilename = ['./my_code/data/fw_ROADS' ...
-        num2str(graphSize) '-' num2str(section)];
-    fwRuntimeFilename = ...
-        ['./my_code/data/fwRuntime_ROADS' ...
-        num2str(graphSize) '-' num2str(section)];
+    if (noOfSections == 1)
+        fwFilename = ['./my_code/data/fw_ROADS' ...
+            num2str(graphSize)];
+        fwRuntimeFilename = ...
+            ['./my_code/data/fwRuntime_ROADS' ...
+            num2str(graphSize)];        
+    else
+        fwFilename = ['./my_code/data/fw_ROADS' ...
+            num2str(graphSize) '-' num2str(section)];
+        fwRuntimeFilename = ...
+            ['./my_code/data/fwRuntime_ROADS' ...
+            num2str(graphSize) '-' num2str(section)];
+    end
     %load(fwFilename)
     %load(fwRuntimeFilename)
     % now we have fwROADS and fwRuntimesROADS
@@ -28,15 +37,15 @@ for graphSize = sizesToRun
     fwRuntimesROADS = zeros(1, nGraphs);
     
     
-    startInd = floor((section-1)*(nGraphs/8))+1;
-    stopInd = floor(section*(nGraphs/8));
+    startInd = floor((section-1)*(nGraphs/noOfSections))+1;
+    stopInd = floor(section*(nGraphs/noOfSections));
     
     t = cputime; % for measuring runtime
     % compute shortest paths
     disp('Entered floyd-warshal loop');
     for i=startInd:stopInd
         ti = cputime;
-        fwROADS{i} = floydwarshall(ROADS(i).am);
+        fwROADS{i} = floydwarshall_mod(ROADS(i).am);
         fwRuntimesROADS(i) = cputime - ti;
         disp(['Finished F-W on graph ', num2str(i), ', working toward ', ...
             num2str(stopInd)]);
