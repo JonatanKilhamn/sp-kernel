@@ -1,7 +1,7 @@
 experiment_setup;
 
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
-sizesToRun = sizes(1);
+sizesToRun = sizes(1:5);
 
 densities = 0.1*[1 2 3 5 9];
 densitiesToRun = densities(1:5);
@@ -33,7 +33,7 @@ for graphSize = sizesToRun
         end
         
         vorPreFilename = [vorPreFilename '.mat'];
-        vorPreRuntimeFilename = [vorPreRuntimeFilename '.mat']
+        vorPreRuntimeFilename = [vorPreRuntimeFilename '.mat'];
             
         %load(fwFilename)
         %load(fwRuntimeFilename)
@@ -49,7 +49,8 @@ for graphSize = sizesToRun
         
         t = cputime; % for measuring runtime
         % compute shortest paths
-        disp(['Entered voronoi loop for density ' num2str(density)]);
+        disp(['Entered voronoi loop for graph size ' ...
+             num2str(graphSize) ' and density ' num2str(density)]);
         for i=startInd:stopInd
             
             ti = cputime;

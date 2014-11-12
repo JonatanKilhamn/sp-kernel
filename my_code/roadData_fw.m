@@ -2,10 +2,10 @@ experiment_setup;
 
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 
-sizesToRun = sizes(3);
+sizesToRun = sizes(6);
 
 section = 1;
-noOfSections = 1;
+noOfSections = 8;
 disp('Cleared the section assignment');
 
 for graphSize = sizesToRun
