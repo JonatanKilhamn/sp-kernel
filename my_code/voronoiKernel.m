@@ -1,4 +1,4 @@
-function kernelValues = voronoiKernel(Graphs, nSamples, grouping, ...
+function kernelValues = voronoiKernel(Graphs, nSamples, groupings, ...
     voronoiAdjacencyMatrices)
 % Compute normalised shortest path length kernel for a set of graphs (by
 % sampling a number of node pairs, computing the shortest path lengths 
@@ -32,19 +32,19 @@ shortestPathDistributions = cell(1,N);
 
 
 for i=1:N
-  % Using cost matrices full of Inf:
-  % shortestPathDistributions{i} = ...
-  %    sampleFirstShortestPathDistribution(costMatrices{i}, nSamples);
-  
-  % Using sparse cost matrices:
-  shortestPathDistributions{i} = ...
-     sampleFirstShortestPathDistribution(Graphs(i).am, nSamples, ...
-     1, grouping, voronoiAdjacencyMatrices{i});
-  
-  disp(['Completed graph ' num2str(i) ' out of ' num2str(N)])
+    % Using cost matrices full of Inf:
+    % shortestPathDistributions{i} = ...
+    %    sampleFirstShortestPathDistribution(costMatrices{i}, nSamples);
+    
+    % Using sparse cost matrices:
+    shortestPathDistributions{i} = ...
+        sampleFirstShortestPathDistribution(Graphs(i).am, nSamples, ...
+        1, groupings{i}, voronoiAdjacencyMatrices{i});
+    
+    disp(['Completed graph ' num2str(i) ' out of ' num2str(N)])
 end
 
-%% compute kernel values 
+%% compute kernel values
 
 kernelValues = shortestPathDeltaKernels(shortestPathDistributions);
 

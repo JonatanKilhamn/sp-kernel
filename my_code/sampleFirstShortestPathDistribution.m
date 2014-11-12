@@ -50,9 +50,10 @@ while i < nPairs+1 % the remaining "samples" are treated as being drawn from
         shortestDistances(i) = dijkstra_heap_m(costMatrix, ...
             sampledPair(1), sampledPair(2));
         
-        if ~isinf(shortestDistances(i))
-            i = i+1;
-        end
+        
+    end
+    if ~isinf(shortestDistances(i))
+        i = i+1;
     end
 end
 
