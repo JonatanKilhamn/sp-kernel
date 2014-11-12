@@ -248,8 +248,6 @@ int row, rowIndex, current, from, to, weight, previousFrom;
 /* output */
 plhs[0] = mxCreateDoubleMatrix(1, 1, mxREAL);
 double *out1 = mxGetPr(plhs[0]);
-plhs[1] = mxCreateDoubleMatrix(size, 1, mxREAL);
-double *out2 = mxGetPr(plhs[1]);
 
 
 /* Special cases for first edge */
@@ -289,18 +287,50 @@ next[nEdges] = 0;
 /* Call dijkstra */
   dijkstra_heap(first, node, next, w, d, pi, sourceNode, size, handle, heap_index);
 
-  
+/* First output */
 out1[0] = d[heap_index[goalNode]];
 
-int prev, ii;
-prev = goalNode;
-for(ii = 0; ii < size; ii++) {
-  mexPrintf("\n%f", ii);
-  mexPrintf("\n Prev: %f", prev);
-  prev = pi[prev];
-  mexPrintf("\n Next: %f", prev);
+/* Second output: reconstruct path */
+int pathNode, pathLength;
+pathNode = goalNode;
+pathLength = 0;
+while (pathNode != sourceNode) {
+  pathNode = pi[pathNode];
+  pathLength++;
 }
 
 
+/*plhs[2] = mxCreateDoubleMatrix(size, 1, mxREAL);
+double *out3 = mxGetPr(plhs[2]);
+for (i = 1; i <= size; i++) {
+  out3[i-1] = d[i];
+}
+
+plhs[3] = mxCreateDoubleMatrix(size, 1, mxREAL);
+double *out4 = mxGetPr(plhs[3]);
+for (i = 1; i <= size; i++) {
+  out4[i-1] = heap_index[i];
+}*/
+
+
+plhs[1] = mxCreateDoubleMatrix(pathLength+1, 1, mxREAL);
+double *out2 = mxGetPr(plhs[1]);
+
+/*TODO: find what the hell is up here*/
+pathNode = goalNode;
+out2[0] = pathNode;
+/*while (pathNode != sourceNode) {
+  pathNode = pi[pathNode];
+  out2[i] = pathNode;
+  i++;
+}*/
+int i;
+for (i = 1; i <= pathLength; i++) {
+  pathNode = pi[pathNode];
+  out2[i] = pathNode;
+}
+
+
+/*mexPrintf("\n%d", d[heap_index[i]]);*/
 }
 

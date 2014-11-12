@@ -8,6 +8,8 @@ vorSource = grouping(source);
 vorGoal = grouping(goal);
 
 vorAm_3col = sparse_to_3col(voronoiAdjacencyMatrix);
+%[d, pi, dist, heap_index] = dijkstra_heap(vorAm_3col', nVor, vorSource, ...
+%    vorGoal);
 [~, vorPath] = dijkstra_heap(vorAm_3col', nVor, vorSource, ...
     vorGoal);
 
@@ -25,6 +27,7 @@ newGoal = find(vorSleeve == goal);
 %TODO: find new size
 
 [d, ~] = dijkstra_heap(amSleeve_3col', newSize, newSource, newGoal);
+
 % the reason for the transpose in the call is that C indexes matrices
 % by column, so for easier-to-understand C code I wanted to have
 % each edge triple (start, end, weight) as a column rather than a row
