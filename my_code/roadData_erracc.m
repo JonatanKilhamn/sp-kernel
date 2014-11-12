@@ -8,7 +8,7 @@ sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 
 %%
 
-sizesToRun = sizes(5);
+sizesToRun = sizes(1:4);
 
 for graphSize = sizesToRun
     %% Pick out the data
@@ -57,7 +57,7 @@ for graphSize = sizesToRun
     K = cell(1,1);
     K{1} = standardKernelValues;
     
-    stdTrialAcc = zeros(1,j);
+    stdTrialAcc = zeros(1,nTrials);
     for j = 1:nTrials
         [standardKernelSvmRes] = runsvm(K,labels);
         stdTrialAcc(j) = standardKernelSvmRes.mean_acc;
