@@ -1,6 +1,7 @@
 # Matlab data files #
 #####################
 *.mat
+*.log
 
 # But include the runtime data #
 ################################
