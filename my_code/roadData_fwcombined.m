@@ -51,8 +51,8 @@ for graphSize = sizesToRun
     fwROADS = fwCombinedROADS;
     fwRuntimesROADS = fwCombinedRuntimesROADS;
     
-    save(fwSectionFilename, 'fwROADS', '-v7.3');
-    save(fwSectionRuntimeFilename, 'fwRuntimesROADS', '-v7.3');
+    save(fwFilename, 'fwROADS', '-v7.3');
+    save(fwRuntimeFilename, 'fwRuntimesROADS', '-v7.3');
     
     
 end
