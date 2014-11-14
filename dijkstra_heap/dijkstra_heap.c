@@ -69,6 +69,9 @@ void exchange(double key[], int handle[], int heap_index[], int i, int j) {
   /* Update the heap_index values. */
   heap_index[handle[i]] = i;
   heap_index[handle[j]] = j;
+  
+  /*TODO: add an operations counter here, tracking number of exchange operations*/
+  
 }
 
 /* Make the min-heap rooted at node i obey the min-heap property.
