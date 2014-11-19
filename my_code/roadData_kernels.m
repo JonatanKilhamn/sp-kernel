@@ -5,7 +5,7 @@ experiment_setup;
 % sample subgraphs of size 100, 200, 500, 1 000, 2 000, 5 000,
 % 10 000, 20 000
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
-sizesToRun = sizes(3);
+sizesToRun = sizes(1:6);
 
 densities = 0.1*[1 2 3 5 9];
 densitiesToRun = densities(1:5);
@@ -152,7 +152,7 @@ for graphSize = sizesToRun
             end
             
             vorValuesFilename = ...
-                ['./my_code/data/smpFstKrnVal_ROADS' ...
+                ['./my_code/data/vorKrnVal_ROADS' ...
                 num2str(graphSize) '_' num2str(density) '.mat'];
             save(vorValuesFilename, 'voronoiKernelValues', ...
                 'voronoiRunTimes');
