@@ -37,9 +37,10 @@ for graphSize = sizesToRun
         ['./my_code/data/params_ROADS' ...
         num2str(graphSize)];
     load(paramsFilename)
-    % we now have nTrials, ms, and graphSize
+    % we now have nTrials, ms, graphSize, and densities
     
     nGraphs = size(ROADS, 2);
+    nDensities = length(densities);
     
     Graphs = ROADS;
     labels = lroads;
@@ -82,6 +83,7 @@ for graphSize = sizesToRun
     smpLstAvgError = zeros(nMValues, 1);
     %smpFstAvgAccuracy = zeros(nMValues, 1);
     %smpLstAvgAccuracy = zeros(nMValues, 1);
+    
     
     smpFstAvgRunTimes = mean(sampleFirstRunTimes, 2);
     smpLstavgRunTimes = mean(sampleLastRunTimes, 2);
@@ -127,6 +129,7 @@ for graphSize = sizesToRun
     sampleFirstAccuracy = zeros(nMValues, nTrials);
     sampleLastAccuracy = zeros(nMValues, nTrials);
     
+    
     for i = 1:nMValues
         for j = 1:nTrials
             
@@ -141,6 +144,7 @@ for graphSize = sizesToRun
             cellK{1} = sampleFirstK;
             [res] = runsvm(cellK, labels);
             sampleFirstAccuracy(i,j) = res.mean_acc;
+            
             
             disp(['Finished accuracies for trial ', num2str(j), ', m-value ', ...
                 num2str(i)]);
@@ -157,6 +161,55 @@ for graphSize = sizesToRun
         ['./my_code/data/accVal_ROADS' ...
         num2str(graphSize)];
     save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy');
+    
+    
+    %% Voronoi, error and accuracy
+    
+    vorAccuracy = zeros(nMValues, nTrials);
+    vorAvgAccuracy = zeros(nMValues, nDensities);
+    vorAvgError = zeros(nMValues, nDensities);
+
+    for d = 1:length(densities)
+        density = densities(d);
+        
+        disp(['Voronoi kernel, density = ' num2str(density)])
+        
+        vorPreFilename = ['./my_code/data/vorPre_ROADS' ...
+            num2str(graphSize) '_' num2str(density) '.mat'];
+        load(vorPreFilename);
+        
+        for i = 1:nMValues
+            for j = 1:nTrials
+                
+                % Error value
+                vorK = voronoiKernelValues{i,j};
+                vorError = vorError + ...
+                    sum(sum(abs(vorK-standardKernelValues))) / ...
+                    (nGraphs^2);
+                
+                % Accuracy
+                vorK = voronoiKernelValues{i,j};
+                cellK{1} = vorK;
+                [res] = runsvm(cellK, labels);
+                vorAccuracy(i,j) = res.mean_acc;
+            end
+            vorAvgError(i, d) = vorError/nTrials;
+        end
+        vorAvgAccuracy(:,d) = mean(vorAccuracy, 2);
+        
+    end
+    
+    
+    save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy', ...
+        'vorAvgAccuracy');
+    save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
+        'vorAvgError');
+
+    
+    
+    
+    
+    
     
 end
 
