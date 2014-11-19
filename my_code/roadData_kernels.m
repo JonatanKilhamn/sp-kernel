@@ -5,7 +5,7 @@ experiment_setup;
 % sample subgraphs of size 100, 200, 500, 1 000, 2 000, 5 000,
 % 10 000, 20 000
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
-sizesToRun = sizes(1:6);
+sizesToRun = sizes(1);
 
 densities = 0.1*[1 2 3 5 9];
 densitiesToRun = densities(1:5);
@@ -13,10 +13,10 @@ nDensities = length(densitiesToRun);
 
 %%
 
-doStandard = 0;
-doSampleLast = 0;
+doStandard = 1;
+doSampleLast = 1;
 doSampleFirst = 0;
-doVoronoi = 1;
+doVoronoi = 0;
 
 
 for graphSize = sizesToRun
@@ -33,10 +33,17 @@ for graphSize = sizesToRun
     
     
     if doStandard || doSampleLast
+        clear fwCombinedROADS;
         fwFilename = ['./my_code/data/fw_ROADS' ...
             num2str(graphSize)];
         load(fwFilename)
-        % we now have fwROADS and fwRuntimesROADS loaded
+        % we now have fwROADS loaded
+        
+        if exist('fwCombinedROADS', 'var')
+            fwROADS = fwCombinedROADS;
+        end
+        
+        
         shortestPathMatrices = fwROADS;
     end
     
