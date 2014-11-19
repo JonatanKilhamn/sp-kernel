@@ -5,7 +5,7 @@ sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 sizesToRun = sizes(6);
 
 noOfSections = 8;
-currentSection = 1;
+currentSection = 3;
 
 for graphSize = sizesToRun
     
@@ -17,8 +17,8 @@ for graphSize = sizesToRun
     
     
     % Use these two rows for the first section:
-    fwCombinedROADS = cell(1, nGraphs);
-    fwCombinedRuntimesROADS = zeros(1, nGraphs);
+    %fwCombinedROADS = cell(1, nGraphs);
+    %fwCombinedRuntimesROADS = zeros(1, nGraphs);
     
     fwFilename = ['./my_code/data/fw_ROADS' ...
         num2str(graphSize)];
@@ -26,8 +26,8 @@ for graphSize = sizesToRun
         ['./my_code/data/fwRuntime_ROADS' ...
         num2str(graphSize)];
     % Use these rows for the other sections:
-    %load(fwFilename);
-    %load(fwRuntimeFilename);
+    load(fwFilename);
+    load(fwRuntimeFilename);
     
     
     for section = currentSection
@@ -63,3 +63,4 @@ for graphSize = sizesToRun
     
     
 end
+disp('Done');
