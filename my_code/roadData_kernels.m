@@ -13,10 +13,10 @@ nDensities = length(densitiesToRun);
 
 %%
 
-doStandard = 0;
-doSampleLast = 0;
+doStandard = 1;
+doSampleLast = 1;
 doSampleFirst = 0;
-doVoronoi = 1;
+doVoronoi = 0;
 
 
 for graphSize = sizesToRun
@@ -33,10 +33,17 @@ for graphSize = sizesToRun
     
     
     if doStandard || doSampleLast
+        clear fwCombinedROADS;
         fwFilename = ['./my_code/data/fw_ROADS' ...
             num2str(graphSize)];
         load(fwFilename)
-        % we now have fwROADS and fwRuntimesROADS loaded
+        % we now have fwROADS loaded
+        
+        if exist('fwCombinedROADS', 'var')
+            fwROADS = fwCombinedROADS;
+        end
+        
+        
         shortestPathMatrices = fwROADS;
     end
     
@@ -59,7 +66,7 @@ for graphSize = sizesToRun
     %%
     
     % sampling:
-    nTrials = 4,%20; % compute all sampled kernels several times
+    nTrials = 20; % compute all sampled kernels several times
     %nTrials = 1;
     ms = [10 20 40 80 140 200];
     %ms = [10];

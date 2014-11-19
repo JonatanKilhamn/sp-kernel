@@ -8,7 +8,10 @@ sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 
 %%
 
-sizesToRun = sizes(6);
+sizesToRun = sizes(1);
+
+doSampling = 0;
+doVoronoi = 0;
 
 for graphSize = sizesToRun
     %% Pick out the data
@@ -51,7 +54,7 @@ for graphSize = sizesToRun
     %% Accuracy reference number
     % run svm for non-sampling kernel, to get reference numbers
     
-    if 0
+    if doSampling
     
     % i.e. partition needs to be in two labeled sets
     
@@ -165,9 +168,9 @@ for graphSize = sizesToRun
     
     
     
-    end %of special "if 0"
+    end %of "if doSampling"
     
-    
+    if ~doSampling
     errorsFilename = ...
         ['./my_code/data/errVal_ROADS' ...
         num2str(graphSize)];
@@ -176,11 +179,11 @@ for graphSize = sizesToRun
         ['./my_code/data/accVal_ROADS' ...
         num2str(graphSize)];
     load(accFilename);
-
+    end
     
     
     %% Voronoi, error and accuracy
-    
+    if doVoronoi
     vorAccuracy = zeros(nMValues, nTrials);
     vorAvgAccuracy = zeros(nMValues, nDensities);
     vorAvgError = zeros(nMValues, nDensities);
@@ -190,9 +193,13 @@ for graphSize = sizesToRun
         
         disp(['Voronoi kernel, density = ' num2str(density)])
         
-        vorPreFilename = ['./my_code/data/vorPre_ROADS' ...
+        vorValuesFilename = ...
+            ['./my_code/data/vorKrnVal_ROADS' ...
             num2str(graphSize) '_' num2str(density) '.mat'];
-        load(vorPreFilename);
+        load(vorValuesFilename);
+        
+        vorError = 0;
+
         
         for i = 1:nMValues
             for j = 1:nTrials
@@ -209,6 +216,7 @@ for graphSize = sizesToRun
                 [res] = runsvm(cellK, labels);
                 vorAccuracy(i,j) = res.mean_acc;
             end
+            disp(['Finished all trials, m = ' num2str(i)])
             vorAvgError(i, d) = vorError/nTrials;
         end
         vorAvgAccuracy(:,d) = mean(vorAccuracy, 2);
@@ -221,7 +229,7 @@ for graphSize = sizesToRun
     save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
         'vorAvgError');
 
-    
+    end
     
     
     
