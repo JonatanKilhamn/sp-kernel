@@ -51,6 +51,8 @@ for graphSize = sizesToRun
     %% Accuracy reference number
     % run svm for non-sampling kernel, to get reference numbers
     
+    if 0
+    
     % i.e. partition needs to be in two labeled sets
     
     disp('Computing standard kernel accuracy:')
@@ -118,8 +120,7 @@ for graphSize = sizesToRun
         ['./my_code/data/errVal_ROADS' ...
         num2str(graphSize)];
     save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError');
-    
-    
+
     %% Accuracy:
     
     disp('Computing sampling kernel classification accuracies:')
@@ -161,6 +162,21 @@ for graphSize = sizesToRun
         ['./my_code/data/accVal_ROADS' ...
         num2str(graphSize)];
     save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy');
+    
+    
+    
+    end %of special "if 0"
+    
+    
+    errorsFilename = ...
+        ['./my_code/data/errVal_ROADS' ...
+        num2str(graphSize)];
+    load(errorsFilename);
+    accFilename = ...
+        ['./my_code/data/accVal_ROADS' ...
+        num2str(graphSize)];
+    load(accFilename);
+
     
     
     %% Voronoi, error and accuracy

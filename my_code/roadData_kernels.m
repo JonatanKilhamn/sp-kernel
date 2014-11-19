@@ -5,7 +5,7 @@ experiment_setup;
 % sample subgraphs of size 100, 200, 500, 1 000, 2 000, 5 000,
 % 10 000, 20 000
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
-sizesToRun = sizes(3);
+sizesToRun = sizes(1);
 
 densities = 0.1*[1 2 3 5 9];
 densitiesToRun = densities(1:5);
@@ -59,7 +59,7 @@ for graphSize = sizesToRun
     %%
     
     % sampling:
-    nTrials = 20; % compute all sampled kernels several times
+    nTrials = 4,%20; % compute all sampled kernels several times
     %nTrials = 1;
     ms = [10 20 40 80 140 200];
     %ms = [10];
