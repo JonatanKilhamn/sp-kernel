@@ -7,11 +7,12 @@ experiment_setup;
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 nSizes = length(sizes);
 
-toRun = 6:8;
+toRun = 1:5;
 
-doStandard = 0;
-doSampleLast = 0;
+doStandard = 1;
+doSampleLast = 1;
 doSampleFirst = 1;
+doVoronoi = 1;
 
 
 %%
@@ -20,8 +21,9 @@ paramsFilename = './my_code/data/params_ROADS100';
 load(paramsFilename)
 % use any params because they are all the same; the matrices created by
 % this script are only possible if the same ms are used for all graph sizes
-% We now have nTrials, ms, and graphSize
+% We now have nTrials, ms, graphSize and densities
 nMValues = length(ms);
+nDensities = length(densities);
     
 stdPrepRuntimes = zeros(1, nSizes);
 stdQueryRuntimes = zeros(1, nSizes);
@@ -29,7 +31,8 @@ smpFstPrepRuntimes = zeros(nMValues, nSizes);
 smpFstQueryRuntimes = zeros(nMValues, nSizes);
 smpLstPrepRuntimes = zeros(nMValues, nSizes);
 smpLstQueryRuntimes = zeros(nMValues, nSizes);
-
+vorPrepRuntimes = zeros(nMValues, nSizes, nDensities);
+vorQueryRuntimes = zeros(nMValues, nSizes, nDensities);
 
 runtimesFilename = './my_code/data/runtimes_ROADS';
 load(runtimesFilename)
@@ -76,6 +79,8 @@ for i = toRun
         % we now have standardKernelValues and standardKernelRuntime loaded
     end
     
+    
+    
     paramsFilename = ...
         ['./my_code/data/params_ROADS' ...
         num2str(graphSize)];
@@ -104,6 +109,27 @@ for i = toRun
     if doSampleLast
         smpLstPrepRuntimes(:, i) = sum(fwRuntimesROADS);
         smpLstQueryRuntimes(:, i) = mean(sampleLastRunTimes, 2);
+    end
+    
+    if doVoronoi
+        for j = 1:nDensities
+            density = densities(j);
+            
+            vorPreRuntimeFilename = ...
+                ['./my_code/data/vorPreRuntime_ROADS' ...
+                num2str(graphSize) '_' num2str(density) '.mat'];
+            load(vorPreRuntimeFilename);
+            % we now have vorPreRuntimesROADS
+            
+            vorValuesFilename = ...
+                ['./my_code/data/vorKrnVal_ROADS' ...
+                num2str(graphSize) '_' num2str(density) '.mat'];
+            load(vorValuesFilename, 'voronoiRunTimes');
+            
+            vorPrepRuntimes(:, i, j) = sum(vorPreRuntimesROADS);
+            vorQueryRuntimes(:, i, j) = mean(voronoiRunTimes, 2);
+        end
+        
     end
     
 end
