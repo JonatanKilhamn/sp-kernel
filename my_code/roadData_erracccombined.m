@@ -7,7 +7,7 @@ experiment_setup;
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 nSizes = length(sizes);
 
-toRun = 6;
+toRun = 1:5;
 
 %%
 
@@ -15,24 +15,20 @@ paramsFilename = './my_code/data/params_ROADS100';
 load(paramsFilename)
 % use any params because they are all the same; the matrices created by
 % this script are only possible if the same ms are used for all graph sizes
-% We now have nTrials, ms, and graphSize
+% We now have nTrials, ms, graphSize and densities
 nMValues = length(ms);
+nDensities = length(densities);
     
 stdAccuracy = zeros(1, nSizes);
 smpFstAccuracies = zeros(nMValues, nSizes);
 smpFstErrors = zeros(nMValues, nSizes);
 smpLstAccuracies = zeros(nMValues, nSizes);
 smpLstErrors = zeros(nMValues, nSizes);
-
+vorErrors = zeros(nMValues, nSizes, nDensities);
 
 errAccFilename = './my_code/data/errAcc_ROADS';
 %load(errAccFilename)
 
-
-%%%%%
-%%%%%
-%%%%% TODO: change the rest of this file to deal with errors and accuracy
-%%%%% as opposed to runtimes
 
 
 %%
@@ -49,11 +45,12 @@ for i = toRun
     errFilename = ['./my_code/data/errVal_ROADS' ...
         num2str(graphSize)];
     load(errFilename)
-    % we now have smpFstAvgError and smpLstAvgError loaded
+    % we now have smpFstAvgError, smpLstAvgError and vorAvgError loaded
     accFilename = ['./my_code/data/accVal_ROADS' ...
         num2str(graphSize)];
     load(accFilename)
-    % we now have smpFstAvgAccuracy and smpLstAvgAccuracy loaded
+    % we now have smpFstAvgAccuracy, smpLstAvgAccuracy and vorAvgAccuracy
+    % loaded
     stdAccFilename = ['./my_code/data/stdAcc_ROADS' ...
         num2str(graphSize)];
     load(stdAccFilename)
@@ -74,6 +71,11 @@ for i = toRun
     smpFstErrors(:, i) = smpFstAvgError;
     smpLstAccuracies(:, i) = smpLstAvgAccuracy;
     smpLstErrors(:, i) = smpLstAvgError;
+    
+    for j = 1:nDensities
+        vorErrors(:, i, j) = vorAvgError(:, j);
+    end
+    
     
     
 end
