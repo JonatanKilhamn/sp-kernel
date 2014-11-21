@@ -25,6 +25,7 @@ smpFstErrors = zeros(nMValues, nSizes);
 smpLstAccuracies = zeros(nMValues, nSizes);
 smpLstErrors = zeros(nMValues, nSizes);
 vorErrors = zeros(nMValues, nSizes, nDensities);
+vorAccuracies = zeros(nMValues, nSizes, nDensities);
 
 errAccFilename = './my_code/data/errAcc_ROADS';
 %load(errAccFilename)
@@ -74,6 +75,7 @@ for i = toRun
     
     for j = 1:nDensities
         vorErrors(:, i, j) = vorAvgError(:, j);
+        vorAccuracies(:, i, j) = vorAvgAccuracy(:, j);
     end
     
     
@@ -81,5 +83,6 @@ for i = toRun
 end
 
 save(errAccFilename, 'stdAccuracy', 'smpFstAccuracies', ...
-    'smpFstErrors', 'smpLstAccuracies', 'smpLstErrors');
+    'smpFstErrors', 'smpLstAccuracies', 'smpLstErrors', ...
+    'vorErrors', 'vorAccuracies');
 
