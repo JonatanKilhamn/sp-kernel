@@ -136,5 +136,5 @@ end
 
 save(runtimesFilename, 'stdPrepRuntimes', 'stdQueryRuntimes', ...
     'smpFstPrepRuntimes', 'smpFstQueryRuntimes', 'smpLstPrepRuntimes', ...
-    'smpLstQueryRuntimes')
+    'smpLstQueryRuntimes', 'vorPrepRuntimes', 'vorQueryRuntimes')
 
