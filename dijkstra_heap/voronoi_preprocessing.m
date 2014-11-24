@@ -7,7 +7,9 @@ n = size(adjacencyMatrix, 1);
 
  
 for i = 1:100
-    vorNodes = randperm(n, ceil(n*voronoiDensity));
+    %vorNodes = randperm(n, ceil(n*voronoiDensity));
+    allNodes = 1:n;
+    vorNodes = allNodes(rand(n, 1) < voronoiDensity);
     [grouping, vorAdj] = voronoi(graph_am_3col', n, vorNodes);
 end
 threshold = sum(sum(adjacencyMatrix)) + 1;

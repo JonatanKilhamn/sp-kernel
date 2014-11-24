@@ -5,18 +5,18 @@ experiment_setup;
 % sample subgraphs of size 100, 200, 500, 1 000, 2 000, 5 000,
 % 10 000, 20 000
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
-sizesToRun = sizes(6);
+sizesToRun = sizes(1);
 
 densities = 0.1*[1 2 3 5 9];
-densitiesToRun = densities(1:5);
+densitiesToRun = densities(1);
 nDensities = length(densitiesToRun);
 
 %%
 
-doStandard = 1;
-doSampleLast = 1;
+doStandard = 0;
+doSampleLast = 0;
 doSampleFirst = 0;
-doVoronoi = 0;
+doVoronoi = 1;
 
 
 for graphSize = sizesToRun
@@ -68,7 +68,7 @@ for graphSize = sizesToRun
     %%
     
     % sampling:
-    nTrials = 20; % compute all sampled kernels several times
+    nTrials = 1; % compute all sampled kernels several times
     %nTrials = 1;
     ms = [10 20 40 80 140 200];
     %ms = [10];
@@ -145,12 +145,23 @@ for graphSize = sizesToRun
             load(vorPreFilename);
             % We now have vorAdjROADS and groupingsROADS
             
+            groupingMats = cell(1, nGraphs);
+            for i = 1:nGraphs
+                groupingMats{i} = repmat(groupingsROADS{i},1,10) == ...
+                    repmat(1:10, nGraphs, 1);
+            end
+            
+            
             % compute Voronoi kernel
             for i = 1:nMValues
                 for j = 1:nTrials
                     t = cputime;
+                    
+%                     voronoiKernelValues{i, j} = ...
+%                         voronoiKernel(Graphs, ms(i), groupingsROADS, ...
+%                         vorAdjROADS);
                     voronoiKernelValues{i, j} = ...
-                        voronoiKernel(Graphs, ms(i), groupingsROADS, ...
+                        voronoiKernel(Graphs, ms(i), groupingMats, ...
                         vorAdjROADS);
                     disp(['Finished trial ' num2str(j) ' out of ' ...
                         num2str(nTrials) ' for m-value ' ...

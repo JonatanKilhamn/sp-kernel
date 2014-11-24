@@ -4,8 +4,10 @@ function d = dijkstra_voronoi(am, source, goal, grouping, ...
 % cost matrix and the voronoi preprocessing
 
 nVor = size(voronoiAdjacencyMatrix, 1);
-vorSource = grouping(source);
-vorGoal = grouping(goal);
+vorSource = find(grouping(source, :));
+vorGoal = find(grouping(goal, :));
+%vorSource = grouping(source);
+%vorGoal = grouping(goal);
 
 vorAm_3col = sparse_to_3col(voronoiAdjacencyMatrix);
 %[d, pi, dist, heap_index] = dijkstra_heap(vorAm_3col', nVor, vorSource, ...
@@ -15,7 +17,8 @@ vorAm_3col = sparse_to_3col(voronoiAdjacencyMatrix);
 
 n = size(am, 1);
 allNodes = 1:n;
-vorSleeve = allNodes(ismember(grouping, vorPath));
+vorSleeve = allNodes(any(grouping(:, vorPath), 2));
+%vorSleeve = allNodes(ismember(grouping, vorPath));
 amFull = full(am);
 amSleeve = sparse(amFull(vorSleeve, vorSleeve));
 amSleeve_3col = sparse_to_3col(amSleeve);
