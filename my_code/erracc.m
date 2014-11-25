@@ -2,64 +2,66 @@
 
 experiment_setup;
 
+dataset = 'ROADS';
 
+paramsFilename = ...
+    ['./my_code/data/params_', dataset];
+load(paramsFilename);
 
-% sample subgraphs of size 100, 200, 500, 1 000, 2 000, 5 000,
-% 10 000, 20 000
-sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+%sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 
 %%
 
-sizesToRun = sizes(1:5);
+sizesToRun = sizes(1);
 
 doStandard = 1;
 doSampling = 0;
-doVoronoi = 1;
+doVoronoi = 0;
 
 for graphSize = sizesToRun
     %% Pick out the data
     
-    roadDataFilename = ['./my_code/data/ROADS' ...
+    dataFilename = ['./my_code/data/', dataset ...
         num2str(graphSize)];
-    load(roadDataFilename)
-    % we now have ROADS and lroads loaded
-    smpFstFilename = ['./my_code/data/smpFstKrnVal_ROADS' ...
+    load(dataFilename)
+    % we now have GRAPHS and lgraphs loaded
+    smpFstFilename = ['./my_code/data/smpFstKrnVal_', dataset ...
         num2str(graphSize)];
     load(smpFstFilename)
     % we now have sampleFirstKernelValues and sampleFirstRunTimes loaded
-    smpLstFilename = ['./my_code/data/smpLstKrnVal_ROADS' ...
+    smpLstFilename = ['./my_code/data/smpLstKrnVal_', dataset ...
         num2str(graphSize)];
     load(smpLstFilename)
     % we now have sampleLastKernelValues and sampleLastRunTimes loaded
-    stdKrnFilename = ['./my_code/data/stdKrnVal_ROADS' ...
+    stdKrnFilename = ['./my_code/data/stdKrnVal_', dataset ...
         num2str(graphSize)];
     load(stdKrnFilename)
     % we now have standardKernelValues and standardKernelRuntime loaded
     paramsFilename = ...
-        ['./my_code/data/params_ROADS' ...
+        ['./my_code/data/params_', dataset ...
         num2str(graphSize)];
     load(paramsFilename)
     % we now have nTrials, ms, graphSize, and densities
     
     
-    clear fwCombinedROADS;
+    clear fwCombined;
     disp('Loading fw data')
-    fwFilename = ['./my_code/data/fw_ROADS' ...
+    fwFilename = ['./my_code/data/fw_', dataset ...
         num2str(graphSize)];
     load(fwFilename)
-    % we now have fwROADS (or fwCombinedROADS) loaded
-    if exist('fwCombinedROADS', 'var')
+    % we now have fw (or fwCombined) loaded
+    if exist('fwCombined', dataset, 'var')
         disp('Using fwCombinedR instead of fwR')
-        fwROADS = fwCombinedROADS;
+        fw = fwCombined;
     end
     
     
-    nGraphs = size(ROADS, 2);
+    nGraphs = size(GRAPHS, 2);
     nDensities = length(densities);
     
-    Graphs = ROADS;
-    labels = lroads;
-    shortestPathMatrices = fwROADS;
+    Graphs = GRAPHS;
+    labels = lgraphs;
+    shortestPathMatrices = fw;
     
     nMValues = length(ms);
     
@@ -83,7 +85,7 @@ for graphSize = sizesToRun
         stdKrnAccuracy = mean(stdTrialAcc);
         
         refAccFilename = ...
-            ['./my_code/data/stdAcc_ROADS' ...
+            ['./my_code/data/stdAcc_', dataset ...
             num2str(graphSize)];
         save(refAccFilename, 'stdKrnAccuracy');
     end
@@ -135,7 +137,7 @@ for graphSize = sizesToRun
         
         % store the error values:
         errorsFilename = ...
-            ['./my_code/data/errVal_ROADS' ...
+            ['./my_code/data/errVal_', dataset ...
             num2str(graphSize)];
         save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError');
         
@@ -177,7 +179,7 @@ for graphSize = sizesToRun
         
         % store the accuracy values
         accFilename = ...
-            ['./my_code/data/accVal_ROADS' ...
+            ['./my_code/data/accVal_', dataset ...
             num2str(graphSize)];
         save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy');
         
@@ -187,11 +189,11 @@ for graphSize = sizesToRun
     
     if ~doSampling
         errorsFilename = ...
-            ['./my_code/data/errVal_ROADS' ...
+            ['./my_code/data/errVal_', dataset ...
             num2str(graphSize)];
         load(errorsFilename);
         accFilename = ...
-            ['./my_code/data/accVal_ROADS' ...
+            ['./my_code/data/accVal_', dataset ...
             num2str(graphSize)];
         load(accFilename);
     end
@@ -209,7 +211,7 @@ for graphSize = sizesToRun
             disp(['Voronoi kernel, density = ' num2str(density)])
             
             vorValuesFilename = ...
-                ['./my_code/data/vorKrnVal_ROADS' ...
+                ['./my_code/data/vorKrnVal_', dataset ...
                 num2str(graphSize) '_' num2str(density) '.mat'];
             load(vorValuesFilename);
             
