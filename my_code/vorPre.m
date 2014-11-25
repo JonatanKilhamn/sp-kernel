@@ -57,17 +57,17 @@ for graphSize = sizesToRun
             
             ti = cputime;
             [vorAdj{i}, groupings{i}] = ...
-                voronoi_preprocessing((i).am, density);
+                voronoi_preprocessing(GRAPHS(i).am, density);
             vorPreRuntimes(i) = cputime - ti;
-            save(vorPreFilename, 'vorAdj, 'groupings, '-v7.3');
-            save(vorPreRuntimeFilename, 'vorPreRuntimes, '-v7.3');
+            save(vorPreFilename, 'vorAdj', 'groupings', '-v7.3');
+            save(vorPreRuntimeFilename, 'vorPreRuntimes', '-v7.3');
             disp(['Finished voronoi preprocessing on graph ', ...
                 num2str(i), ', working toward ', num2str(stopInd)]);
         end
         disp(['Processing  ', num2str(nGraphs), ' graphs took ', ...
             num2str(cputime-t), ' sec']);
         
-        save(vorPreFilename, 'vorAdj, 'groupings, '-v7.3');
-        save(vorPreRuntimeFilename, 'vorPreRuntimes, '-v7.3');
+        save(vorPreFilename, 'vorAdj', 'groupings', '-v7.3');
+        save(vorPreRuntimeFilename, 'vorPreRuntimes', '-v7.3');
     end
 end
