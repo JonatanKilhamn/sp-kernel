@@ -1,12 +1,14 @@
 %% Setup
 
-
-
 experiment_setup;
 
-% sample subgraphs of size 100, 200, 500, 1 000, 2 000, 5 000,
-% 10 000, 20 000
-sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+dataset = 'ROADS';
+
+paramsFilename = ...
+    ['./my_code/data/params_', dataset];
+load(paramsFilename);
+
+%sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 nSizes = length(sizes);
 
 toRun = 1:5;
@@ -19,14 +21,13 @@ doVoronoi = 1;
 
 %%
 
-paramsFilename = './my_code/data/params_ROADS100';
+paramsFilename = ['./my_code/data/params_', dataset];
 load(paramsFilename)
-% use any params because they are all the same; the matrices created by
-% this script are only possible if the same ms are used for all graph sizes
 % We now have nTrials, ms, graphSize and densities
-nMValues = length(ms);
-nDensities = length(densities);
-    
+
+%nMValues = length(ms);
+%nDensities = length(densitiesToRun);
+
 stdPrepRuntimes = zeros(1, nSizes);
 stdQueryRuntimes = zeros(1, nSizes);
 smpFstPrepRuntimes = zeros(nMValues, nSizes);
@@ -36,7 +37,7 @@ smpLstQueryRuntimes = zeros(nMValues, nSizes);
 vorPrepRuntimes = zeros(nMValues, nSizes, nDensities);
 vorQueryRuntimes = zeros(nMValues, nSizes, nDensities);
 
-runtimesFilename = './my_code/data/runtimes_ROADS';
+runtimesFilename = ['./my_code/data/runtimes_', dataset];
 load(runtimesFilename)
 
 %%
@@ -45,37 +46,37 @@ for i = toRun
     
     graphSize = sizes(i);
     
-    roadDataFilename = ['./my_code/data/ROADS' ...
+    dataFilename = ['./my_code/data/', dataset ...
         num2str(graphSize)];
-    load(roadDataFilename)
-    % we now have ROADS and lroads loaded
+    load(dataFilename)
+    % we now have GRAPHS and lgraphs loaded
     
     if (doStandard || doSampleLast)
-        %fwFilename = ['./my_code/data/fw_ROADS' ...
+        %fwFilename = ['./my_code/data/fw_', dataset ...
         %    num2str(graphSize)];
         %load(fwFilename)
-        fwRuntimeFilename = ['./my_code/data/fwRuntime_ROADS' ...
+        fwRuntimeFilename = ['./my_code/data/fwRuntime_', dataset ...
             num2str(graphSize)];
         load(fwRuntimeFilename)
-        % we now have fwROADS and fwRuntimesROADS loaded
+        % we now have fw and fwRuntimes loaded
     end
     
     if doSampleFirst
-        smpFstFilename = ['./my_code/data/smpFstKrnVal_ROADS' ...
+        smpFstFilename = ['./my_code/data/smpFstKrnVal_', dataset ...
             num2str(graphSize)];
         load(smpFstFilename)
         % we now have sampleFirstKernelValues and sampleFirstRunTimes loaded
     end
     
     if doSampleLast
-        smpLstFilename = ['./my_code/data/smpLstKrnVal_ROADS' ...
+        smpLstFilename = ['./my_code/data/smpLstKrnVal_', dataset ...
             num2str(graphSize)];
         load(smpLstFilename)
         % we now have sampleLastKernelValues and sampleLastRunTimes loaded
     end
     
     if doStandard
-        stdKrnFilename = ['./my_code/data/stdKrnVal_ROADS' ...
+        stdKrnFilename = ['./my_code/data/stdKrnVal_', dataset ...
             num2str(graphSize)];
         load(stdKrnFilename)
         % we now have standardKernelValues and standardKernelRuntime loaded
@@ -84,22 +85,22 @@ for i = toRun
     
     
     paramsFilename = ...
-        ['./my_code/data/params_ROADS' ...
+        ['./my_code/data/params_', dataset ...
         num2str(graphSize)];
     load(paramsFilename)
     % we now have nTrials, ms, and graphSize
 
     
-    nGraphs = size(ROADS, 2);
+    nGraphs = size(GRAPHS, 2);
     
-    Graphs = ROADS;
-    labels = lroads;
-    %shortestPathMatrices = fwROADS;
+    Graphs = GRAPHS;
+    labels = lgraphs;
+    %shortestPathMatrices = fw;
     
     nMValues = length(ms);
     
     if doStandard
-        stdPrepRuntimes(i) = sum(fwRuntimesROADS);
+        stdPrepRuntimes(i) = sum(fwRuntimes);
         stdQueryRuntimes(i) = standardKernelRuntime;
     end
     
@@ -109,7 +110,7 @@ for i = toRun
     end
     
     if doSampleLast
-        smpLstPrepRuntimes(:, i) = sum(fwRuntimesROADS);
+        smpLstPrepRuntimes(:, i) = sum(fwRuntimes);
         smpLstQueryRuntimes(:, i) = mean(sampleLastRunTimes, 2);
     end
     
@@ -118,17 +119,17 @@ for i = toRun
             density = densities(j);
             
             vorPreRuntimeFilename = ...
-                ['./my_code/data/vorPreRuntime_ROADS' ...
+                ['./my_code/data/vorPreRuntime_', dataset ...
                 num2str(graphSize) '_' num2str(density) '.mat'];
             load(vorPreRuntimeFilename);
-            % we now have vorPreRuntimesROADS
+            % we now have vorPreRuntimes
             
             vorValuesFilename = ...
-                ['./my_code/data/vorKrnVal_ROADS' ...
+                ['./my_code/data/vorKrnVal_', dataset ...
                 num2str(graphSize) '_' num2str(density) '.mat'];
             load(vorValuesFilename, 'voronoiRunTimes');
             
-            vorPrepRuntimes(:, i, j) = sum(vorPreRuntimesROADS);
+            vorPrepRuntimes(:, i, j) = sum(vorPreRuntimes);
             vorQueryRuntimes(:, i, j) = mean(voronoiRunTimes, 2);
         end
         

@@ -2,14 +2,30 @@
 
 experiment_setup;
 
+dataset = 'ROADS';
+
 % sample subgraphs of size 100, 200, 500, 1 000, 2 000, 5 000,
 % 10 000, 20 000
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 sizesToRun = sizes(1);
 
+% sampling params:
+nTrials = 20; % compute all sampled kernels several times
+%nTrials = 1;
+ms = [10 20 40 80 140 200];
+%ms = [10];
+nMValues = length(ms);
+
+% voronoi params
 densities = 0.1*[1 2 3 5 9];
 densitiesToRun = densities(1);
 nDensities = length(densitiesToRun);
+
+paramsFilename = ...
+    ['./my_code/data/params_', dataset];
+save(paramsFilename, 'sizes', 'sizesToRun', 'nTrials', 'ms', ...
+    'nMValues', 'nGraphs', 'densities', 'densitiesToRun', ...
+    'nDensities');
 
 %%
 
@@ -22,31 +38,31 @@ doVoronoi = 0;
 for graphSize = sizesToRun
     %% Pick out the data
     disp('Loading data')
-    roadDataFilename = ['./my_code/data/ROADS' ...
+    dataFilename = ['./my_code/data/', dataset ...
         num2str(graphSize)];
-    load(roadDataFilename)
-    % we now have ROADS and lroads loaded
+    load(dataFilename)
+    % we now have GRAPHS and lgraphs loaded
     disp('Data loaded')
-    nGraphs = size(ROADS, 2);
-    Graphs = ROADS;
-    labels = lroads;
+    nGraphs = size(GRAPHS, 2);
+    Graphs = GRAPHS;
+    labels = lgraphs;
     
     
     if doStandard || doSampleLast
-        clear fwCombinedROADS;
+        clear fwCombined;
         disp('Loading fw data')
-        fwFilename = ['./my_code/data/fw_ROADS' ...
+        fwFilename = ['./my_code/data/fw_', dataset ...
             num2str(graphSize)];
         load(fwFilename)
-        % we now have fwROADS (or fwCombinedROADS) loaded
+        % we now have fw (or fwCombined) loaded
         
-        if exist('fwCombinedROADS', 'var')
+        if exist('fwCombined', 'var')
             disp('Using fwCombinedR instead of fwR')
-            fwROADS = fwCombinedROADS;
+            fw = fwCombined;
         end
         
         
-        shortestPathMatrices = fwROADS;
+        shortestPathMatrices = fw;
     end
     
     
@@ -60,26 +76,15 @@ for graphSize = sizesToRun
         standardKernelRuntime = cputime - t;
         
         standKernValuesFilename = ...
-            ['./my_code/data/stdKrnVal_ROADS' ...
+            ['./my_code/data/stdKrnVal_', dataset ...
             num2str(graphSize)];
         save(standKernValuesFilename, 'standardKernelValues', ...
             'standardKernelRuntime');
     end
     
-    %%
-    
-    % sampling:
-    nTrials = 20; % compute all sampled kernels several times
-    %nTrials = 1;
-    ms = [10 20 40 80 140 200];
-    %ms = [10];
-    nMValues = length(ms);
-    
-    paramsFilename = ...
-        ['./my_code/data/params_ROADS' ...
-        num2str(graphSize)];
-    save(paramsFilename, 'graphSize', 'nTrials', 'ms', 'nGraphs', ...
-        'densities');
+    %% Sampling
+   
+   
     
     
     sampleLastKernelValues = cell(nMValues, nTrials);
@@ -108,7 +113,7 @@ for graphSize = sizesToRun
         
         
         sampLastValuesFilename = ...
-            ['./my_code/data/smpLstKrnVal_ROADS' ...
+            ['./my_code/data/smpLstKrnVal_', dataset ...
             num2str(graphSize)];
         save(sampLastValuesFilename, 'sampleLastKernelValues', ...
             'sampleLastRunTimes');
@@ -131,7 +136,7 @@ for graphSize = sizesToRun
         end
         
         sampFstValuesFilename = ...
-            ['./my_code/data/smpFstKrnVal_ROADS' ...
+            ['./my_code/data/smpFstKrnVal_', dataset ...
             num2str(graphSize)];
         save(sampFstValuesFilename, 'sampleFirstKernelValues', ...
             'sampleFirstRunTimes');
@@ -141,14 +146,14 @@ for graphSize = sizesToRun
         disp('Voronoi kernel:')
         for density = densitiesToRun
             % loading
-            vorPreFilename = ['./my_code/data/vorPre_ROADS' ...
+            vorPreFilename = ['./my_code/data/vorPre_', dataset ...
                 num2str(graphSize) '_' num2str(density) '.mat'];
             load(vorPreFilename);
-            % We now have vorAdjROADS and groupingsROADS
+            % We now have vorAdj and groupings
             
             groupingMats = cell(1, nGraphs);
             for i = 1:nGraphs
-                groupingMats{i} = repmat(groupingsROADS{i},1,10) == ...
+                groupingMats{i} = repmat(groupings{i},1,10) == ...
                     repmat(1:10, nGraphs, 1);
             end
             
@@ -159,11 +164,11 @@ for graphSize = sizesToRun
                     t = cputime;
                     
 %                     voronoiKernelValues{i, j} = ...
-%                         voronoiKernel(Graphs, ms(i), groupingsROADS, ...
-%                         vorAdjROADS);
+%                         voronoiKernel(Graphs, ms(i), groupings, ...
+%                         vorAdj);
                     voronoiKernelValues{i, j} = ...
                         voronoiKernel(Graphs, ms(i), groupingMats, ...
-                        vorAdjROADS);
+                        vorAdj);
                     disp(['Finished trial ' num2str(j) ' out of ' ...
                         num2str(nTrials) ' for m-value ' ...
                         num2str(ms(i)), ' and density ' ...
@@ -173,7 +178,7 @@ for graphSize = sizesToRun
             end
             
             vorValuesFilename = ...
-                ['./my_code/data/vorKrnVal_ROADS' ...
+                ['./my_code/data/vorKrnVal_', dataset ...
                 num2str(graphSize) '_' num2str(density) '.mat'];
             save(vorValuesFilename, 'voronoiKernelValues', ...
                 'voronoiRunTimes');
