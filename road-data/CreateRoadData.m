@@ -1,4 +1,4 @@
-function success = CreateRoadData(sizeOfSampled, nGraphs)
+function [success, dataset] = CreateRoadData(sizeOfSampled, nGraphs)
 %sizeOfSampled = 100;
 %nGraphs = 120;
 

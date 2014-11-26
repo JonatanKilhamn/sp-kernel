@@ -18,7 +18,9 @@ function G = erdosRenyi (n, p, varargin)
 G = rand(n, n) < p;
 G = triu(G, 1);
 G = G + G';
-% G = sparse(G);
+G = sparse(G);
+
+% What does this do? TODO: ask Carl and Otto
 if (~isempty(varargin))
     for i = 1:2:length(varargin)
         opt = lower(varargin{i});

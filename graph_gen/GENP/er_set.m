@@ -29,6 +29,7 @@ for i=1:N
     ams{N+i} = A;
     als{N+i} = al;
     nls{N+i} = nl;
+    disp(['Done with step ', num2str(i), ' out of ', num2str(N)])
 end
 
 graphs = struct('am',ams,'al',als,'nl',nls);
