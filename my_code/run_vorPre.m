@@ -2,11 +2,12 @@ experiment_setup;
 
 dataset = 'ROADS';
 
-sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
-sizesToRun = sizes(7:8);
+paramsFilename = ...
+    ['./my_code/data/params_', dataset];
+load(paramsFilename);
 
-densities = 0.1*[1 2 3 5 9];
-densitiesToRun = densities(1:5);
+sizesToRun = sizes(1);
+densitiesToRun = densities(1);
 nDensities = length(densitiesToRun);
 
 

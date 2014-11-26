@@ -1,4 +1,4 @@
-function sampledDistribution = ...
+function [sampledDistribution, ops] = ...
     sampleFirstShortestPathDistribution(costMatrix, nSamples, voronoi, ...
     grouping, voronoiAdjacencyMatrix)
 % takes a graph, i.e. an adjacency matrix
@@ -30,6 +30,7 @@ end
 shortestDistances = zeros(1, nSamples);
 %for i = 1:nSamples
 i = 1;
+ops = 0;
 while i < nPairs+1 % the remaining "samples" are treated as being drawn from
     % the diagonal elements, i.e. the distances are zero
     
@@ -42,12 +43,12 @@ while i < nPairs+1 % the remaining "samples" are treated as being drawn from
     %     sampledPair(1), sampledPair(2));
     
     if voronoi
-        shortestDistances(i) = dijkstra_voronoi(costMatrix, ...
+        [shortestDistances(i), opsTmp] = dijkstra_voronoi(costMatrix, ...
             sampledPair(1), sampledPair(2), grouping, ...
             voronoiAdjacencyMatrix);
     else
         % C implementation using a heap (even faster?):
-        shortestDistances(i) = dijkstra_heap_m(costMatrix, ...
+        [shortestDistances(i), opsTmp] = dijkstra_heap_m(costMatrix, ...
             sampledPair(1), sampledPair(2));
         
         
@@ -55,6 +56,7 @@ while i < nPairs+1 % the remaining "samples" are treated as being drawn from
     if ~isinf(shortestDistances(i))
         i = i+1;
     end
+    ops = ops + opsTmp;
 end
 
 % remove all unreachable pairs (Inf distances)

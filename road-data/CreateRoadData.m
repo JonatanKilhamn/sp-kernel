@@ -2,13 +2,14 @@ function success = CreateRoadData(sizeOfSampled, nGraphs)
 %sizeOfSampled = 100;
 %nGraphs = 120;
 
+dataset = 'ROADS';
 
 doCa = true;
 doTx = true;
 sampleCa = true;
 sampleTx = true;
 merge = true;
-filename = ['./my_code/data/ROADS' num2str(sizeOfSampled)];
+filename = ['./my_code/data/', dataset, num2str(sizeOfSampled)];
 
 %path(path, genpath('../'))
 
@@ -74,9 +75,9 @@ if merge
     labels = [lca; ltx];
     data = [caGraphs, txGraphs];
     
-    ROADS = data;
-    lroads = labels;
-    save(filename, 'ROADS', 'lroads');
+    GRAPHS = data;
+    lgraphs = labels;
+    save(filename, 'GRAPHS', 'lgraphs');
 end
 
 success = 1;

@@ -4,35 +4,22 @@ experiment_setup;
 
 dataset = 'ROADS';
 
-% sample subgraphs of size 100, 200, 500, 1 000, 2 000, 5 000,
-% 10 000, 20 000
-sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+paramsFilename = ...
+    ['./my_code/data/params_', dataset];
+load(paramsFilename)
+
 sizesToRun = sizes(1);
 
-% sampling params:
-nTrials = 20; % compute all sampled kernels several times
-%nTrials = 1;
-ms = [10 20 40 80 140 200];
-%ms = [10];
-nMValues = length(ms);
-
-% voronoi params
-densities = 0.1*[1 2 3 5 9];
 densitiesToRun = densities(1);
 nDensities = length(densitiesToRun);
 
-paramsFilename = ...
-    ['./my_code/data/params_', dataset];
-save(paramsFilename, 'sizes', 'sizesToRun', 'nTrials', 'ms', ...
-    'nMValues', 'nGraphs', 'densities', 'densitiesToRun', ...
-    'nDensities');
 
 %%
 
-doStandard = 1;
+doStandard = 0;
 doSampleLast = 0;
 doSampleFirst = 0;
-doVoronoi = 0;
+doVoronoi = 1;
 
 
 for graphSize = sizesToRun
@@ -92,9 +79,11 @@ for graphSize = sizesToRun
     
     sampleFirstKernelValues = cell(nMValues, nTrials);
     sampleFirstRunTimes = zeros(nMValues, nTrials);
+    sampleFirstOps = zeros(nMValues, nTrials);
     
     voronoiKernelValues = cell(nMValues, nTrials);
     voronoiRunTimes = zeros(nMValues, nTrials);
+    voronoiOps = zeros(nMValues, nTrials);
     
     %%
     if doSampleLast
@@ -127,7 +116,7 @@ for graphSize = sizesToRun
         for i = 1:nMValues
             for j = 1:nTrials
                 t = cputime;
-                sampleFirstKernelValues{i, j} = ...
+                [sampleFirstKernelValues{i, j}, sampleFirstOps(i,j)] = ...
                     sampleFirstKernel(Graphs, ms(i));
                 disp(['Finished trial ' num2str(j) ' out of ' ...
                     num2str(nTrials) ' for m-value ' num2str(ms(i))])
@@ -153,8 +142,9 @@ for graphSize = sizesToRun
             
             groupingMats = cell(1, nGraphs);
             for i = 1:nGraphs
-                groupingMats{i} = repmat(groupings{i},1,10) == ...
-                    repmat(1:10, nGraphs, 1);
+                nVorNodes = size(vorAdj{i}, 1);
+                groupingMats{i} = repmat(groupings{i},1,nVorNodes) == ...
+                    repmat(1:nVorNodes, nGraphs, 1);
             end
             
             
@@ -166,7 +156,7 @@ for graphSize = sizesToRun
 %                     voronoiKernelValues{i, j} = ...
 %                         voronoiKernel(Graphs, ms(i), groupings, ...
 %                         vorAdj);
-                    voronoiKernelValues{i, j} = ...
+                    [voronoiKernelValues{i, j}, voronoiOps(i,j)] = ...
                         voronoiKernel(Graphs, ms(i), groupingMats, ...
                         vorAdj);
                     disp(['Finished trial ' num2str(j) ' out of ' ...
@@ -181,7 +171,7 @@ for graphSize = sizesToRun
                 ['./my_code/data/vorKrnVal_', dataset ...
                 num2str(graphSize) '_' num2str(density) '.mat'];
             save(vorValuesFilename, 'voronoiKernelValues', ...
-                'voronoiRunTimes');
+                'voronoiRunTimes', 'voronoiOps');
         end
     end
     

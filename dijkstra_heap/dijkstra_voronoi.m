@@ -1,4 +1,4 @@
-function d = dijkstra_voronoi(am, source, goal, grouping, ...
+function [d, ops] = dijkstra_voronoi(am, source, goal, grouping, ...
     voronoiAdjacencyMatrix)
 % Computes the approximate distance between two nodes, given the original
 % cost matrix and the voronoi preprocessing
@@ -12,7 +12,9 @@ vorGoal = find(grouping(goal, :));
 vorAm_3col = sparse_to_3col(voronoiAdjacencyMatrix);
 %[d, pi, dist, heap_index] = dijkstra_heap(vorAm_3col', nVor, vorSource, ...
 %    vorGoal);
-[~, vorPath] = dijkstra_heap(vorAm_3col', nVor, vorSource, ...
+%[~, vorPath] = dijkstra_heap(vorAm_3col', nVor, vorSource, ...
+%    vorGoal);
+[~, vorPath, ops1] = dijkstra_heap_count(vorAm_3col', nVor, vorSource, ...
     vorGoal);
 
 n = size(am, 1);
@@ -29,8 +31,10 @@ newGoal = find(vorSleeve == goal);
 
 %TODO: find new size
 
-[d, ~] = dijkstra_heap(amSleeve_3col', newSize, newSource, newGoal);
-
+%[d, ~] = dijkstra_heap(amSleeve_3col', newSize, newSource, newGoal);
+[d, ~, ops2] = dijkstra_heap_count(amSleeve_3col', newSize, newSource, ...
+    newGoal);
+ops = ops1 + ops2;
 % the reason for the transpose in the call is that C indexes matrices
 % by column, so for easier-to-understand C code I wanted to have
 % each edge triple (start, end, weight) as a column rather than a row

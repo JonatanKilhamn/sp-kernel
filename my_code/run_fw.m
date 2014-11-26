@@ -2,12 +2,16 @@ experiment_setup;
 
 dataset = 'ROADS';
 
-sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+paramsFilename = ...
+    ['./my_code/data/params_', dataset];
+load(paramsFilename);
 
-sizesToRun = sizes(7);
+%sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+
+sizesToRun = sizes(1);
 
 section = 1;
-noOfSections = 8;
+noOfSections = 1;
 disp('Cleared the section assignment');
 
 for graphSize = sizesToRun
@@ -15,7 +19,7 @@ for graphSize = sizesToRun
         num2str(graphSize)];
     load(dataFilename)
     % we now have GRAPHS and lgraphs loaded
-    nGraphs = size(GRAPHS, 2);
+    %nGraphs = size(GRAPHS, 2);
     
     if (noOfSections == 1)
         fwFilename = ['./my_code/data/fw_', dataset ...
