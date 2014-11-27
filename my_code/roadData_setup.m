@@ -2,7 +2,7 @@ experiment_setup;
 
 %dataset = 'ROADS';
 
-doCreateData = 0;
+doCreateData = 1;
 doStoreParams = 1;
 
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];

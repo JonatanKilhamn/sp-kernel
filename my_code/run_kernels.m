@@ -10,7 +10,7 @@ load(paramsFilename)
 
 sizesToRun = sizes(1);
 
-densitiesToRun = densities(1);
+densitiesToRun = densities(2);
 nDensities = length(densitiesToRun);
 
 

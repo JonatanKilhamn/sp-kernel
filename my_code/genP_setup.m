@@ -1,18 +1,17 @@
-disp('Entered file')
 experiment_setup;
 
 dataset = 'GENP';
 
-doCreateData = 0;
+doCreateData = 1;
 doStoreParams = 1;
 
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+nSizes = length(sizes);
 nGraphs = 100;
 
 p1 = 0.1;
-p2 = 0.101;
+p2 = 0.103;
 
-disp('set parameters')
 if doCreateData
     for graphSize = sizes(1);
         
@@ -25,7 +24,6 @@ if doCreateData
 end
 
 if doStoreParams
-    disp('Entered if doStoreParams')
     % sampling params:
     nTrials = 20; % compute all sampled kernels several times
     %nTrials = 1;
@@ -35,10 +33,10 @@ if doStoreParams
     
     % voronoi params
     densities = [0.04 0.1];
+    nDensities = length(densities);
     
     paramsFilename = ...
         ['./my_code/data/params_', dataset];
-    save(paramsFilename, 'sizes', 'nTrials', 'ms', 'nGraphs', ...
-        'nMValues', 'densities', 'p1', 'p2');
+    save(paramsFilename, 'sizes', 'nSizes', 'nTrials', 'ms', 'nGraphs', ...
+        'nMValues', 'densities', 'nDensities', 'p1', 'p2');
 end
-disp('exited doStoreParams')

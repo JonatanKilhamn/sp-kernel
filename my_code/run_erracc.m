@@ -232,13 +232,15 @@ for graphSize = sizesToRun
             end
             vorAvgAccuracy(:,d) = mean(vorAccuracy, 2);
             
+            save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy', ...
+                'vorAvgAccuracy');
+            save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
+                'vorAvgError');
+            
         end
         
         
-        save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy', ...
-            'vorAvgAccuracy');
-        save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
-            'vorAvgError');
+
         
     end
     
