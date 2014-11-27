@@ -36,7 +36,7 @@ for graphSize = sizesToRun
     stdKrnFilename = ['./my_code/data/stdKrnVal_', dataset ...
         num2str(graphSize)];
     load(stdKrnFilename)
-    % we now have standardKernelValues and standardKernelRuntime loaded
+    % we now have stdKrnValues and standardKernelRuntime loaded
     
     
     clear fwCombined;
@@ -69,12 +69,12 @@ for graphSize = sizesToRun
         disp('Computing standard kernel accuracy:')
         
         K = cell(1,1);
-        K{1} = standardKernelValues;
+        K{1} = stdKrnValues;
         
         stdTrialAcc = zeros(1,nTrials);
         for j = 1:nTrials
-            [standardKernelSvmRes] = runsvm(K,labels);
-            stdTrialAcc(j) = standardKernelSvmRes.mean_acc;
+            [stdKrnSvmRes] = runsvm(K,labels);
+            stdTrialAcc(j) = stdKrnSvmRes.mean_acc;
         end
         stdKrnAccuracy = mean(stdTrialAcc);
         
@@ -115,12 +115,12 @@ for graphSize = sizesToRun
             for j = 1:nTrials
                 sampleLastK = sampleLastKernelValues{i,j};
                 sampleLastError = sampleLastError + ...
-                    sum(sum(abs(sampleLastK-standardKernelValues))) / ...
+                    sum(sum(abs(sampleLastK-stdKrnValues))) / ...
                     (nGraphs^2);
                 
                 sampleFirstK = sampleFirstKernelValues{i,j};
                 sampleFirstError = sampleFirstError + ...
-                    sum(sum(abs(sampleFirstK-standardKernelValues))) / ...
+                    sum(sum(abs(sampleFirstK-stdKrnValues))) / ...
                     (nGraphs^2);
                 
             end
@@ -218,7 +218,7 @@ for graphSize = sizesToRun
                     % Error value
                     vorK = voronoiKernelValues{i,j};
                     vorError = vorError + ...
-                        sum(sum(abs(vorK-standardKernelValues))) / ...
+                        sum(sum(abs(vorK-stdKrnValues))) / ...
                         (nGraphs^2);
                     
                     % Accuracy

@@ -1,4 +1,4 @@
-function kernelValues = shortestPathKernel(Graphs, shortestPathMatrices)
+function [kernelValues, distributions] = shortestPathKernel(Graphs, shortestPathMatrices)
 % Compute normalised shortest path length kernel for a set of graphs (by
 % exact matching of shortest path lengths)
 %
