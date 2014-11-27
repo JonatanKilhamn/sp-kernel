@@ -10,9 +10,9 @@ nSizes = length(sizes);
 nGraphs = 100;
 
 p1 = 0.1;
-p2 = 0.103;
+p2 = 0.109;
 
-sizesToRun = sizes(1:5);
+sizesToRun = sizes(1);
 
 if doCreateData
     for graphSize = sizesToRun
