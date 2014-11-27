@@ -44,6 +44,7 @@ for graphSize = sizesToRun
         vorAdj = cell(1, nGraphs);
         groupings = cell(1, nGraphs);
         vorPreRuntimes = zeros(1, nGraphs);
+        vorPreOps = zeros(1, nGraphs);
         
         startInd = floor((section-1)*(nGraphs/noOfSections))+1;
         stopInd = floor(section*(nGraphs/noOfSections));
@@ -55,7 +56,7 @@ for graphSize = sizesToRun
         for i=startInd:stopInd
             
             ti = cputime;
-            [vorAdj{i}, groupings{i}] = ...
+            [vorAdj{i}, groupings{i}, vorPreOps(i)] = ...
                 voronoi_preprocessing(GRAPHS(i).am, density);
             vorPreRuntimes(i) = cputime - ti;
             save(vorPreFilename, 'vorAdj', 'groupings', '-v7.3');
@@ -67,6 +68,6 @@ for graphSize = sizesToRun
             num2str(cputime-t), ' sec']);
         
         save(vorPreFilename, 'vorAdj', 'groupings', '-v7.3');
-        save(vorPreRuntimeFilename, 'vorPreRuntimes', '-v7.3');
+        save(vorPreRuntimeFilename, 'vorPreRuntimes', 'vorPreOps', '-v7.3');
     end
 end

@@ -2,16 +2,17 @@
 
 experiment_setup;
 
-dataset = 'ROADS';
+dataset = 'GENP';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename);
 
+
 %sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 nSizes = length(sizes);
 
-toRun = 1:5;
+toRun = 1;
 
 doStandard = 1;
 doSampleLast = 1;
@@ -30,15 +31,24 @@ load(paramsFilename)
 
 stdPrepRuntimes = zeros(1, nSizes);
 stdQueryRuntimes = zeros(1, nSizes);
+
 smpFstPrepRuntimes = zeros(nMValues, nSizes);
 smpFstQueryRuntimes = zeros(nMValues, nSizes);
+smpFstPrepOps = zeros(nMValues, nSizes);
+smpFstQueryOps = zeros(nMValues, nSizes);
+
 smpLstPrepRuntimes = zeros(nMValues, nSizes);
 smpLstQueryRuntimes = zeros(nMValues, nSizes);
+
 vorPrepRuntimes = zeros(nMValues, nSizes, nDensities);
 vorQueryRuntimes = zeros(nMValues, nSizes, nDensities);
+vorPrepOps = zeros(nMValues, nSizes, nDensities);
+vorQueryOps = zeros(nMValues, nSizes, nDensities);
+
+
 
 runtimesFilename = ['./my_code/data/runtimes_', dataset];
-load(runtimesFilename)
+%load(runtimesFilename)
 
 %%
 for i = toRun
@@ -50,6 +60,8 @@ for i = toRun
         num2str(graphSize)];
     load(dataFilename)
     % we now have GRAPHS and lgraphs loaded
+    Graphs = GRAPHS;
+    labels = lgraphs;
     
     if (doStandard || doSampleLast)
         %fwFilename = ['./my_code/data/fw_', dataset ...
@@ -83,21 +95,7 @@ for i = toRun
     end
     
     
-    
-    paramsFilename = ...
-        ['./my_code/data/params_', dataset ...
-        num2str(graphSize)];
-    load(paramsFilename)
-    % we now have nTrials, ms, and graphSize
-
-    
-    nGraphs = size(GRAPHS, 2);
-    
-    Graphs = GRAPHS;
-    labels = lgraphs;
-    %shortestPathMatrices = fw;
-    
-    nMValues = length(ms);
+  
     
     if doStandard
         stdPrepRuntimes(i) = sum(fwRuntimes);
@@ -107,6 +105,8 @@ for i = toRun
     if doSampleFirst
         smpFstPrepRuntimes(:, i) = 0;
         smpFstQueryRuntimes(:, i) = mean(sampleFirstRunTimes, 2);
+        smpFstPrepOps(:, i) = 0;
+        smpFstQueryOps(:, i) = mean(sampleFirstOps, 2);
     end
     
     if doSampleLast
@@ -122,15 +122,18 @@ for i = toRun
                 ['./my_code/data/vorPreRuntime_', dataset ...
                 num2str(graphSize) '_' num2str(density) '.mat'];
             load(vorPreRuntimeFilename);
-            % we now have vorPreRuntimes
+            % we now have vorPreRuntimes and vorPreOps
             
             vorValuesFilename = ...
                 ['./my_code/data/vorKrnVal_', dataset ...
                 num2str(graphSize) '_' num2str(density) '.mat'];
-            load(vorValuesFilename, 'voronoiRunTimes');
+            load(vorValuesFilename, 'voronoiRunTimes', 'voronoiOps');
             
             vorPrepRuntimes(:, i, j) = sum(vorPreRuntimes);
             vorQueryRuntimes(:, i, j) = mean(voronoiRunTimes, 2);
+            vorPrepOps(:, i, j) = sum(vorPreOps);
+            vorQueryOps(:, i, j) = mean(voronoiOps, 2);
+            
         end
         
     end

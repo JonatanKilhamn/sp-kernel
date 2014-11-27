@@ -1,4 +1,4 @@
-function [vorAdj, grouping] = voronoi_preprocessing(adjacencyMatrix, ...
+function [vorAdj, grouping, ops] = voronoi_preprocessing(adjacencyMatrix, ...
     voronoiDensity)
 
 graph_am_3col = sparse_to_3col(adjacencyMatrix);
@@ -12,7 +12,7 @@ vorNodes = zeros(0);
 while isempty(vorNodes)
     vorNodes = allNodes(rand(n, 1) < voronoiDensity);
 end
-[grouping, vorAdj] = voronoi(graph_am_3col', n, vorNodes);
+[grouping, vorAdj, ops] = voronoi_count(graph_am_3col', n, vorNodes);
 
 threshold = sum(sum(adjacencyMatrix)) + 1;
 %vorAdj(vorAdj == 1000000000) = 0;
