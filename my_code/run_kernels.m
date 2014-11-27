@@ -8,9 +8,9 @@ paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename)
 
-sizesToRun = sizes(1);
+sizesToRun = sizes(2);
 
-densitiesToRun = densities(1:end);
+densitiesToRun = densities(1);
 
 
 %%
@@ -57,13 +57,13 @@ for graphSize = sizesToRun
     if doStandard
         disp('Standard kernel')
         t = cputime;
-        standardKernelValues = shortestPathKernel(Graphs, shortestPathMatrices);
+        stdKrnValues  = shortestPathKernel(Graphs, shortestPathMatrices);
         standardKernelRuntime = cputime - t;
         
         standKernValuesFilename = ...
             ['./my_code/data/stdKrnVal_', dataset ...
             num2str(graphSize)];
-        save(standKernValuesFilename, 'standardKernelValues', ...
+        save(standKernValuesFilename, 'stdKrnValues', ...
             'standardKernelRuntime');
     end
     
@@ -142,7 +142,7 @@ for graphSize = sizesToRun
             for i = 1:nGraphs
                 nVorNodes = size(vorAdj{i}, 1);
                 groupingMats{i} = repmat(groupings{i},1,nVorNodes) == ...
-                    repmat(1:nVorNodes, nGraphs, 1);
+                    repmat(1:nVorNodes, graphSize, 1);
             end
             
             
