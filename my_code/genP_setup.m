@@ -12,8 +12,10 @@ nGraphs = 100;
 p1 = 0.1;
 p2 = 0.103;
 
+sizesToRun = sizes(1:5);
+
 if doCreateData
-    for graphSize = sizes(1);
+    for graphSize = sizestoRun
         
         filename = ['./my_code/data/', dataset, num2str(graphSize)];
         
