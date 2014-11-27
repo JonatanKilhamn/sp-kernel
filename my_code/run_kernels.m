@@ -8,17 +8,17 @@ paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename)
 
-sizesToRun = sizes(2);
+sizesToRun = sizes(4);
 
 densitiesToRun = densities(1);
 
 
 %%
 
-doStandard = 0;
-doSampleLast = 0;
+doStandard = 1;
+doSampleLast = 1;
 doSampleFirst = 0;
-doVoronoi = 1;
+doVoronoi = 0;
 
 
 for graphSize = sizesToRun
