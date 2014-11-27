@@ -9,7 +9,7 @@ paramsFilename = ...
 load(paramsFilename);
 nSizes = length(sizes);
 
-toRun = 1;
+toRun = 1:2;
 
 %%
 

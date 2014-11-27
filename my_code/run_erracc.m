@@ -12,7 +12,7 @@ load(paramsFilename);
 
 %%
 
-sizesToRun = sizes(1);
+sizesToRun = sizes(1:2);
 
 doStandard = 1;
 doSampling = 1;
