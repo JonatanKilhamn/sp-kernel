@@ -8,16 +8,16 @@ paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename)
 
-sizesToRun = sizes(1:4);
+sizesToRun = sizes(1);
 
 densitiesToRun = densities(1:end);
 
 
 %%
 
-doStandard = 1;
-doSampleLast = 1;
-doSampleFirst = 1;
+doStandard = 0;
+doSampleLast = 0;
+doSampleFirst = 0;
 doVoronoi = 1;
 
 
@@ -126,7 +126,7 @@ for graphSize = sizesToRun
             ['./my_code/data/smpFstKrnVal_', dataset ...
             num2str(graphSize)];
         save(sampFstValuesFilename, 'sampleFirstKernelValues', ...
-            'sampleFirstRunTimes');
+            'sampleFirstRunTimes', 'sampleFirstOps');
     end
     
     if doVoronoi
