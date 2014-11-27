@@ -6,6 +6,8 @@ function [sampledDistribution, ops] = ...
 % returns a distribution P of sampled shortest path lengths
 % calculated using Dijkstra's algorithm
 
+N = size(costMatrix, 1);
+
 if (nargin < 2)
     nSamples = getNSamples();
 end
@@ -18,9 +20,9 @@ end
 n = size(costMatrix, 1);
 %n = size(graph.nl.values, 1);
 
-nDiagonalSamples = ceil(nSamples/n);
-nPairs = nSamples - nDiagonalSamples;
-
+%nDiagonalSamples = ceil(nSamples/n);
+%nPairs = nSamples - nDiagonalSamples;
+nPairs = nSamples;
 
 
 
@@ -43,6 +45,7 @@ while i < nPairs+1 % the remaining "samples" are treated as being drawn from
     %     sampledPair(1), sampledPair(2));
     
     if voronoi
+
         [shortestDistances(i), opsTmp] = dijkstra_voronoi(costMatrix, ...
             sampledPair(1), sampledPair(2), grouping, ...
             voronoiAdjacencyMatrix);
@@ -64,11 +67,16 @@ shortestDistances = shortestDistances(~isinf(shortestDistances));
 
 % add zero-length paths (no need to sample those since we know exactly how
 % common they are)
-shortestDistances = [zeros(1, nDiagonalSamples) shortestDistances];
+%shortestDistances = [zeros(1, nDiagonalSamples) shortestDistances];
+% (this is the old way of handling this; new is further down)
 
 % ensure that we base the distribution on the right number of samples
 nSamples = length(shortestDistances);
 
 counts=accumarray(shortestDistances'+1,ones(1, nSamples));
+
+% add the expected number of samples from the diagonal:
+counts(1) = counts(1) + nSamples/(N-1);
+
 sampledDistribution = counts ./ sum(counts);
 

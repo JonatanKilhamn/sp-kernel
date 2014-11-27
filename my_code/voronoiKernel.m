@@ -15,7 +15,7 @@ function [kernelValues, ops] = voronoiKernel(Graphs, nSamples, groupings, ...
 %     to the exact K)
 
 
-N=size(Graphs,2);
+N=length(Graphs);
 
 %% Argument inference
 

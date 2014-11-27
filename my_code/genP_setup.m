@@ -14,7 +14,7 @@ p2 = 0.101;
 
 disp('set parameters')
 if doCreateData
-    for graphSize = sizes(1:8);
+    for graphSize = sizes(1);
         
         filename = ['./my_code/data/', dataset, num2str(graphSize)];
         
@@ -34,7 +34,7 @@ if doStoreParams
     nMValues = length(ms);
     
     % voronoi params
-    densities = [0.01 0.1];
+    densities = [0.04 0.1];
     
     paramsFilename = ...
         ['./my_code/data/params_', dataset];

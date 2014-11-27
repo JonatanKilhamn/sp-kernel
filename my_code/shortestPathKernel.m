@@ -12,7 +12,7 @@ function kernelValues = shortestPathKernel(Graphs, shortestPathMatrices)
 %   kernelValues - nxn kernel matrix (often denoted K)
 
 
-N=size(Graphs,2);
+N=length(Graphs);
 
 t=cputime; % for measuring runtime
 

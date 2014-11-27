@@ -2,7 +2,7 @@
 
 experiment_setup;
 
-dataset = 'ROADS';
+dataset = 'GENP';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -30,7 +30,6 @@ for graphSize = sizesToRun
     load(dataFilename)
     % we now have GRAPHS and lgraphs loaded
     disp('Data loaded')
-    nGraphs = size(GRAPHS, 2);
     Graphs = GRAPHS;
     labels = lgraphs;
     

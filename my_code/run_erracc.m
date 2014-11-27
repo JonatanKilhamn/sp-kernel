@@ -2,7 +2,7 @@
 
 experiment_setup;
 
-dataset = 'ROADS';
+dataset = 'GENP';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -15,8 +15,8 @@ load(paramsFilename);
 sizesToRun = sizes(1);
 
 doStandard = 1;
-doSampling = 0;
-doVoronoi = 0;
+doSampling = 1;
+doVoronoi = 1;
 
 for graphSize = sizesToRun
     %% Pick out the data
@@ -37,11 +37,6 @@ for graphSize = sizesToRun
         num2str(graphSize)];
     load(stdKrnFilename)
     % we now have standardKernelValues and standardKernelRuntime loaded
-    paramsFilename = ...
-        ['./my_code/data/params_', dataset ...
-        num2str(graphSize)];
-    load(paramsFilename)
-    % we now have nTrials, ms, graphSize, and densities
     
     
     clear fwCombined;
@@ -50,13 +45,12 @@ for graphSize = sizesToRun
         num2str(graphSize)];
     load(fwFilename)
     % we now have fw (or fwCombined) loaded
-    if exist('fwCombined', dataset, 'var')
+    if exist('fwCombined', 'var')
         disp('Using fwCombinedR instead of fwR')
         fw = fwCombined;
     end
     
     
-    nGraphs = size(GRAPHS, 2);
     nDensities = length(densities);
     
     Graphs = GRAPHS;

@@ -238,9 +238,10 @@ if( !mxIsDouble(prhs[1]) ||
     mexErrMsgIdAndTxt("MyToolbox:dijkstra_matlab:notScalar",
                       "Input size must be a scalar.");
 }
-/* make sure the third argument (vorNodes) is a matrix */
+/* make sure the third argument (vorNodes) is a nonempty matrix */
 if( !mxIsDouble(prhs[2]) || 
-     mxIsComplex(prhs[2])) {
+     mxIsComplex(prhs[2])  ||
+     mxGetNumberOfElements(prhs[2]) == 0 ) {
     mexErrMsgIdAndTxt("MyToolbox:dijkstra_matlab:notDouble",
         "Input matrix 'voronoi_nodes' must be type double.");
 }
