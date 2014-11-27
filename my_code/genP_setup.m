@@ -1,8 +1,9 @@
+disp('Entered file')
 experiment_setup;
 
 dataset = 'GENP';
 
-doCreateData = 1;
+doCreateData = 0;
 doStoreParams = 1;
 
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
@@ -11,8 +12,9 @@ nGraphs = 100;
 p1 = 0.1;
 p2 = 0.101;
 
+disp('set parameters')
 if doCreateData
-    for graphSize = sizes(2:3);
+    for graphSize = sizes(1:8);
         
         filename = ['./my_code/data/', dataset, num2str(graphSize)];
         
@@ -23,6 +25,7 @@ if doCreateData
 end
 
 if doStoreParams
+    disp('Entered if doStoreParams')
     % sampling params:
     nTrials = 20; % compute all sampled kernels several times
     %nTrials = 1;
@@ -38,3 +41,4 @@ if doStoreParams
     save(paramsFilename, 'sizes', 'nTrials', 'ms', 'nGraphs', ...
         'nMValues', 'densities', 'p1', 'p2');
 end
+disp('exited doStoreParams')
