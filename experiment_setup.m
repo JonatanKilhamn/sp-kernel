@@ -33,3 +33,10 @@ path(genpath('graphsampling'), path);
 % C-a d
 %
 % export KRB5CCNAME=$CCOLD
+
+
+
+
+%%
+
+%   git rm $(git ls-files --deleted)
