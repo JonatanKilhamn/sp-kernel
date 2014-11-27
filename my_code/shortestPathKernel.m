@@ -46,6 +46,6 @@ end
 %% compute kernel values 
 
 kernelValues = shortestPathDeltaKernels(shortestPathDistributions);
-
+distributions = shortestPathDistributions;
 end
 
