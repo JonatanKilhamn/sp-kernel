@@ -11,7 +11,6 @@ load(paramsFilename)
 sizesToRun = sizes(1:4);
 
 densitiesToRun = densities(1:end);
-nDensities = length(densitiesToRun);
 
 
 %%

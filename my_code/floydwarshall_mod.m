@@ -26,16 +26,16 @@ end
 %t=cputime;
 if sym % then it is a bit faster
     for k=1:n
-        disp(['Step ', num2str(k), ' out of ', ...
-            num2str(n), ' of F-W']);
+        %disp(['Step ', num2str(k), ' out of ', ...
+        %    num2str(n), ' of F-W']);
         Daux=repmat(full(D(:,k)),1,n);
         Sumdist=Daux+Daux';
         D(Sumdist<D)=Sumdist(Sumdist<D);
     end
 else
     for k=1:n
-        disp(['Step ', num2str(k), ' out of ', ...
-            num2str(n), ' of F-W']);
+        %disp(['Step ', num2str(k), ' out of ', ...
+        %    num2str(n), ' of F-W']);
         Daux1=repmat(full(D(:,k)),1,n);
         Daux2=repmat(full(D(k,:)),n,1);
         Sumdist=Daux1+Daux2;
