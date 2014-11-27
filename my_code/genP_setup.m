@@ -15,7 +15,7 @@ p2 = 0.103;
 sizesToRun = sizes(1:5);
 
 if doCreateData
-    for graphSize = sizestoRun
+    for graphSize = sizesToRun
         
         filename = ['./my_code/data/', dataset, num2str(graphSize)];
         
