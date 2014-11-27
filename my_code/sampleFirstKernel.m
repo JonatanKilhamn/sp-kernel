@@ -14,7 +14,7 @@ function [kernelValues, ops] = sampleFirstKernel(Graphs, nSamples)
 %     to the exact K)
 
 
-N=size(Graphs,2);
+N=length(Graphs);
 
 %% Argument inference
 

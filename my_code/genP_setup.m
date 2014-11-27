@@ -2,7 +2,7 @@ experiment_setup;
 
 dataset = 'GENP';
 
-doCreateData = 1;
+doCreateData = 0;
 doStoreParams = 1;
 
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
@@ -12,7 +12,7 @@ p1 = 0.1;
 p2 = 0.101;
 
 if doCreateData
-    for graphSize = sizes(2:3);
+    for graphSize = sizes(1);
         
         filename = ['./my_code/data/', dataset, num2str(graphSize)];
         
@@ -31,7 +31,7 @@ if doStoreParams
     nMValues = length(ms);
     
     % voronoi params
-    densities = [0.01 0.1];
+    densities = [0.04 0.1];
     
     paramsFilename = ...
         ['./my_code/data/params_', dataset];

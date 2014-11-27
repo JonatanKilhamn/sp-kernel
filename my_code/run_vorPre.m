@@ -1,6 +1,6 @@
 experiment_setup;
 
-dataset = 'ROADS';
+dataset = 'GENP';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -20,7 +20,6 @@ for graphSize = sizesToRun
         num2str(graphSize)];
     load(dataFilename)
     % we now have GRAPHS and lgraphs loaded
-    nGraphs = size(GRAPHS, 2);
     
     for density = densitiesToRun
         

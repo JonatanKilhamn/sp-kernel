@@ -17,7 +17,7 @@ function kernelValues = sampleLastKernel(Graphs, nSamples, ...
 %     to the exact K)
 
 
-N=size(Graphs,2);
+N=length(Graphs);
 
 %% compute shortestPathMatrix for each graph (if not supplied)
 
