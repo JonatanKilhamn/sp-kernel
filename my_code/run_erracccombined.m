@@ -17,10 +17,15 @@ toRun = 1:4;
 stdAccuracy = zeros(1, nSizes);
 smpFstAccuracies = zeros(nMValues, nSizes);
 smpFstErrors = zeros(nMValues, nSizes);
+smpFstDistErrors = zeros(nMValues, nSizes);
+
 smpLstAccuracies = zeros(nMValues, nSizes);
 smpLstErrors = zeros(nMValues, nSizes);
+smpLstDistErrors = zeros(nMValues, nSizes);
+
 vorErrors = zeros(nMValues, nSizes, nDensities);
 vorAccuracies = zeros(nMValues, nSizes, nDensities);
+vorDistErrors = zeros(nMValues, nSizes, nDensities);
 
 errAccFilename = ['./my_code/data/errAcc_', dataset];
 %load(errAccFilename)
@@ -57,13 +62,18 @@ for i = toRun
     %%
     
     stdAccuracy(i) = stdKrnAccuracy;
+
     smpFstAccuracies(:, i) = smpFstAvgAccuracy;
     smpFstErrors(:, i) = smpFstAvgError;
+    smpFstDistErrors(:, i) = smpFstAvgDistError;
+
     smpLstAccuracies(:, i) = smpLstAvgAccuracy;
     smpLstErrors(:, i) = smpLstAvgError;
+    smpLstDistErrors(:, i) = smpLstAvgDistError;
     
     for j = 1:nDensities
         vorErrors(:, i, j) = vorAvgError(:, j);
+        vorDistErrors(:, i, j) = vorAvgDistError(:, j);
         vorAccuracies(:, i, j) = vorAvgAccuracy(:, j);
     end
     
