@@ -17,8 +17,8 @@ densitiesToRun = densities(1:2);
 
 doStandard = 1;
 doSampleLast = 1;
-doSampleFirst = 0;
-doVoronoi = 0;
+doSampleFirst = 1;
+doVoronoi = 1;
 
 doSaveDists = 1;
 

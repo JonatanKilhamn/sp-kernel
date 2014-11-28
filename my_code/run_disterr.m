@@ -67,7 +67,7 @@ for graphSize = sizesToRun
     errorsFilename = ...
         ['./my_code/data/distErr_', dataset ...
         num2str(graphSize)];
-    save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError');
+    save(errorsFilename, 'smpLstAvgDistError', 'smpFstAvgDistError');
 
     
     %% Voronoi, error and accuracy
@@ -90,9 +90,9 @@ for graphSize = sizesToRun
             for i = 1:nMValues
                 for j = 1:nTrials
                     
-                vorDists = vorDists{i,j};
+                voronoiDists = vorDists{i,j};
                 vorError = vorError + ...
-                    avgDistError(vorDists, stdDists);
+                    avgDistError(voronoiDists, stdDists);
 
                 end
                 disp(['Finished all trials, m = ' num2str(i)])
