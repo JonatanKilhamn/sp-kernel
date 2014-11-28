@@ -1,4 +1,4 @@
-function [kernelValues, ops] = sampleFirstKernel(Graphs, nSamples)
+function [kernelValues, distributions, ops] = sampleFirstKernel(Graphs, nSamples)
 % Compute normalised shortest path length kernel for a set of graphs (by
 % sampling a number of node pairs, computing the shortest path lengths
 % for those pairs, and using the results as an approximate distribution)
@@ -78,6 +78,6 @@ end
 %% compute kernel values
 
 kernelValues = shortestPathDeltaKernels(shortestPathDistributions);
-
+distributions = shortestPathDistributions;
 end
 

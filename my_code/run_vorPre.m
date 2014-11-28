@@ -6,7 +6,7 @@ paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename);
 
-sizesToRun = sizes(1:5);
+sizesToRun = sizes(1);
 densitiesToRun = densities(1:2);
 
 
