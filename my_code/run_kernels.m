@@ -57,14 +57,14 @@ for graphSize = sizesToRun
     if doStandard
         disp('Standard kernel')
         t = cputime;
-        [stdKrnValues, ~] = shortestPathKernel(Graphs, shortestPathMatrices);
+        [stdKrnValues, stdKrnDists] = shortestPathKernel(Graphs, shortestPathMatrices);
         standardKernelRuntime = cputime - t;
         
         standKernValuesFilename = ...
             ['./my_code/data/stdKrnVal_', dataset ...
             num2str(graphSize)];
         save(standKernValuesFilename, 'stdKrnValues', ...
-            'standardKernelRuntime');
+            'standardKernelRuntime', 'stdKrnDists');
     end
     
     %% Sampling
@@ -72,16 +72,16 @@ for graphSize = sizesToRun
    
     
     
-    sampleLastKernelValues = cell(nMValues, nTrials);
-    sampleLastRunTimes = zeros(nMValues, nTrials);
+    smpLstKrnValues = cell(nMValues, nTrials);
+    smpLstRunTimes = zeros(nMValues, nTrials);
     
-    sampleFirstKernelValues = cell(nMValues, nTrials);
-    sampleFirstRunTimes = zeros(nMValues, nTrials);
-    sampleFirstOps = zeros(nMValues, nTrials);
+    smpFstKrnValues = cell(nMValues, nTrials);
+    smpFstRunTimes = zeros(nMValues, nTrials);
+    smpFstOps = zeros(nMValues, nTrials);
     
-    voronoiKernelValues = cell(nMValues, nTrials);
-    voronoiRunTimes = zeros(nMValues, nTrials);
-    voronoiOps = zeros(nMValues, nTrials);
+    vorKrnValues = cell(nMValues, nTrials);
+    vorRunTimes = zeros(nMValues, nTrials);
+    vorOps = zeros(nMValues, nTrials);
     
     %%
     if doSampleLast
@@ -90,20 +90,20 @@ for graphSize = sizesToRun
         for i = 1:nMValues
             for j = 1:nTrials
                 t = cputime;
-                sampleLastKernelValues{i, j} = sampleLastKernel(Graphs, ...
+                smpLstKrnValues{i, j} = smpLstKrn(Graphs, ...
                     ms(i), shortestPathMatrices);
-                sampleLastRunTimes(i, j) = cputime - t;
+                smpLstRunTimes(i, j) = cputime - t;
                 disp(['Finished trial ' num2str(j) ' out of ' ...
                     num2str(nTrials) ' for m-value ' num2str(ms(i))])
             end
         end
         
         
-        sampLastValuesFilename = ...
+        smpLstValuesFilename = ...
             ['./my_code/data/smpLstKrnVal_', dataset ...
             num2str(graphSize)];
-        save(sampLastValuesFilename, 'sampleLastKernelValues', ...
-            'sampleLastRunTimes');
+        save(smpLstValuesFilename, 'smpLstKrnValues', ...
+            'smpLstRunTimes');
     end
     
     %%
@@ -114,19 +114,19 @@ for graphSize = sizesToRun
         for i = 1:nMValues
             for j = 1:nTrials
                 t = cputime;
-                [sampleFirstKernelValues{i, j}, sampleFirstOps(i,j)] = ...
+                [smpFstKrnValues{i, j}, smpFstOps(i,j)] = ...
                     sampleFirstKernel(Graphs, ms(i));
                 disp(['Finished trial ' num2str(j) ' out of ' ...
                     num2str(nTrials) ' for m-value ' num2str(ms(i))])
-                sampleFirstRunTimes(i, j) = cputime - t;
+                smpFstRunTimes(i, j) = cputime - t;
             end
         end
         
         sampFstValuesFilename = ...
             ['./my_code/data/smpFstKrnVal_', dataset ...
             num2str(graphSize)];
-        save(sampFstValuesFilename, 'sampleFirstKernelValues', ...
-            'sampleFirstRunTimes', 'sampleFirstOps');
+        save(sampFstValuesFilename, 'smpFstKrnValues', ...
+            'smpFstRunTimes', 'smpFstOps');
     end
     
     if doVoronoi
@@ -154,22 +154,22 @@ for graphSize = sizesToRun
 %                     voronoiKernelValues{i, j} = ...
 %                         voronoiKernel(Graphs, ms(i), groupings, ...
 %                         vorAdj);
-                    [voronoiKernelValues{i, j}, voronoiOps(i,j)] = ...
+                    [vorKrnValues{i, j}, vorOps(i,j)] = ...
                         voronoiKernel(Graphs, ms(i), groupingMats, ...
                         vorAdj);
                     disp(['Finished trial ' num2str(j) ' out of ' ...
                         num2str(nTrials) ' for m-value ' ...
                         num2str(ms(i)), ' and density ' ...
                         num2str(density)])
-                    voronoiRunTimes(i, j) = cputime - t;
+                    vorRunTimes(i, j) = cputime - t;
                 end
             end
             
             vorValuesFilename = ...
                 ['./my_code/data/vorKrnVal_', dataset ...
                 num2str(graphSize) '_' num2str(density) '.mat'];
-            save(vorValuesFilename, 'voronoiKernelValues', ...
-                'voronoiRunTimes', 'voronoiOps');
+            save(vorValuesFilename, 'vorKrnValues', ...
+                'vorRunTimes', 'vorOps');
         end
     end
     

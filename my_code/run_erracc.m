@@ -28,11 +28,11 @@ for graphSize = sizesToRun
     smpFstFilename = ['./my_code/data/smpFstKrnVal_', dataset ...
         num2str(graphSize)];
     load(smpFstFilename)
-    % we now have sampleFirstKernelValues and sampleFirstRunTimes loaded
+    % we now have smpLstKrnValues and smpLstRunTimes loaded
     smpLstFilename = ['./my_code/data/smpLstKrnVal_', dataset ...
         num2str(graphSize)];
     load(smpLstFilename)
-    % we now have sampleLastKernelValues and sampleLastRunTimes loaded
+    % we now have smpLstKrnValues and smpLstRunTimes loaded
     stdKrnFilename = ['./my_code/data/stdKrnVal_', dataset ...
         num2str(graphSize)];
     load(stdKrnFilename)
@@ -101,8 +101,8 @@ for graphSize = sizesToRun
         %smpLstAvgAccuracy = zeros(nMValues, 1);
         
         
-        smpFstAvgRunTimes = mean(sampleFirstRunTimes, 2);
-        smpLstavgRunTimes = mean(sampleLastRunTimes, 2);
+        smpFstAvgRunTimes = mean(smpLstRunTimes, 2);
+        smpLstavgRunTimes = mean(smpLstRunTimes, 2);
         
         
         %% Errors:
@@ -113,12 +113,12 @@ for graphSize = sizesToRun
             sampleLastError = 0;
             sampleFirstError = 0;
             for j = 1:nTrials
-                sampleLastK = sampleLastKernelValues{i,j};
+                sampleLastK = smpLstKrnValues{i,j};
                 sampleLastError = sampleLastError + ...
                     sum(sum(abs(sampleLastK-stdKrnValues))) / ...
                     (nGraphs^2);
                 
-                sampleFirstK = sampleFirstKernelValues{i,j};
+                sampleFirstK = smpLstKrnValues{i,j};
                 sampleFirstError = sampleFirstError + ...
                     sum(sum(abs(sampleFirstK-stdKrnValues))) / ...
                     (nGraphs^2);
@@ -149,13 +149,13 @@ for graphSize = sizesToRun
             for j = 1:nTrials
                 
                 disp('Acc. for SampleLast kernel')
-                sampleLastK = sampleLastKernelValues{i,j};
+                sampleLastK = smpLstKrnValues{i,j};
                 cellK{1} = sampleLastK;
                 [res] = runsvm(cellK, labels);
                 sampleLastAccuracy(i,j) = res.mean_acc;
                 
                 disp('Acc. for SampleFirst kernel')
-                sampleFirstK = sampleFirstKernelValues{i,j};
+                sampleFirstK = smpLstKrnValues{i,j};
                 cellK{1} = sampleFirstK;
                 [res] = runsvm(cellK, labels);
                 sampleFirstAccuracy(i,j) = res.mean_acc;
