@@ -58,7 +58,8 @@ for graphSize = sizesToRun
     if doStandard
         disp('Standard kernel')
         t = cputime;
-        [stdKrnValues, stdDists] = shortestPathKernel(Graphs, shortestPathMatrices);
+        [stdKrnValues, stdDists] = ...
+            shortestPathKernel(Graphs, shortestPathMatrices);
         standardKernelRuntime = cputime - t;
         
         standKernValuesFilename = ...
