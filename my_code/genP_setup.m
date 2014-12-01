@@ -3,7 +3,7 @@ experiment_setup;
 dataset = 'GENP';
 
 doCreateData = 1;
-doStoreParams = 1;
+doStoreParams = 0;
 
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 nSizes = length(sizes);
@@ -12,7 +12,7 @@ nGraphs = 100;
 p1 = 0.1;
 p2 = 0.109;
 
-sizesToRun = sizes(2:5);
+sizesToRun = sizes(6);
 
 if doCreateData
     for graphSize = sizesToRun
