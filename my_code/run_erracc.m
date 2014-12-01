@@ -14,8 +14,8 @@ load(paramsFilename);
 
 sizesToRun = sizes(1:3);
 
-doStandard = 1;
-doSampling = 1;
+doStandard = 0;
+doSampling = 0;
 doVoronoi = 1;
 
 for graphSize = sizesToRun
