@@ -209,10 +209,11 @@ for graphSize = sizesToRun
                 num2str(graphSize) '_' num2str(density) '.mat'];
             load(vorValuesFilename);
             
-            vorError = 0;
+            
             
             
             for i = 1:nMValues
+                vorError = 0;
                 for j = 1:nTrials
                     
                     % Error value
