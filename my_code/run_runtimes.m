@@ -77,14 +77,14 @@ for i = toRun
         smpFstFilename = ['./my_code/data/smpFstKrnVal_', dataset ...
             num2str(graphSize)];
         load(smpFstFilename)
-        % we now have sampleFirstKernelValues and sampleFirstRunTimes loaded
+        % we now have smpFstKernelValues and smpFstRunTimes loaded
     end
     
     if doSampleLast
         smpLstFilename = ['./my_code/data/smpLstKrnVal_', dataset ...
             num2str(graphSize)];
         load(smpLstFilename)
-        % we now have sampleLastKernelValues and sampleLastRunTimes loaded
+        % we now have smpLstKernelValues and smpLstRunTimes loaded
     end
     
     if doStandard
@@ -104,14 +104,14 @@ for i = toRun
     
     if doSampleFirst
         smpFstPrepRuntimes(:, i) = 0;
-        smpFstQueryRuntimes(:, i) = mean(sampleFirstRunTimes, 2);
+        smpFstQueryRuntimes(:, i) = mean(smpFstRunTimes, 2);
         smpFstPrepOps(:, i) = 0;
-        smpFstQueryOps(:, i) = mean(sampleFirstOps, 2);
+        smpFstQueryOps(:, i) = mean(smpFstOps, 2);
     end
     
     if doSampleLast
         smpLstPrepRuntimes(:, i) = sum(fwRuntimes);
-        smpLstQueryRuntimes(:, i) = mean(sampleLastRunTimes, 2);
+        smpLstQueryRuntimes(:, i) = mean(smpLstRunTimes, 2);
     end
     
     if doVoronoi
