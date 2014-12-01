@@ -216,13 +216,13 @@ for graphSize = sizesToRun
                 for j = 1:nTrials
                     
                     % Error value
-                    vorK = voronoiKernelValues{i,j};
+                    vorK = vorKrnValues{i,j};
                     vorError = vorError + ...
                         sum(sum(abs(vorK-stdKrnValues))) / ...
                         (nGraphs^2);
                     
                     % Accuracy
-                    vorK = voronoiKernelValues{i,j};
+                    vorK = vorKrnValues{i,j};
                     cellK{1} = vorK;
                     [res] = runsvm(cellK, labels);
                     vorAccuracy(i,j) = res.mean_acc;
