@@ -127,12 +127,12 @@ for i = toRun
             vorValuesFilename = ...
                 ['./my_code/data/vorKrnVal_', dataset ...
                 num2str(graphSize) '_' num2str(density) '.mat'];
-            load(vorValuesFilename, 'voronoiRunTimes', 'voronoiOps');
+            load(vorValuesFilename, 'vorRunTimes', 'vorOps');
             
             vorPrepRuntimes(:, i, j) = sum(vorPreRuntimes);
-            vorQueryRuntimes(:, i, j) = mean(voronoiRunTimes, 2);
+            vorQueryRuntimes(:, i, j) = mean(vorRunTimes, 2);
             vorPrepOps(:, i, j) = sum(vorPreOps);
-            vorQueryOps(:, i, j) = mean(voronoiOps, 2);
+            vorQueryOps(:, i, j) = mean(vorOps, 2);
             
         end
         
