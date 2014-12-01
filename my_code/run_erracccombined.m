@@ -56,6 +56,11 @@ for i = toRun
         num2str(graphSize)];
     load(stdAccFilename)
     % we now have stdKrnAccuracy loaded
+    distErrFilename = ['./my_code/data/distErr_', dataset ...
+        num2str(graphSize)];
+    load(distErrFilename)
+    % we now have stdKrnAccuracy loaded
+    
     
     
     nMValues = length(ms);
@@ -82,6 +87,7 @@ for i = toRun
 end
 
 save(errAccFilename, 'stdAccuracy', 'smpFstAccuracies', ...
-    'smpFstErrors', 'smpLstAccuracies', 'smpLstErrors', ...
-    'vorErrors', 'vorAccuracies');
+    'smpFstErrors', 'smpFstDistErrors', 'smpLstAccuracies', ...
+    'smpLstErrors', 'smpLstDistErrors', 'vorErrors', 'vorAccuracies', ...
+    'vorDistErrors');
 
