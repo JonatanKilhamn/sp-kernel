@@ -9,7 +9,7 @@ paramsFilename = ...
 load(paramsFilename);
 nSizes = length(sizes);
 
-toRun = 1;
+toRun = 1:3;
 
 %%
 
@@ -36,8 +36,8 @@ errAccFilename = ['./my_code/data/errAcc_', dataset];
 
 for i = toRun
     %% Pick out the data
-    
     graphSize = sizes(i);
+    disp(['Combining error and accuracy data for size ', num2str(graphSize)]);
 
 %     dataFilename = ['./my_code/data/', dataset ...
 %         num2str(graphSize)];
