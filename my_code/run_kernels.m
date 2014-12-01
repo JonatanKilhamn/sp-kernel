@@ -8,17 +8,17 @@ paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename)
 
-sizesToRun = sizes(1);
+sizesToRun = sizes(1:5);
 
 densitiesToRun = densities(1:2);
 
 
 %%
 
-doStandard = 1;
-doSampleLast = 1;
+doStandard = 0;
+doSampleLast = 0;
 doSampleFirst = 0;
-doVoronoi = 0;
+doVoronoi = 1;
 
 doSaveDists = 1;
 
