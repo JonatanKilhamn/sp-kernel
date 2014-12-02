@@ -11,7 +11,7 @@ load(paramsFilename);
 
 %%
 
-sizesToRun = sizes(1:3);
+sizesToRun = sizes(4);
 
 doSampling = 1;
 doVoronoi = 1;
