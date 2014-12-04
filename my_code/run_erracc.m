@@ -18,6 +18,8 @@ doStandard = 1;
 doSampling = 0;
 doVoronoi = 1;
 
+appending = 0;
+
 for graphSize = sizesToRun
     %% Pick out the data
     
@@ -138,11 +140,16 @@ for graphSize = sizesToRun
         %
         
         % store the error values:
-%         errorsFilename = ...
-%             ['./my_code/data/errVal_', dataset ...
-%             num2str(graphSize)];
-        save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
-            '-append');
+        %         errorsFilename = ...
+        %             ['./my_code/data/errVal_', dataset ...
+        %             num2str(graphSize)];
+        
+        if appending
+            save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
+                '-append');
+        else
+            save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError');
+        end
         
         %% Accuracy:
         
@@ -181,12 +188,15 @@ for graphSize = sizesToRun
         smpFstAvgAccuracy = mean(sampleFirstAccuracy, 2);
         
         % store the accuracy values
-%         accFilename = ...
-%             ['./my_code/data/accVal_', dataset ...
-%             num2str(graphSize)];
-        save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy', ...
-            '-append');
-        
+        %         accFilename = ...
+        %             ['./my_code/data/accVal_', dataset ...
+        %             num2str(graphSize)];
+        if appending
+            save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy', ...
+                '-append');
+        else
+            save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy');
+        end
         
         
     end %of "if doSampling"
@@ -243,11 +253,17 @@ for graphSize = sizesToRun
             end
             vorAvgAccuracy(:,d) = mean(vorAccuracy, 2);
             
-            save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy', ...
-                'vorAvgAccuracy', '-append');
-            save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
-                'vorAvgError', '-append');
-            
+            if appending
+                save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy', ...
+                    'vorAvgAccuracy', '-append');
+                save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
+                    'vorAvgError', '-append');
+            else
+                save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy', ...
+                    'vorAvgAccuracy');
+                save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
+                    'vorAvgError');
+            end
         end
         
         
