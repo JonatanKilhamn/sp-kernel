@@ -12,10 +12,10 @@ load(paramsFilename);
 
 %%
 
-sizesToRun = sizes(4);
+sizesToRun = sizes(5);
 
 doStandard = 1;
-doSampling = 1;
+doSampling = 0;
 doVoronoi = 1;
 
 for graphSize = sizesToRun
@@ -84,6 +84,14 @@ for graphSize = sizesToRun
         save(refAccFilename, 'stdKrnAccuracy');
     end
     
+    
+    errorsFilename = ...
+        ['./my_code/data/errVal_', dataset ...
+        num2str(graphSize)];
+    accFilename = ...
+        ['./my_code/data/accVal_', dataset ...
+        num2str(graphSize)];
+    
     if doSampling
         
         %% Comparison across sample numbers
@@ -130,10 +138,11 @@ for graphSize = sizesToRun
         %
         
         % store the error values:
-        errorsFilename = ...
-            ['./my_code/data/errVal_', dataset ...
-            num2str(graphSize)];
-        save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError');
+%         errorsFilename = ...
+%             ['./my_code/data/errVal_', dataset ...
+%             num2str(graphSize)];
+        save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
+            '-append');
         
         %% Accuracy:
         
@@ -172,25 +181,26 @@ for graphSize = sizesToRun
         smpFstAvgAccuracy = mean(sampleFirstAccuracy, 2);
         
         % store the accuracy values
-        accFilename = ...
-            ['./my_code/data/accVal_', dataset ...
-            num2str(graphSize)];
-        save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy');
+%         accFilename = ...
+%             ['./my_code/data/accVal_', dataset ...
+%             num2str(graphSize)];
+        save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy', ...
+            '-append');
         
         
         
     end %of "if doSampling"
     
-    if ~doSampling
-        errorsFilename = ...
-            ['./my_code/data/errVal_', dataset ...
-            num2str(graphSize)];
-        load(errorsFilename);
-        accFilename = ...
-            ['./my_code/data/accVal_', dataset ...
-            num2str(graphSize)];
-        load(accFilename);
-    end
+%     if ~doSampling
+%         errorsFilename = ...
+%             ['./my_code/data/errVal_', dataset ...
+%             num2str(graphSize)];
+%         load(errorsFilename);
+%         accFilename = ...
+%             ['./my_code/data/accVal_', dataset ...
+%             num2str(graphSize)];
+%         load(accFilename);
+%     end
     
     
     %% Voronoi, error and accuracy
@@ -234,9 +244,9 @@ for graphSize = sizesToRun
             vorAvgAccuracy(:,d) = mean(vorAccuracy, 2);
             
             save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy', ...
-                'vorAvgAccuracy');
+                'vorAvgAccuracy', '-append');
             save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
-                'vorAvgError');
+                'vorAvgError', '-append');
             
         end
         
