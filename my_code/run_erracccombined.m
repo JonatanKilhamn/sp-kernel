@@ -76,11 +76,11 @@ for i = toRun
     smpLstErrors(:, i) = smpLstAvgError;
     smpLstDistErrors(:, i) = smpLstAvgDistError;
     
-    %for j = 1:nDensities
-    %    vorErrors(:, i, j) = vorAvgError(:, j);
-    %    vorDistErrors(:, i, j) = vorAvgDistError(:, j);
-    %    vorAccuracies(:, i, j) = vorAvgAccuracy(:, j);
-    %end
+    for j = 1:nDensities
+        vorErrors(:, i, j) = vorAvgError(:, j);
+        vorDistErrors(:, i, j) = vorAvgDistError(:, j);
+        vorAccuracies(:, i, j) = vorAvgAccuracy(:, j);
+    end
     
     
     
