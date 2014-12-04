@@ -12,11 +12,11 @@ load(paramsFilename);
 %sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 nSizes = length(sizes);
 
-toRun = 1:4;
+toRun = 1:5;
 
 doStandard = 1;
 doSampleLast = 1;
-doSampleFirst = 1;
+doSampleFirst = 0;
 doVoronoi = 1;
 
 
@@ -48,7 +48,7 @@ vorQueryOps = zeros(nMValues, nSizes, nDensities);
 
 
 runtimesFilename = ['./my_code/data/runtimes_', dataset];
-%load(runtimesFilename)
+load(runtimesFilename)
 
 %%
 for i = toRun
