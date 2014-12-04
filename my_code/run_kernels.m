@@ -9,7 +9,7 @@ paramsFilename = ...
 load(paramsFilename)
 
 
-sizesToRun = sizes(7);
+sizesToRun = sizes(6);
 
 
 densitiesToRun = densities(1:2);
