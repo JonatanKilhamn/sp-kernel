@@ -9,7 +9,7 @@ paramsFilename = ...
 load(paramsFilename)
 
 
-sizesToRun = sizes(5);
+sizesToRun = sizes(7);
 
 
 densitiesToRun = densities(1:2);
@@ -166,7 +166,8 @@ for graphSize = sizesToRun
             
             
             % compute Voronoi kernel
-            for i = 1:nMValues
+            %for i = 1:nMValues
+            for i = nMValues
                 for j = 1:nTrials
                     t = cputime;
                     
