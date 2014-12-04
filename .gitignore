@@ -7,7 +7,4 @@
 ################################
 !*runtimes_ROADS.mat
 !*params_ROADS*.mat
-!*acc*.mat
-!*err*.mat
-!*Acc*.mat
-!*Err*.mat
+!*errAcc*.mat
