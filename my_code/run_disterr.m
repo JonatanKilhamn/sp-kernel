@@ -11,10 +11,10 @@ load(paramsFilename);
 
 %%
 
-sizesToRun = sizes(4);
+sizesToRun = sizes(5);
 
 doSampling = 1;
-doVoronoi = 1;
+doVoronoi = 0;
 
 for graphSize = sizesToRun
     %% Pick out the data

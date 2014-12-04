@@ -9,7 +9,7 @@ paramsFilename = ...
 load(paramsFilename);
 nSizes = length(sizes);
 
-toRun = 1:4;
+toRun = 5;
 
 %%
 
@@ -28,7 +28,7 @@ vorAccuracies = zeros(nMValues, nSizes, nDensities);
 vorDistErrors = zeros(nMValues, nSizes, nDensities);
 
 errAccFilename = ['./my_code/data/errAcc_', dataset];
-%load(errAccFilename)
+load(errAccFilename)
 
 
 
@@ -76,11 +76,11 @@ for i = toRun
     smpLstErrors(:, i) = smpLstAvgError;
     smpLstDistErrors(:, i) = smpLstAvgDistError;
     
-    for j = 1:nDensities
-        vorErrors(:, i, j) = vorAvgError(:, j);
-        vorDistErrors(:, i, j) = vorAvgDistError(:, j);
-        vorAccuracies(:, i, j) = vorAvgAccuracy(:, j);
-    end
+    %for j = 1:nDensities
+    %    vorErrors(:, i, j) = vorAvgError(:, j);
+    %    vorDistErrors(:, i, j) = vorAvgDistError(:, j);
+    %    vorAccuracies(:, i, j) = vorAvgAccuracy(:, j);
+    %end
     
     
     

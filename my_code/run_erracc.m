@@ -15,8 +15,8 @@ load(paramsFilename);
 sizesToRun = sizes(5);
 
 doStandard = 1;
-doSampling = 0;
-doVoronoi = 1;
+doSampling = 1;
+doVoronoi = 0;
 
 appending = 0;
 
