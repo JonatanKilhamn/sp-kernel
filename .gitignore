@@ -5,6 +5,6 @@
 
 # But include the runtime data #
 ################################
-!*runtimes_ROADS.mat
-!*params_ROADS*.mat
+!*runtimes_*.mat
+!*params_*.mat
 !*errAcc*.mat

@@ -1,14 +1,15 @@
 experiment_setup;
 
-dataset = 'GENP';
+dataset = 'PROTO';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename);
 
 %sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+%sizes = [100, 150, 250, 400, 650, 1000, 1500, 2500, 4000, 6500, 10000];
 
-sizesToRun = sizes(1:5);
+sizesToRun = sizes(1:6);
 
 section = 1;
 noOfSections = 1;
