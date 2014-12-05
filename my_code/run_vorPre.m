@@ -20,13 +20,13 @@ for graphSize = sizesToRun
     load(dataFilename)
     % we now have GRAPHS and lgraphs loaded
     
-    for density = densitiesToRun
+    for densityFactor = densitiesToRun
         
         vorPreFilename = ['./my_code/data/vorPre_', dataset ...
-            num2str(graphSize) '_' num2str(density)];
+            num2str(graphSize) '_' num2str(densityFactor)];
         vorPreRuntimeFilename = ...
             ['./my_code/data/vorPreRuntime_', dataset ...
-            num2str(graphSize) '_' num2str(density)];
+            num2str(graphSize) '_' num2str(densityFactor)];
         if (noOfSections ~= 1)
             vorPreFilename = [vorPreFilename '_' num2str(section)];
             vorPreRuntimeFilename = [vorPreRuntimeFilename '_' ...
@@ -52,8 +52,10 @@ for graphSize = sizesToRun
         t = cputime; % for measuring runtime
         % compute shortest paths
         disp(['Entered voronoi loop for graph size ' ...
-             num2str(graphSize) ' and density ' num2str(density)]);
+             num2str(graphSize) ' and density ' num2str(densityFactor)]);
         for i=startInd:stopInd
+            
+            density = graphSize^(-2/3)*densityFactor;
             
             ti = cputime;
             [vorAdj{i}, groupings{i}, vorPreOps(i)] = ...
