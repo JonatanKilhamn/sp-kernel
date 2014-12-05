@@ -2,21 +2,23 @@ experiment_setup;
 
 dataset = 'PROTO';
 
+doRenameVars = 0;
 doStoreParams = 1;
 
 sizes = [100, 150, 250, 400, 650, 1000, 1500, 2500, 4000, 6500, 10000];
 nSizes = length(sizes);
-nGraphs = 100;
+nGraphs = 200;
 
-for graphSize = sizes
-    dataFilename = ['./my_code/data/', dataset ...
-        num2str(graphSize)];
-    load(dataFilename)
-    GRAPHS = PROTO;
-    lgraphs = lproto;
-    save(dataFilename, 'GRAPHS', 'lgraphs')
+if doRenameVars
+    for graphSize = sizes
+        dataFilename = ['./my_code/data/', dataset ...
+            num2str(graphSize)];
+        load(dataFilename)
+        GRAPHS = PROTO;
+        lgraphs = lproto;
+        save(dataFilename, 'GRAPHS', 'lgraphs')
+    end
 end
-
 
 if doStoreParams
     % sampling params:
