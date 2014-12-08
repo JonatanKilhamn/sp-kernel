@@ -41,23 +41,10 @@ for graphSize = sizesToRun
     % we now have stdKrnValues and standardKernelRuntime loaded
     
     
-    clear fwCombined;
-    disp('Loading fw data')
-    fwFilename = ['./my_code/data/fw_', dataset ...
-        num2str(graphSize)];
-    load(fwFilename)
-    % we now have fw (or fwCombined) loaded
-    if exist('fwCombined', 'var')
-        disp('Using fwCombinedR instead of fwR')
-        fw = fwCombined;
-    end
-    
-    
     nDensities = length(densities);
     
     Graphs = GRAPHS;
     labels = lgraphs;
-    shortestPathMatrices = fw;
     
     nMValues = length(ms);
     
@@ -149,6 +136,7 @@ for graphSize = sizesToRun
                 '-append');
         else
             save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError');
+            appending = 1;
         end
         
         %% Accuracy:
@@ -196,6 +184,7 @@ for graphSize = sizesToRun
                 '-append');
         else
             save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy');
+            appending = 1;
         end
         
         
