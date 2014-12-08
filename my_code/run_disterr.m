@@ -2,7 +2,7 @@
 
 experiment_setup;
 
-dataset = 'PROTO';
+dataset = 'GENP';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -11,9 +11,9 @@ load(paramsFilename);
 
 %%
 
-sizesToRun = sizes(5);
+sizesToRun = sizes(1:4);
 
-doSampling = 1;
+doSampling = 0;
 doVoronoi = 1;
 
 for graphSize = sizesToRun

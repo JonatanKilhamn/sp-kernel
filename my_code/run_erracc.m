@@ -2,7 +2,7 @@
 
 experiment_setup;
 
-dataset = 'GENP';
+dataset = 'PROTO';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -12,11 +12,11 @@ load(paramsFilename);
 
 %%
 
-sizesToRun = sizes(1:4);
+sizesToRun = sizes(4:5);
 
-doStandard = 0;
-doSampling = 0;
-doVoronoi = 1;
+doStandard = 1;
+doSampling = 1;
+doVoronoi = 0;
 
 appending = 1;
 
