@@ -1,6 +1,6 @@
 experiment_setup;
 
-dataset = 'PROTO';
+dataset = 'GENP';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];

@@ -12,7 +12,7 @@ load(paramsFilename);
 
 %%
 
-sizesToRun = sizes(5);
+sizesToRun = sizes(1:4);
 
 doStandard = 0;
 doSampling = 0;
@@ -232,7 +232,8 @@ for graphSize = sizesToRun
             
             
             
-            for i = 1:nMValues
+            %for i = 1:nMValues
+            for i = nMValues
                 vorError = 0;
                 for j = 1:nTrials
                     

@@ -2,7 +2,7 @@
 
 experiment_setup;
 
-dataset = 'GENP';
+dataset = 'PROTO';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -22,8 +22,8 @@ doVoronoi = 1;
 
 %%
 
-paramsFilename = ['./my_code/data/params_', dataset];
-load(paramsFilename)
+%paramsFilename = ['./my_code/data/params_', dataset];
+%load(paramsFilename)
 % We now have nTrials, ms, graphSize and densities
 
 %nMValues = length(ms);
@@ -48,7 +48,7 @@ vorQueryOps = zeros(nMValues, nSizes, nDensities);
 
 
 runtimesFilename = ['./my_code/data/runtimes_', dataset];
-load(runtimesFilename)
+%load(runtimesFilename)
 
 %%
 for i = toRun

@@ -2,7 +2,7 @@ experiment_setup;
 
 dataset = 'GENP';
 
-doCreateData = 1;
+doCreateData = 0;
 doStoreParams = 1;
 
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
@@ -34,7 +34,7 @@ if doStoreParams
     nMValues = length(ms);
     
     % voronoi params
-    densities = [0.04 0.1];
+    densities = [1, 5];
     nDensities = length(densities);
     
     paramsFilename = ...

@@ -2,14 +2,14 @@
 
 experiment_setup;
 
-dataset = 'GENP';
+dataset = 'PROTO';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename);
 nSizes = length(sizes);
 
-toRun = 5;
+toRun = 1:5;
 
 %%
 
@@ -28,7 +28,7 @@ vorAccuracies = zeros(nMValues, nSizes, nDensities);
 vorDistErrors = zeros(nMValues, nSizes, nDensities);
 
 errAccFilename = ['./my_code/data/errAcc_', dataset];
-load(errAccFilename)
+%load(errAccFilename)
 
 
 
