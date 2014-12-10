@@ -2,7 +2,7 @@
 
 experiment_setup;
 
-dataset = 'GENP';
+dataset = 'PROTO';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -12,15 +12,16 @@ load(paramsFilename)
 sizesToRun = sizes(1);
 
 
+
 densityFactorsToRun = densityFactors(1:3);
 
 
 %%
 
-doStandard = 0;
-doSampleLast = 0;
+doStandard = 1;
+doSampleLast = 1;
 doSampleFirst = 0;
-doVoronoi = 1;
+doVoronoi = 0;
 
 doSaveDists = 1;
 
