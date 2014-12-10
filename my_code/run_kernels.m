@@ -85,10 +85,10 @@ for graphSize = sizesToRun
     smpFstRunTimes = zeros(nMValues, nTrials);
     smpFstOps = zeros(nMValues, nTrials);
     
-    vorKrnValues = cell(nMValues, nTrials);
-    vorDists = cell(nMValues, nTrials);
-    vorRunTimes = zeros(nMValues, nTrials);
-    vorOps = zeros(nMValues, nTrials);
+    vorKrnValues = cell(nMValues, nVorPreTrials, nVorTrials);
+    vorDists = cell(nMValues, nVorPreTrials, nVorTrials);
+    vorRunTimes = zeros(nMValues, nVorPreTrials, nVorTrials);
+    vorOps = zeros(nMValues, nVorPreTrials, nVorTrials);
     
     %%
     if doSampleLast
@@ -157,31 +157,35 @@ for graphSize = sizesToRun
             load(vorPreFilename);
             % We now have vorAdj and groupings
             
-            groupingMats = cell(1, nGraphs);
+            groupingMats = cell(nGraphs, nVorPreTrials);
             for i = 1:nGraphs
-                nVorNodes = size(vorAdj{i}, 1);
-                groupingMats{i} = repmat(groupings{i},1,nVorNodes) == ...
-                    repmat(1:nVorNodes, graphSize, 1);
+                for j = 1:nVorPreTrials
+                    nVorNodes = size(vorAdj{i, j}, 1);
+                    groupingMats{i, j} = ...
+                        repmat(groupings{i,j}, 1, nVorNodes) == ...
+                        repmat(1:nVorNodes, graphSize, 1);
+                end
             end
             
             
             % compute Voronoi kernel
             %for i = 1:nMValues
             for i = nMValues
-                for j = 1:nTrials
-                    t = cputime;
-                    
-%                     voronoiKernelValues{i, j} = ...
-%                         voronoiKernel(Graphs, ms(i), groupings, ...
-%                         vorAdj);
-                    [vorKrnValues{i, j}, vorDists{i,j}, vorOps(i,j)] = ...
-                        voronoiKernel(Graphs, ms(i), groupingMats, ...
-                        vorAdj);
-                    disp(['Finished trial ' num2str(j) ' out of ' ...
-                        num2str(nTrials) ' for m-value ' ...
+                for j = 1:nVorPreTrials
+                    for k = 1:nVorTrials
+                        t = cputime;
+                        
+                        [vorKrnValues{i, j, k}, vorDists{i, j, k}, ...
+                            vorOps(i, j, k)] = ...
+                            voronoiKernel(Graphs, ms(i), ...
+                            groupingMats{:, j}, vorAdj{:, j});
+                        % TODO: send in shortest-path-matrix
+                        vorRunTimes(i, j) = cputime - t;
+                    end
+                    disp(['Finished trial set ' num2str(j) ' out of ' ...
+                        num2str(nVorPreTrials) ' for m-value ' ...
                         num2str(ms(i)), ' and density ' ...
                         num2str(density)])
-                    vorRunTimes(i, j) = cputime - t;
                 end
             end
             
