@@ -2,7 +2,7 @@
 
 experiment_setup;
 
-dataset = 'GENP';
+dataset = 'PROTO';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -12,13 +12,13 @@ load(paramsFilename);
 
 %%
 
-sizesToRun = sizes(5);
+sizesToRun = sizes(6);
 
-doStandard = 0;
-doSampling = 0;
+doStandard = 1;
+doSampling = 1;
 doVoronoi = 1;
 
-appending = 1;
+appending = 0;
 
 for graphSize = sizesToRun
     %% Pick out the data
@@ -27,6 +27,8 @@ for graphSize = sizesToRun
         num2str(graphSize)];
     load(dataFilename)
     % we now have GRAPHS and lgraphs loaded
+
+if doSampling
     smpFstFilename = ['./my_code/data/smpFstKrnVal_', dataset ...
         num2str(graphSize)];
     load(smpFstFilename)
@@ -34,12 +36,15 @@ for graphSize = sizesToRun
     smpLstFilename = ['./my_code/data/smpLstKrnVal_', dataset ...
         num2str(graphSize)];
     load(smpLstFilename)
+end
+
+if doStandard
     % we now have smpLstKrnValues and smpLstRunTimes loaded
     stdKrnFilename = ['./my_code/data/stdKrnVal_', dataset ...
         num2str(graphSize)];
     load(stdKrnFilename)
     % we now have stdKrnValues and standardKernelRuntime loaded
-    
+end    
     
     nDensities = length(densities);
     
