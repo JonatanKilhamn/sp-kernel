@@ -11,6 +11,13 @@ nSizes = length(sizes);
 
 toRun = 1:5;
 
+
+doStandard = 1;
+doSampleFirst = 1;
+doSampleLast = 1;
+doVoronoi = 1;
+
+
 %%
 
     
@@ -66,22 +73,29 @@ for i = toRun
     nMValues = length(ms);
     %%
     
-    stdAccuracy(i) = stdKrnAccuracy;
-
-    smpFstAccuracies(:, i) = smpFstAvgAccuracy;
-    smpFstErrors(:, i) = smpFstAvgError;
-    smpFstDistErrors(:, i) = smpFstAvgDistError;
-
-    smpLstAccuracies(:, i) = smpLstAvgAccuracy;
-    smpLstErrors(:, i) = smpLstAvgError;
-    smpLstDistErrors(:, i) = smpLstAvgDistError;
-    
-    for j = 1:nDensities
-        vorErrors(:, i, j) = vorAvgError(:, j);
-        vorDistErrors(:, i, j) = vorAvgDistError(:, j);
-        vorAccuracies(:, i, j) = vorAvgAccuracy(:, j);
+    if doStandard
+        stdAccuracy(i) = stdKrnAccuracy;
     end
     
+    if doSampleFirst
+        smpFstAccuracies(:, i) = smpFstAvgAccuracy;
+        smpFstErrors(:, i) = smpFstAvgError;
+        smpFstDistErrors(:, i) = smpFstAvgDistError;
+    end
+
+    if doSampleLast
+        smpLstAccuracies(:, i) = smpLstAvgAccuracy;
+        smpLstErrors(:, i) = smpLstAvgError;
+        smpLstDistErrors(:, i) = smpLstAvgDistError;
+    end
+    
+    if doVoronoi
+        for j = 1:nDensities
+            vorErrors(:, i, j) = vorAvgError(:, j);
+            vorDistErrors(:, i, j) = vorAvgDistError(:, j);
+            vorAccuracies(:, i, j) = vorAvgAccuracy(:, j);
+        end
+    end
     
     
 end

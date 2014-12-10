@@ -12,13 +12,13 @@ load(paramsFilename);
 
 %%
 
-sizesToRun = sizes(5);
+sizesToRun = sizes(1);
 
 doStandard = 0;
 doSampling = 0;
 doVoronoi = 1;
 
-appending = 1;
+appending = 0;
 
 for graphSize = sizesToRun
     %% Pick out the data
@@ -204,7 +204,7 @@ for graphSize = sizesToRun
     
     %% Voronoi, error and accuracy
     if doVoronoi
-        vorAccuracy = zeros(nMValues, nTrials);
+        vorAccuracy = zeros(nMValues, nVorPreTrials, nVorTrials);
         vorAvgAccuracy = zeros(nMValues, nDensities);
         vorAvgError = zeros(nMValues, nDensities);
         
@@ -224,24 +224,25 @@ for graphSize = sizesToRun
             %for i = 1:nMValues
             for i = nMValues
                 vorError = 0;
-                for j = 1:nTrials
-                    
-                    % Error value
-                    vorK = vorKrnValues{i,j};
-                    vorError = vorError + ...
-                        sum(sum(abs(vorK-stdKrnValues))) / ...
-                        (nGraphs^2);
-                    
-                    % Accuracy
-                    vorK = vorKrnValues{i,j};
-                    cellK{1} = vorK;
-                    [res] = runsvm(cellK, labels);
-                    vorAccuracy(i,j) = res.mean_acc;
+                for j = 1:nVorPreTrials
+                    for k = 1:nVorTrials
+                        
+                        % Error value
+                        vorK = vorKrnValues{i, j, k};
+                        vorError = vorError + ...
+                            sum(sum(abs(vorK-stdKrnValues))) / ...
+                            (nGraphs^2);
+                        
+                        % Accuracy
+                        cellK{1} = vorK;
+                        [res] = runsvm(cellK, labels);
+                        vorAccuracy(i, j, k) = res.mean_acc;
+                    end
                 end
                 disp(['Finished all trials, m = ' num2str(i)])
                 vorAvgError(i, d) = vorError/nTrials;
             end
-            vorAvgAccuracy(:,d) = mean(vorAccuracy, 2);
+            vorAvgAccuracy(:,d) = mean(mean(vorAccuracy, 2), 3);
             
             if appending
                 save(accFilename, 'vorAvgAccuracy', '-append');

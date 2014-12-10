@@ -10,13 +10,12 @@ load(paramsFilename);
 
 
 %sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
-nSizes = length(sizes);
 
-toRun = 1:5;
+toRun = 1;
 
-doStandard = 1;
-doSampleLast = 1;
-doSampleFirst = 1;
+doStandard = 0;
+doSampleLast = 0;
+doSampleFirst = 0;
 doVoronoi = 1;
 
 
@@ -40,10 +39,10 @@ smpFstQueryOps = zeros(nMValues, nSizes);
 smpLstPrepRuntimes = zeros(nMValues, nSizes);
 smpLstQueryRuntimes = zeros(nMValues, nSizes);
 
-vorPrepRuntimes = zeros(nMValues, nSizes, nDensities);
-vorQueryRuntimes = zeros(nMValues, nSizes, nDensities);
-vorPrepOps = zeros(nMValues, nSizes, nDensities);
-vorQueryOps = zeros(nMValues, nSizes, nDensities);
+vorPrepRuntimes = zeros(nMValues, nSizes, nDensityFactors);
+vorQueryRuntimes = zeros(nMValues, nSizes, nDensityFactors);
+vorPrepOps = zeros(nMValues, nSizes, nDensityFactors);
+vorQueryOps = zeros(nMValues, nSizes, nDensityFactors);
 
 
 
@@ -115,24 +114,27 @@ for i = toRun
     end
     
     if doVoronoi
-        for j = 1:nDensities
-            density = densities(j);
+        for j = 1:nDensityFactors
+            densityFactor = densityFactors(j);
             
             vorPreRuntimeFilename = ...
                 ['./my_code/data/vorPreRuntime_', dataset ...
-                num2str(graphSize) '_' num2str(density) '.mat'];
+                num2str(graphSize) '_' num2str(densityFactor) '.mat'];
             load(vorPreRuntimeFilename);
             % we now have vorPreRuntimes and vorPreOps
             
             vorValuesFilename = ...
                 ['./my_code/data/vorKrnVal_', dataset ...
-                num2str(graphSize) '_' num2str(density) '.mat'];
+                num2str(graphSize) '_' num2str(densityFactor) '.mat'];
             load(vorValuesFilename, 'vorRunTimes', 'vorOps');
             
-            vorPrepRuntimes(:, i, j) = sum(vorPreRuntimes);
-            vorQueryRuntimes(:, i, j) = mean(vorRunTimes, 2);
-            vorPrepOps(:, i, j) = sum(vorPreOps);
-            vorQueryOps(:, i, j) = mean(vorOps, 2);
+            vorPrepRuntimes(:, i, j) = mean(sum(vorPreRuntimes, 1));
+            vorQueryRuntimes(:, i, j) = mean(mean(vorRunTimes, 2), 3);
+            vorPrepOps(:, i, j) = mean(sum(vorPreOps, 1));
+            vorQueryOps(:, i, j) = mean(mean(vorOps, 2), 3);
+            
+            %vorRuntimes(i,j,k) = runtime of Mval i, vorPreTrial j,
+            %vorTrial k
             
         end
         

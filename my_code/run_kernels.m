@@ -9,10 +9,10 @@ paramsFilename = ...
 load(paramsFilename)
 
 
-sizesToRun = sizes(1:6);
+sizesToRun = sizes(1);
 
 
-densitiesToRun = densities(1:2);
+densityFactorsToRun = densityFactors(1:3);
 
 
 %%
@@ -150,7 +150,7 @@ for graphSize = sizesToRun
     
     if doVoronoi
         disp('Voronoi kernel:')
-        for density = densitiesToRun
+        for density = densityFactorsToRun
             % loading
             vorPreFilename = ['./my_code/data/vorPre_', dataset ...
                 num2str(graphSize) '_' num2str(density) '.mat'];
@@ -169,8 +169,8 @@ for graphSize = sizesToRun
             
             
             % compute Voronoi kernel
-            %for i = 1:nMValues
-            for i = nMValues
+            for i = 1:nMValues
+            %for i = nMValues
                 for j = 1:nVorPreTrials
                     for k = 1:nVorTrials
                         t = cputime;
@@ -178,9 +178,9 @@ for graphSize = sizesToRun
                         [vorKrnValues{i, j, k}, vorDists{i, j, k}, ...
                             vorOps(i, j, k)] = ...
                             voronoiKernel(Graphs, ms(i), ...
-                            groupingMats{:, j}, vorAdj{:, j});
+                            groupingMats(:, j), vorAdj(:, j));
                         % TODO: send in shortest-path-matrix
-                        vorRunTimes(i, j) = cputime - t;
+                        vorRunTimes(i, j, k) = cputime - t;
                     end
                     disp(['Finished trial set ' num2str(j) ' out of ' ...
                         num2str(nVorPreTrials) ' for m-value ' ...

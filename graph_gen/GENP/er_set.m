@@ -6,7 +6,7 @@ ams = cell(2*N,1); als = cell(2*N,1); nls = cell(2*N,1);
 for i=1:N
     
     A = erdosRenyi(n,p1);
-    while any(all(~A,2))
+    while ~isconnected(A)
         A = erdosRenyi(n,p1);
     end
 
@@ -23,7 +23,7 @@ for i=1:N
     nls{i} = nl;
     
     A = erdosRenyi(n,p2);
-    while any(all(~A,2))
+    while ~isconnected(A)
         A = erdosRenyi(n,p2);
     end
     

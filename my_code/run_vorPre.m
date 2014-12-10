@@ -6,8 +6,8 @@ paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename);
 
-sizesToRun = sizes(1:6);
-densityFacToRun = densityFactors(1:2);
+sizesToRun = sizes(1);
+densityFacToRun = densityFactors(1:3);
 
 
 section = 1;
@@ -60,7 +60,7 @@ for graphSize = sizesToRun
             
             for j=1:nVorPreTrials
                 ti = cputime;
-                [vorAdj{i,i}, groupings{i,j}, vorPreOps(i,j)] = ...
+                [vorAdj{i,j}, groupings{i,j}, vorPreOps(i,j)] = ...
                     voronoi_preprocessing(GRAPHS(i).am, density);
                 
                 %TODO: find shortest path matrices
