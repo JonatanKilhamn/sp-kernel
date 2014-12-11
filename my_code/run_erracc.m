@@ -2,7 +2,7 @@
 
 experiment_setup;
 
-dataset = 'PROTO';
+dataset = 'GENP';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -27,27 +27,25 @@ for graphSize = sizesToRun
         num2str(graphSize)];
     load(dataFilename)
     % we now have GRAPHS and lgraphs loaded
-
-if doSampling
-    smpFstFilename = ['./my_code/data/smpFstKrnVal_', dataset ...
-        num2str(graphSize)];
-    load(smpFstFilename)
-    % we now have smpLstKrnValues and smpLstRunTimes loaded
-    smpLstFilename = ['./my_code/data/smpLstKrnVal_', dataset ...
-        num2str(graphSize)];
-    load(smpLstFilename)
-end
-
-if doStandard
-    % we now have smpLstKrnValues and smpLstRunTimes loaded
-    stdKrnFilename = ['./my_code/data/stdKrnVal_', dataset ...
-        num2str(graphSize)];
-    load(stdKrnFilename)
-    % we now have stdKrnValues and standardKernelRuntime loaded
-end    
     
-    nDensities = length(densities);
+    if doSampling
+        smpFstFilename = ['./my_code/data/smpFstKrnVal_', dataset ...
+            num2str(graphSize)];
+        load(smpFstFilename)
+        % we now have smpLstKrnValues and smpLstRunTimes loaded
+        smpLstFilename = ['./my_code/data/smpLstKrnVal_', dataset ...
+            num2str(graphSize)];
+        load(smpLstFilename)
+    end
     
+    if doStandard
+        % we now have smpLstKrnValues and smpLstRunTimes loaded
+        stdKrnFilename = ['./my_code/data/stdKrnVal_', dataset ...
+            num2str(graphSize)];
+        load(stdKrnFilename)
+        % we now have stdKrnValues and standardKernelRuntime loaded
+    end
+        
     Graphs = GRAPHS;
     labels = lgraphs;
     
@@ -60,7 +58,7 @@ end
     if doStandard
         % i.e. partition needs to be in two labeled sets
         
-        disp('Computing standard kernel accuracy:')
+        disp('Computing standard kernel accuracy')
         
         K = cell(1,1);
         K{1} = stdKrnValues;
@@ -99,22 +97,26 @@ end
         
         smpFstAvgError = zeros(nMValues, 1);
         smpLstAvgError = zeros(nMValues, 1);
-        %smpFstAvgAccuracy = zeros(nMValues, 1);
-        %smpLstAvgAccuracy = zeros(nMValues, 1);
+        
+        cellK = cell(1,1);
+        sampleFirstAccuracy = zeros(nMValues, nTrials);
+        sampleLastAccuracy = zeros(nMValues, nTrials);
         
         
         smpFstAvgRunTimes = mean(smpLstRunTimes, 2);
         smpLstavgRunTimes = mean(smpLstRunTimes, 2);
         
         
-        %% Errors:
+        %% Errors and accuracy:
         
-        disp('Computing kernel value errors')
+        disp('Computing samplng kernels errors and acc.s')
         
         for i = 1:nMValues
             sampleLastError = 0;
             sampleFirstError = 0;
             for j = 1:nTrials
+                
+                
                 sampleLastK = smpLstKrnValues{i,j};
                 sampleLastError = sampleLastError + ...
                     sum(sum(abs(sampleLastK-stdKrnValues))) / ...
@@ -125,37 +127,7 @@ end
                     sum(sum(abs(sampleFirstK-stdKrnValues))) / ...
                     (nGraphs^2);
                 
-            end
-            smpLstAvgError(i) = sampleLastError/nTrials;
-            smpFstAvgError(i) = sampleFirstError/nTrials;
-        end
-        %
-        
-        % store the error values:
-        %         errorsFilename = ...
-        %             ['./my_code/data/errVal_', dataset ...
-        %             num2str(graphSize)];
-        
-        if appending
-            save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
-                '-append');
-        else
-            save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError');
-            appending = 1;
-        end
-        
-        %% Accuracy:
-        
-        disp('Computing sampling kernel classification accuracies:')
-        
-        cellK = cell(1,1);
-        
-        sampleFirstAccuracy = zeros(nMValues, nTrials);
-        sampleLastAccuracy = zeros(nMValues, nTrials);
-        
-        
-        for i = 1:nMValues
-            for j = 1:nTrials
+                
                 
                 disp('Acc. for SampleLast kernel')
                 sampleLastK = smpLstKrnValues{i,j};
@@ -169,29 +141,27 @@ end
                 [res] = runsvm(cellK, labels);
                 sampleFirstAccuracy(i,j) = res.mean_acc;
                 
-                
-                disp(['Finished accuracies for trial ', num2str(j), ...
-                    ', m-value ', num2str(i)]);
+                disp(['Finished smpFst and smpLst, trial ', num2str(j), ...
+                    ', m=', num2str(ms(i))]);
                 
             end
-            disp(['Finished accuracies for all trials, m-value ', ...
-                num2str(i), ' out of ', num2str(nMValues)]);
+            smpLstAvgError(i) = sampleLastError/nTrials;
+            smpFstAvgError(i) = sampleFirstError/nTrials;
         end
         smpLstAvgAccuracy = mean(sampleLastAccuracy, 2);
         smpFstAvgAccuracy = mean(sampleFirstAccuracy, 2);
         
-        % store the accuracy values
-        %         accFilename = ...
-        %             ['./my_code/data/accVal_', dataset ...
-        %             num2str(graphSize)];
+        
         if appending
+            save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError', ...
+                '-append');
             save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy', ...
                 '-append');
-        else
+         else
+            save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError');
             save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy');
             appending = 1;
-        end
-        
+        end       
         
     end %of "if doSampling"
     
@@ -209,18 +179,18 @@ end
     
     %% Voronoi, error and accuracy
     if doVoronoi
-        vorAccuracy = zeros(nMValues, nTrials);
-        vorAvgAccuracy = zeros(nMValues, nDensities);
-        vorAvgError = zeros(nMValues, nDensities);
+        vorAccuracy = zeros(nMValues, nVorPreTrials, nVorTrials);
+        vorAvgAccuracy = zeros(nMValues, nDensityFactors);
+        vorAvgError = zeros(nMValues, nDensityFactors);
         
-        for d = 1:length(densities)
-            density = densities(d);
+        for d = 1:length(densityFactors)
+            densityFactor = densityFactors(d);
             
-            disp(['Voronoi kernel, density = ' num2str(density)])
+            disp(['Voronoi kernel, density = ' num2str(densityFactor)])
             
             vorValuesFilename = ...
                 ['./my_code/data/vorKrnVal_', dataset ...
-                num2str(graphSize) '_' num2str(density) '.mat'];
+                num2str(graphSize) '_' num2str(densityFactor) '.mat'];
             load(vorValuesFilename);
             
             
@@ -229,24 +199,25 @@ end
             %for i = 1:nMValues
             for i = nMValues
                 vorError = 0;
-                for j = 1:nTrials
-                    
-                    % Error value
-                    vorK = vorKrnValues{i,j};
-                    vorError = vorError + ...
-                        sum(sum(abs(vorK-stdKrnValues))) / ...
-                        (nGraphs^2);
-                    
-                    % Accuracy
-                    vorK = vorKrnValues{i,j};
-                    cellK{1} = vorK;
-                    [res] = runsvm(cellK, labels);
-                    vorAccuracy(i,j) = res.mean_acc;
+                for j = 1:nVorPreTrials
+                    for k = 1:nVorTrials
+                        
+                        % Error value
+                        vorK = vorKrnValues{i, j, k};
+                        vorError = vorError + ...
+                            sum(sum(abs(vorK-stdKrnValues))) / ...
+                            (nGraphs^2);
+                        
+                        % Accuracy
+                        cellK{1} = vorK;
+                        [res] = runsvm(cellK, labels);
+                        vorAccuracy(i, j, k) = res.mean_acc;
+                    end
                 end
                 disp(['Finished all trials, m = ' num2str(i)])
                 vorAvgError(i, d) = vorError/nTrials;
             end
-            vorAvgAccuracy(:,d) = mean(vorAccuracy, 2);
+            vorAvgAccuracy(:,d) = mean(mean(vorAccuracy, 2), 3);
             
             if appending
                 save(accFilename, 'vorAvgAccuracy', '-append');

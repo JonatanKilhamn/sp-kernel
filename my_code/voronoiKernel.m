@@ -1,5 +1,5 @@
-function [kernelValues, distributions, ops] = voronoiKernel(Graphs, nSamples, groupings, ...
-    voronoiAdjacencyMatrices)
+function [kernelValues, distributions, ops] = voronoiKernel(Graphs, ...
+    nSamples, groupings, voronoiAdjacencyMatrices)
 % Compute normalised shortest path length kernel for a set of graphs (by
 % sampling a number of node pairs, computing the shortest path lengths 
 % for those pairs, and using the results as an approximate distribution)

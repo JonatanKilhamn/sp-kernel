@@ -6,8 +6,8 @@ paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename);
 
-sizesToRun = sizes(1:6);
-densitiesToRun = densities(1:2);
+sizesToRun = sizes(1);
+densityFacToRun = densityFactors(1:3);
 
 
 section = 1;
@@ -20,7 +20,7 @@ for graphSize = sizesToRun
     load(dataFilename)
     % we now have GRAPHS and lgraphs loaded
     
-    for densityFactor = densitiesToRun
+    for densityFactor = densityFacToRun
         
         vorPreFilename = ['./my_code/data/vorPre_', dataset ...
             num2str(graphSize) '_' num2str(densityFactor)];
@@ -41,10 +41,11 @@ for graphSize = sizesToRun
         % now we have fw and fwRuntimes
         % if this is the first run for this size, replace load with the
         % following:
-        vorAdj = cell(1, nGraphs);
-        groupings = cell(1, nGraphs);
-        vorPreRuntimes = zeros(1, nGraphs);
-        vorPreOps = zeros(1, nGraphs);
+        vorAdj = cell(nGraphs, nVorPreTrials);
+        groupings = cell(nGraphs, nVorPreTrials);
+        vorShortestPaths = cell(nGraphs, nVorPreTrials);
+        vorPreRuntimes = zeros(nGraphs, nVorPreTrials);
+        vorPreOps = zeros(nGraphs, nVorPreTrials);
         
         startInd = floor((section-1)*(nGraphs/noOfSections))+1;
         stopInd = floor(section*(nGraphs/noOfSections));
@@ -57,19 +58,25 @@ for graphSize = sizesToRun
             
             density = graphSize^(-2/3)*densityFactor;
             
-            ti = cputime;
-            [vorAdj{i}, groupings{i}, vorPreOps(i)] = ...
-                voronoi_preprocessing(GRAPHS(i).am, density);
-            vorPreRuntimes(i) = cputime - ti;
-            save(vorPreFilename, 'vorAdj', 'groupings', '-v7.3');
-            save(vorPreRuntimeFilename, 'vorPreRuntimes', '-v7.3');
+            for j=1:nVorPreTrials
+                ti = cputime;
+                [vorAdj{i,j}, groupings{i,j}, vorPreOps(i,j)] = ...
+                    voronoi_preprocessing(GRAPHS(i).am, density);
+                
+                %TODO: find shortest path matrices
+                
+                vorPreRuntimes(i,j) = cputime - ti;
+                save(vorPreFilename, 'vorAdj', 'groupings', '-v7.3');
+                save(vorPreRuntimeFilename, 'vorPreRuntimes', '-v7.3');
+            end
             disp(['Finished voronoi preprocessing on graph ', ...
                 num2str(i), ', working toward ', num2str(stopInd)]);
         end
         disp(['Processing  ', num2str(nGraphs), ' graphs took ', ...
             num2str(cputime-t), ' sec']);
         
-        save(vorPreFilename, 'vorAdj', 'groupings', '-v7.3');
+        save(vorPreFilename, 'vorAdj', 'groupings', 'vorShortestPaths', ...
+            '-v7.3');
         save(vorPreRuntimeFilename, 'vorPreRuntimes', 'vorPreOps', '-v7.3');
     end
 end
