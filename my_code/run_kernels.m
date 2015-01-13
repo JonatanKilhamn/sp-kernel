@@ -9,7 +9,7 @@ paramsFilename = ...
 load(paramsFilename)
 
 
-sizesToRun = sizes(1);
+sizesToRun = sizes(1:6);
 
 
 
@@ -18,10 +18,10 @@ densityFactorsToRun = densityFactors(1:3);
 
 %%
 
-doStandard = 1;
-doSampleLast = 1;
-doSampleFirst = 0;
-doVoronoi = 0;
+doStandard = 0;
+doSampleLast = 0;
+doSampleFirst = 1;
+doVoronoi = 1;
 
 doSaveDists = 1;
 

@@ -1,12 +1,12 @@
 experiment_setup;
 
-dataset = 'GENP';
+dataset = 'PROTO';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename);
 
-sizesToRun = sizes(1);
+sizesToRun = sizes(1:6);
 densityFacToRun = densityFactors(1:3);
 
 
@@ -63,7 +63,6 @@ for graphSize = sizesToRun
                 [vorAdj{i,j}, groupings{i,j}, vorPreOps(i,j)] = ...
                     voronoi_preprocessing(GRAPHS(i).am, density);
                 
-                %TODO: find shortest path matrices
                 
                 vorPreRuntimes(i,j) = cputime - ti;
                 save(vorPreFilename, 'vorAdj', 'groupings', '-v7.3');
