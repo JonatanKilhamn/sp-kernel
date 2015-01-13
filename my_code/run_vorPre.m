@@ -56,14 +56,13 @@ for graphSize = sizesToRun
              num2str(graphSize) ' and density ' num2str(densityFactor)]);
         for i=startInd:stopInd
             
+            % Actual voronoi selection probability calculation:
             density = graphSize^(-2/3)*densityFactor;
             
             for j=1:nVorPreTrials
                 ti = cputime;
                 [vorAdj{i,j}, groupings{i,j}, vorPreOps(i,j)] = ...
                     voronoi_preprocessing(GRAPHS(i).am, density);
-                
-                %TODO: find shortest path matrices
                 
                 vorPreRuntimes(i,j) = cputime - ti;
                 save(vorPreFilename, 'vorAdj', 'groupings', '-v7.3');
