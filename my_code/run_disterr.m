@@ -2,7 +2,7 @@
 
 experiment_setup;
 
-dataset = 'GENP';
+dataset = 'PROTO';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -11,9 +11,9 @@ load(paramsFilename);
 
 %%
 
-sizesToRun = sizes(5);
+sizesToRun = sizes(1:6);
 
-doSampling = 0;
+doSampling = 1;
 doVoronoi = 1;
 
 for graphSize = sizesToRun
@@ -73,16 +73,16 @@ for graphSize = sizesToRun
     %% Voronoi, error and accuracy
     if doVoronoi
 
-        vorAvgDistError = zeros(nMValues, nDensities);
+        vorAvgDistError = zeros(nMValues, nDensityFactors);
         
-        for d = 1:length(densities)
-            density = densities(d);
+        for d = 1:nDensityFactors
+            densityFactor = densityFactors(d);
             
-            disp(['Voronoi kernel, density = ' num2str(density)])
+            disp(['Voronoi kernel, density = ' num2str(densityFactor)])
             
             vorValuesFilename = ...
                 ['./my_code/data/vorKrnVal_', dataset ...
-                num2str(graphSize) '_' num2str(density) '.mat'];
+                num2str(graphSize) '_' num2str(densityFactor) '.mat'];
             load(vorValuesFilename);
             
             
