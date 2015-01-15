@@ -1,6 +1,8 @@
+function fin = run_fw(dataset, sizeInd)
+
 experiment_setup;
 
-dataset = 'PROTO';
+%dataset = 'PROTO';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -9,7 +11,7 @@ load(paramsFilename);
 %sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 %sizes = [100, 150, 250, 400, 650, 1000, 1500, 2500, 4000, 6500, 10000];
 
-sizesToRun = sizes(1:6);
+sizesToRun = sizes(sizeInd);
 
 section = 1;
 noOfSections = 1;
@@ -27,7 +29,7 @@ for graphSize = sizesToRun
             num2str(graphSize)];
         fwRuntimeFilename = ...
             ['./my_code/data/fwRuntime_', dataset ...
-            num2str(graphSize)];        
+            num2str(graphSize)];
     else
         fwFilename = ['./my_code/data/fw_', dataset ...
             num2str(graphSize) '-' num2str(section)];
@@ -67,4 +69,11 @@ for graphSize = sizesToRun
     save(fwFilename, 'fw', '-v7.3');
     save(fwRuntimeFilename, 'fwRuntimes', '-v7.3');
     
+end
+
+fin = 1;
+
+run_kernels(dataset, sizeInd, 1, 1, 0, 0, 1);
+
+
 end
