@@ -18,10 +18,12 @@ doStandard = 1;
 doSampling = 1;
 doVoronoi = 1;
 
-appending = 0;
-
 for graphSize = sizesToRun
     %% Pick out the data
+    
+   
+    appending = 0;
+    
     
     dataFilename = ['./my_code/data/', dataset ...
         num2str(graphSize)];
@@ -45,7 +47,7 @@ for graphSize = sizesToRun
         load(stdKrnFilename)
         % we now have stdKrnValues and standardKernelRuntime loaded
     end
-        
+    
     Graphs = GRAPHS;
     labels = lgraphs;
     
@@ -129,6 +131,7 @@ for graphSize = sizesToRun
                 
                 
                 
+                
                 disp('Acc. for SampleLast kernel')
                 sampleLastK = smpLstKrnValues{i,j};
                 cellK{1} = sampleLastK;
@@ -157,24 +160,24 @@ for graphSize = sizesToRun
                 '-append');
             save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy', ...
                 '-append');
-         else
+        else
             save(errorsFilename, 'smpLstAvgError', 'smpFstAvgError');
             save(accFilename, 'smpLstAvgAccuracy', 'smpFstAvgAccuracy');
             appending = 1;
-        end       
+        end
         
     end %of "if doSampling"
     
-%     if ~doSampling
-%         errorsFilename = ...
-%             ['./my_code/data/errVal_', dataset ...
-%             num2str(graphSize)];
-%         load(errorsFilename);
-%         accFilename = ...
-%             ['./my_code/data/accVal_', dataset ...
-%             num2str(graphSize)];
-%         load(accFilename);
-%     end
+    %     if ~doSampling
+    %         errorsFilename = ...
+    %             ['./my_code/data/errVal_', dataset ...
+    %             num2str(graphSize)];
+    %         load(errorsFilename);
+    %         accFilename = ...
+    %             ['./my_code/data/accVal_', dataset ...
+    %             num2str(graphSize)];
+    %         load(accFilename);
+    %     end
     
     
     %% Voronoi, error and accuracy
@@ -229,7 +232,7 @@ for graphSize = sizesToRun
         end
         
         
-
+        
         
     end
     
