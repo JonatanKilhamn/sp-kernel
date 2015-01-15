@@ -1,15 +1,17 @@
 %% Setup
+function fin = run_kernels(dataset, sizeInd, doStandard, doSampleLast, ...
+    doSampleFirst, doVoronoi, doSaveDists)
 
 experiment_setup;
 
-dataset = 'PROTO';
+%dataset = 'GENP';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename)
 
 
-sizesToRun = sizes(1:6);
+sizesToRun = sizes(sizeInd);
 
 
 
@@ -18,12 +20,12 @@ densityFactorsToRun = densityFactors(1:3);
 
 %%
 
-doStandard = 0;
-doSampleLast = 0;
-doSampleFirst = 1;
-doVoronoi = 1;
+%doStandard = 0;
+%doSampleLast = 0;
+%doSampleFirst = 1;
+%doVoronoi = 1;
 
-doSaveDists = 1;
+%doSaveDists = 1;
 
 for graphSize = sizesToRun
     %% Pick out the data
@@ -204,6 +206,10 @@ for graphSize = sizesToRun
         end
     end
     
+end
+
+fin = 1;
+
 end
 
 % Comments

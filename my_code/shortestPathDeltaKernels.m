@@ -6,5 +6,5 @@ function kernelValues = ...
 spDistrMat = shortestPathDistrMatrix(shortestPathDistributions);
 % this handles distributions of varying lengths
 
+%kernelValues = sqrt(spDistrMat)*sqrt(spDistrMat)';
 kernelValues = spDistrMat*spDistrMat';
-

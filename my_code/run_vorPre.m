@@ -1,12 +1,13 @@
+function fin = run_vorPre(dataset, sizeInd)
 experiment_setup;
 
-dataset = 'PROTO';
+%dataset = 'PROTO';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename);
 
-sizesToRun = sizes(1:6);
+sizesToRun = sizes(sizeInd);
 densityFacToRun = densityFactors(1:3);
 
 
@@ -78,4 +79,10 @@ for graphSize = sizesToRun
             '-v7.3');
         save(vorPreRuntimeFilename, 'vorPreRuntimes', 'vorPreOps', '-v7.3');
     end
+end
+
+fin = 1;
+
+run_kernels(dataset, sizeInd, 0, 0, 0, 1, 1);
+
 end

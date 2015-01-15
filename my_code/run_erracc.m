@@ -114,20 +114,39 @@ for graphSize = sizesToRun
         disp('Computing samplng kernels errors and acc.s')
         
         for i = 1:nMValues
-            sampleLastError = 0;
-            sampleFirstError = 0;
+            % 1: all mean
+            % 2: only within label 0
+            % 3: only within label 1
+            % 4: only across labels
+            sampleLastError = zeros(1,4);
+            sampleFirstError = zeros(1,4);
             for j = 1:nTrials
                 
                 
                 sampleLastK = smpLstKrnValues{i,j};
-                sampleLastError = sampleLastError + ...
-                    sum(sum(abs(sampleLastK-stdKrnValues))) / ...
-                    (nGraphs^2);
+                sampleLastAllErrors = abs(sampleLastK-stdKrnValues);
+                
+                sampleLastError(1) = sampleLastError + ...
+                    sum(sum(sampleLastAllErrors)) / (nGraphs^2);
+                sampleLastError(2) = ...
+                    mean(mean(sampleLastAllErrors(labels==0, labels==0)));
+                sampleLastError(3) = ...
+                    mean(mean(sampleLastAllErrors(labels==1, labels==1)));
+                sampleLastError(4) = ...
+                    mean(mean(sampleLastAllErrors(labels==0, labels==1)));
+                
+                
                 
                 sampleFirstK = smpLstKrnValues{i,j};
-                sampleFirstError = sampleFirstError + ...
-                    sum(sum(abs(sampleFirstK-stdKrnValues))) / ...
-                    (nGraphs^2);
+                sampleFirstAllErrors = abs(sampleFirstK-stdKrnValues);
+                sampleFirstError(1) = sampleFirstError + ...
+                    sum(sum(sampleFirstAllErrors)) / (nGraphs^2);
+                sampleFirstError(2) = ...
+                    mean(mean(sampleFirstAllErrors(labels==0, labels==0)));
+                sampleFirstError(3) = ...
+                    mean(mean(sampleFirstAllErrors(labels==1, labels==1)));
+                sampleFirstError(4) = ...
+                    mean(mean(sampleFirstAllErrors(labels==0, labels==1)));
                 
                 
                 
