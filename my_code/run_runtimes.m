@@ -1,8 +1,10 @@
+function fin = run_runtimes(dataset, sizeInd)
+
 %% Setup
 
 experiment_setup;
 
-dataset = 'GENP';
+%dataset = 'GENP';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -11,11 +13,11 @@ load(paramsFilename);
 
 %sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 
-toRun = 1;
+%sizeInd = 1;
 
-doStandard = 0;
-doSampleLast = 0;
-doSampleFirst = 0;
+doStandard = 1;
+doSampleLast = 1;
+doSampleFirst = 1;
 doVoronoi = 1;
 
 
@@ -44,13 +46,21 @@ vorQueryRuntimes = zeros(nMValues, nSizes, nDensityFactors);
 vorPrepOps = zeros(nMValues, nSizes, nDensityFactors);
 vorQueryOps = zeros(nMValues, nSizes, nDensityFactors);
 
-
-
 runtimesFilename = ['./my_code/data/runtimes_', dataset];
-%load(runtimesFilename)
 
-%%
-for i = toRun
+if sizeInd == 0
+    
+    save(runtimesFilename, 'stdPrepRuntimes', 'stdQueryRuntimes', ...
+    'smpFstPrepRuntimes', 'smpFstQueryRuntimes', 'smpLstPrepRuntimes', ...
+    'smpLstQueryRuntimes', 'vorPrepRuntimes', 'vorQueryRuntimes', ...
+    'smpFstPrepOps', 'smpFstQueryOps', 'vorPrepOps', 'vorQueryOps')
+
+else
+
+    load(runtimesFilename)
+
+
+for i = sizeInd
     %% Pick out the data
     
     graphSize = sizes(i);
@@ -147,3 +157,8 @@ save(runtimesFilename, 'stdPrepRuntimes', 'stdQueryRuntimes', ...
     'smpLstQueryRuntimes', 'vorPrepRuntimes', 'vorQueryRuntimes', ...
     'smpFstPrepOps', 'smpFstQueryOps', 'vorPrepOps', 'vorQueryOps')
 
+end
+
+fin = 1;
+
+end
