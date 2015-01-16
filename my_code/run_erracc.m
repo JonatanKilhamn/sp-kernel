@@ -1,8 +1,9 @@
+function fin = run_erracc(dataset, sizeInd)
 %% Setup
 
 experiment_setup;
 
-dataset = 'PROTO';
+%dataset = 'PROTO';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -12,7 +13,7 @@ load(paramsFilename);
 
 %%
 
-sizesToRun = sizes(1:6);
+sizesToRun = sizes(sizeInd);
 
 doStandard = 1;
 doSampling = 1;
@@ -97,8 +98,8 @@ for graphSize = sizesToRun
         
         % Two separate sampled kernels -> two columns of values
         
-        smpFstAvgError = zeros(nMValues, 1);
-        smpLstAvgError = zeros(nMValues, 1);
+        smpFstAvgError = zeros(nMValues, 4);
+        smpLstAvgError = zeros(nMValues, 4);
         
         cellK = cell(1,1);
         sampleFirstAccuracy = zeros(nMValues, nTrials);
@@ -126,49 +127,49 @@ for graphSize = sizesToRun
                 sampleLastK = smpLstKrnValues{i,j};
                 sampleLastAllErrors = abs(sampleLastK-stdKrnValues);
                 
-                sampleLastError(1) = sampleLastError + ...
+                sampleLastError(1) = sampleLastError(1) + ...
                     sum(sum(sampleLastAllErrors)) / (nGraphs^2);
-                sampleLastError(2) = ...
+                sampleLastError(2) = sampleLastError(2) + ...
                     mean(mean(sampleLastAllErrors(labels==0, labels==0)));
-                sampleLastError(3) = ...
+                sampleLastError(3) = sampleLastError(3) + ...
                     mean(mean(sampleLastAllErrors(labels==1, labels==1)));
-                sampleLastError(4) = ...
+                sampleLastError(4) = sampleLastError(4) + ...
                     mean(mean(sampleLastAllErrors(labels==0, labels==1)));
                 
                 
                 
                 sampleFirstK = smpLstKrnValues{i,j};
                 sampleFirstAllErrors = abs(sampleFirstK-stdKrnValues);
-                sampleFirstError(1) = sampleFirstError + ...
+                sampleFirstError(1) = sampleFirstError(1) + ...
                     sum(sum(sampleFirstAllErrors)) / (nGraphs^2);
-                sampleFirstError(2) = ...
+                sampleFirstError(2) = sampleFirstError(2) + ...
                     mean(mean(sampleFirstAllErrors(labels==0, labels==0)));
-                sampleFirstError(3) = ...
+                sampleFirstError(3) = sampleFirstError(3) + ...
                     mean(mean(sampleFirstAllErrors(labels==1, labels==1)));
-                sampleFirstError(4) = ...
+                sampleFirstError(4) = sampleFirstError(4) + ...
                     mean(mean(sampleFirstAllErrors(labels==0, labels==1)));
                 
                 
                 
                 
-                disp('Acc. for SampleLast kernel')
-                sampleLastK = smpLstKrnValues{i,j};
-                cellK{1} = sampleLastK;
-                [res] = runsvm(cellK, labels);
-                sampleLastAccuracy(i,j) = res.mean_acc;
-                
-                disp('Acc. for SampleFirst kernel')
-                sampleFirstK = smpLstKrnValues{i,j};
-                cellK{1} = sampleFirstK;
-                [res] = runsvm(cellK, labels);
-                sampleFirstAccuracy(i,j) = res.mean_acc;
-                
-                disp(['Finished smpFst and smpLst, trial ', num2str(j), ...
-                    ', m=', num2str(ms(i))]);
+%                 disp('Acc. for SampleLast kernel')
+%                 sampleLastK = smpLstKrnValues{i,j};
+%                 cellK{1} = sampleLastK;
+%                 [res] = runsvm(cellK, labels);
+%                 sampleLastAccuracy(i,j) = res.mean_acc;
+%                 
+%                 disp('Acc. for SampleFirst kernel')
+%                 sampleFirstK = smpLstKrnValues{i,j};
+%                 cellK{1} = sampleFirstK;
+%                 [res] = runsvm(cellK, labels);
+%                 sampleFirstAccuracy(i,j) = res.mean_acc;
+%                 
+%                 disp(['Finished smpFst and smpLst, trial ', num2str(j), ...
+%                     ', m=', num2str(ms(i))]);
                 
             end
-            smpLstAvgError(i) = sampleLastError/nTrials;
-            smpFstAvgError(i) = sampleFirstError/nTrials;
+            smpLstAvgError(i,:) = sampleLastError./nTrials;
+            smpFstAvgError(i,:) = sampleFirstError./nTrials;
         end
         smpLstAvgAccuracy = mean(sampleLastAccuracy, 2);
         smpFstAvgAccuracy = mean(sampleFirstAccuracy, 2);
@@ -261,6 +262,11 @@ for graphSize = sizesToRun
     
 end
 
+fin = 1;
+
+run_erracccombined(dataset, sizeInd);
+
+end
 % Overview:
 
 
