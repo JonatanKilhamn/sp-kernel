@@ -1,6 +1,8 @@
 function fin = run_erracc(dataset, sizeInd)
 %% Setup
 
+if sizeInd ~= 0
+
 experiment_setup;
 
 %dataset = 'PROTO';
@@ -250,18 +252,13 @@ for graphSize = sizesToRun
                 save(errorsFilename, 'vorAvgError');
             end
         end
-        
-        
-        
-        
+   
     end
-    
-    
-    
-    
     
 end
 
+
+end
 fin = 1;
 
 run_erracccombined(dataset, sizeInd);
