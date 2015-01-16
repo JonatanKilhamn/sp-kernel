@@ -1,8 +1,9 @@
+function fin = run_disterr(dataset, sizeInd)
 %% Setup
 
 experiment_setup;
 
-dataset = 'PROTO';
+%dataset = 'PROTO';
 
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
@@ -11,7 +12,7 @@ load(paramsFilename);
 
 %%
 
-sizesToRun = sizes(1:6);
+sizesToRun = sizes(sizeInd);
 
 doSampling = 1;
 doVoronoi = 1;
@@ -110,6 +111,9 @@ for graphSize = sizesToRun
     
 end
 
+fin = 1;
+
+end
 
 
 
