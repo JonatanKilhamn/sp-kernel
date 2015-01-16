@@ -1,4 +1,4 @@
-function fin = run_runtimes(dataset, sizeInd)
+function fin = run_runtimes(dataset, maxSizeInd)
 
 %% Setup
 
@@ -48,120 +48,112 @@ vorQueryOps = zeros(nMValues, nSizes, nDensityFactors);
 
 runtimesFilename = ['./my_code/data/runtimes_', dataset];
 
-if sizeInd == 0
+
+save(runtimesFilename, 'stdPrepRuntimes', 'stdQueryRuntimes', ...
+    'smpFstPrepRuntimes', 'smpFstQueryRuntimes', 'smpLstPrepRuntimes', ...
+    'smpLstQueryRuntimes', 'vorPrepRuntimes', 'vorQueryRuntimes', ...
+    'smpFstPrepOps', 'smpFstQueryOps', 'vorPrepOps', 'vorQueryOps')
+
+disp('Saved blank file')
+
+
+for i = 1:maxSizeInd
+    %% Pick out the data
     
-    save(runtimesFilename, 'stdPrepRuntimes', 'stdQueryRuntimes', ...
-        'smpFstPrepRuntimes', 'smpFstQueryRuntimes', 'smpLstPrepRuntimes', ...
-        'smpLstQueryRuntimes', 'vorPrepRuntimes', 'vorQueryRuntimes', ...
-        'smpFstPrepOps', 'smpFstQueryOps', 'vorPrepOps', 'vorQueryOps')
+    graphSize = sizes(i);
     
-    disp('Saved blank file')
+    dataFilename = ['./my_code/data/', dataset ...
+        num2str(graphSize)];
+    load(dataFilename)
+    % we now have GRAPHS and lgraphs loaded
+    Graphs = GRAPHS;
+    labels = lgraphs;
     
-else
-    
-    load(runtimesFilename)
-    
-    disp('Loaded previous results')
-    
-    
-    for i = sizeInd
-        %% Pick out the data
-        
-        graphSize = sizes(i);
-        
-        dataFilename = ['./my_code/data/', dataset ...
+    if (doStandard || doSampleLast)
+        %fwFilename = ['./my_code/data/fw_', dataset ...
+        %    num2str(graphSize)];
+        %load(fwFilename)
+        fwRuntimeFilename = ['./my_code/data/fwRuntime_', dataset ...
             num2str(graphSize)];
-        load(dataFilename)
-        % we now have GRAPHS and lgraphs loaded
-        Graphs = GRAPHS;
-        labels = lgraphs;
-        
-        if (doStandard || doSampleLast)
-            %fwFilename = ['./my_code/data/fw_', dataset ...
-            %    num2str(graphSize)];
-            %load(fwFilename)
-            fwRuntimeFilename = ['./my_code/data/fwRuntime_', dataset ...
-                num2str(graphSize)];
-            load(fwRuntimeFilename)
-            % we now have fw and fwRuntimes loaded
-        end
-        
-        if doSampleFirst
-            smpFstFilename = ['./my_code/data/smpFstKrnVal_', dataset ...
-                num2str(graphSize)];
-            load(smpFstFilename)
-            % we now have smpFstKernelValues and smpFstRunTimes loaded
-        end
-        
-        if doSampleLast
-            smpLstFilename = ['./my_code/data/smpLstKrnVal_', dataset ...
-                num2str(graphSize)];
-            load(smpLstFilename)
-            % we now have smpLstKernelValues and smpLstRunTimes loaded
-        end
-        
-        if doStandard
-            stdKrnFilename = ['./my_code/data/stdKrnVal_', dataset ...
-                num2str(graphSize)];
-            load(stdKrnFilename)
-            % we now have standardKernelValues and standardKernelRuntime loaded
-        end
-        
-        
-        
-        
-        if doStandard
-            stdPrepRuntimes(i) = sum(fwRuntimes);
-            stdQueryRuntimes(i) = standardKernelRuntime;
-        end
-        
-        if doSampleFirst
-            smpFstPrepRuntimes(:, i) = 0;
-            smpFstQueryRuntimes(:, i) = mean(smpFstRunTimes, 2);
-            smpFstPrepOps(:, i) = 0;
-            smpFstQueryOps(:, i) = mean(smpFstOps, 2);
-        end
-        
-        if doSampleLast
-            smpLstPrepRuntimes(:, i) = sum(fwRuntimes);
-            smpLstQueryRuntimes(:, i) = mean(smpLstRunTimes, 2);
-        end
-        
-        if doVoronoi
-            for j = 1:nDensityFactors
-                densityFactor = densityFactors(j);
-                
-                vorPreRuntimeFilename = ...
-                    ['./my_code/data/vorPreRuntime_', dataset ...
-                    num2str(graphSize) '_' num2str(densityFactor) '.mat'];
-                load(vorPreRuntimeFilename);
-                % we now have vorPreRuntimes and vorPreOps
-                
-                vorValuesFilename = ...
-                    ['./my_code/data/vorKrnVal_', dataset ...
-                    num2str(graphSize) '_' num2str(densityFactor) '.mat'];
-                load(vorValuesFilename, 'vorRunTimes', 'vorOps');
-                
-                vorPrepRuntimes(:, i, j) = mean(sum(vorPreRuntimes, 1));
-                vorQueryRuntimes(:, i, j) = mean(mean(vorRunTimes, 2), 3);
-                vorPrepOps(:, i, j) = mean(sum(vorPreOps, 1));
-                vorQueryOps(:, i, j) = mean(mean(vorOps, 2), 3);
-                
-                %vorRuntimes(i,j,k) = runtime of Mval i, vorPreTrial j,
-                %vorTrial k
-                
-            end
+        load(fwRuntimeFilename)
+        % we now have fw and fwRuntimes loaded
+    end
+    
+    if doSampleFirst
+        smpFstFilename = ['./my_code/data/smpFstKrnVal_', dataset ...
+            num2str(graphSize)];
+        load(smpFstFilename)
+        % we now have smpFstKernelValues and smpFstRunTimes loaded
+    end
+    
+    if doSampleLast
+        smpLstFilename = ['./my_code/data/smpLstKrnVal_', dataset ...
+            num2str(graphSize)];
+        load(smpLstFilename)
+        % we now have smpLstKernelValues and smpLstRunTimes loaded
+    end
+    
+    if doStandard
+        stdKrnFilename = ['./my_code/data/stdKrnVal_', dataset ...
+            num2str(graphSize)];
+        load(stdKrnFilename)
+        % we now have standardKernelValues and standardKernelRuntime loaded
+    end
+    
+    
+    
+    
+    if doStandard
+        stdPrepRuntimes(i) = sum(fwRuntimes);
+        stdQueryRuntimes(i) = standardKernelRuntime;
+    end
+    
+    if doSampleFirst
+        smpFstPrepRuntimes(:, i) = 0;
+        smpFstQueryRuntimes(:, i) = mean(smpFstRunTimes, 2);
+        smpFstPrepOps(:, i) = 0;
+        smpFstQueryOps(:, i) = mean(smpFstOps, 2);
+    end
+    
+    if doSampleLast
+        smpLstPrepRuntimes(:, i) = sum(fwRuntimes);
+        smpLstQueryRuntimes(:, i) = mean(smpLstRunTimes, 2);
+    end
+    
+    if doVoronoi
+        for j = 1:nDensityFactors
+            densityFactor = densityFactors(j);
+            
+            vorPreRuntimeFilename = ...
+                ['./my_code/data/vorPreRuntime_', dataset ...
+                num2str(graphSize) '_' num2str(densityFactor) '.mat'];
+            load(vorPreRuntimeFilename);
+            % we now have vorPreRuntimes and vorPreOps
+            
+            vorValuesFilename = ...
+                ['./my_code/data/vorKrnVal_', dataset ...
+                num2str(graphSize) '_' num2str(densityFactor) '.mat'];
+            load(vorValuesFilename, 'vorRunTimes', 'vorOps');
+            
+            vorPrepRuntimes(:, i, j) = mean(sum(vorPreRuntimes, 1));
+            vorQueryRuntimes(:, i, j) = mean(mean(vorRunTimes, 2), 3);
+            vorPrepOps(:, i, j) = mean(sum(vorPreOps, 1));
+            vorQueryOps(:, i, j) = mean(mean(vorOps, 2), 3);
+            
+            %vorRuntimes(i,j,k) = runtime of Mval i, vorPreTrial j,
+            %vorTrial k
             
         end
         
     end
     
-    save(runtimesFilename, 'stdPrepRuntimes', 'stdQueryRuntimes', ...
-        'smpFstPrepRuntimes', 'smpFstQueryRuntimes', 'smpLstPrepRuntimes', ...
-        'smpLstQueryRuntimes', 'vorPrepRuntimes', 'vorQueryRuntimes', ...
-        'smpFstPrepOps', 'smpFstQueryOps', 'vorPrepOps', 'vorQueryOps')
-    
 end
+
+save(runtimesFilename, 'stdPrepRuntimes', 'stdQueryRuntimes', ...
+    'smpFstPrepRuntimes', 'smpFstQueryRuntimes', 'smpLstPrepRuntimes', ...
+    'smpLstQueryRuntimes', 'vorPrepRuntimes', 'vorQueryRuntimes', ...
+    'smpFstPrepOps', 'smpFstQueryOps', 'vorPrepOps', 'vorQueryOps')
+disp('Saved final results')
 
 fin = 1;
 
