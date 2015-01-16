@@ -30,9 +30,9 @@ smpLstAccuracies = zeros(nMValues, nSizes);
 smpLstErrors = zeros(nMValues, nSizes);
 smpLstDistErrors = zeros(nMValues, nSizes);
 
-vorErrors = zeros(nMValues, nSizes, nDensities);
-vorAccuracies = zeros(nMValues, nSizes, nDensities);
-vorDistErrors = zeros(nMValues, nSizes, nDensities);
+vorErrors = zeros(nMValues, nSizes, nDensityFactors);
+vorAccuracies = zeros(nMValues, nSizes, nDensityFactors);
+vorDistErrors = zeros(nMValues, nSizes, nDensityFactors);
 
 errAccFilename = ['./my_code/data/errAcc_', dataset];
 
@@ -101,7 +101,7 @@ else
         end
         
         if doVoronoi
-            for j = 1:nDensities
+            for j = 1:nDensityFactors
                 vorErrors(:, i, j) = vorAvgError(:, j);
                 vorDistErrors(:, i, j) = vorAvgDistError(:, j);
                 vorAccuracies(:, i, j) = vorAvgAccuracy(:, j);
