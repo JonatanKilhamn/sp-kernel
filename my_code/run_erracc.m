@@ -154,20 +154,20 @@ for graphSize = sizesToRun
                 
                 
                 
-%                 disp('Acc. for SampleLast kernel')
-%                 sampleLastK = smpLstKrnValues{i,j};
-%                 cellK{1} = sampleLastK;
-%                 [res] = runsvm(cellK, labels);
-%                 sampleLastAccuracy(i,j) = res.mean_acc;
-%                 
-%                 disp('Acc. for SampleFirst kernel')
-%                 sampleFirstK = smpLstKrnValues{i,j};
-%                 cellK{1} = sampleFirstK;
-%                 [res] = runsvm(cellK, labels);
-%                 sampleFirstAccuracy(i,j) = res.mean_acc;
-%                 
-%                 disp(['Finished smpFst and smpLst, trial ', num2str(j), ...
-%                     ', m=', num2str(ms(i))]);
+                disp('Acc. for SampleLast kernel')
+                sampleLastK = smpLstKrnValues{i,j};
+                cellK{1} = sampleLastK;
+                [res] = runsvm(cellK, labels);
+                sampleLastAccuracy(i,j) = res.mean_acc;
+                
+                disp('Acc. for SampleFirst kernel')
+                sampleFirstK = smpLstKrnValues{i,j};
+                cellK{1} = sampleFirstK;
+                [res] = runsvm(cellK, labels);
+                sampleFirstAccuracy(i,j) = res.mean_acc;
+                
+                disp(['Finished smpFst and smpLst, trial ', num2str(j), ...
+                    ', m=', num2str(ms(i))]);
                 
             end
             smpLstAvgError(i,:) = sampleLastError./nTrials;
