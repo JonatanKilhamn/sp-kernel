@@ -13,7 +13,7 @@ nGraphs = 100;
 p1 = 0.1;
 p2 = 0.109;
 
-sizesToRun = sizes(1);
+sizesToRun = sizes(1:7);
 
 if doCreateData
     for graphSize = sizesToRun

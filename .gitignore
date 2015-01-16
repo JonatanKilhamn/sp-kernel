@@ -2,6 +2,7 @@
 #####################
 *.mat
 *.log
+oldScripts/*
 
 # But include the runtime data #
 ################################
