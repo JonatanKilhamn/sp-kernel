@@ -1,6 +1,6 @@
 experiment_setup;
 
-dataset = 'ER3';
+dataset = 'ER';
 
 doCreateData = 1;
 doStoreParams = 1;
@@ -8,7 +8,7 @@ doStoreParams = 1;
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 %sizes = 10;
 nSizes = length(sizes);
-nGraphs = 10;
+nGraphs = 100;
 
 p1 = 0.1;
 p2 = 0.109;
