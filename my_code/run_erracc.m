@@ -221,8 +221,8 @@ for graphSize = sizesToRun
             
             
             
-            %for i = 1:nMValues
-            for i = nMValues
+            for i = 1:nMValues
+            %for i = nMValues
                 vorError = 0;
                 for j = 1:nVorPreTrials
                     for k = 1:nVorTrials
