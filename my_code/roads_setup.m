@@ -1,11 +1,12 @@
 experiment_setup;
 
-%dataset = 'ROADS';
+dataset = 'ROADS';
 
-doCreateData = 1;
+doCreateData = 0;
 doStoreParams = 1;
 
 sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+nSizes = length(sizes);
 nGraphs = 100;
 
 toRun = 1:6;
