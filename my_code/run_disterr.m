@@ -97,7 +97,7 @@ for graphSize = sizesToRun
 
                 end
                 disp(['Finished all trials, m = ' num2str(i)])
-                vorAvgDistError(i, d) = vorError/nTrials;
+                vorAvgDistError(i, d) = vorError/(nVorPreTrials*nVorTrials);
             end
             
             save(errorsFilename, 'smpLstAvgDistError', 'smpFstAvgDistError', ...
