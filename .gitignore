@@ -3,6 +3,7 @@
 *.mat
 *.log
 oldScripts/*
+my_code/Gammalt/*
 
 # But include the runtime data #
 ################################
