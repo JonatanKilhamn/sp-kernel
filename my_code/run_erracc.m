@@ -240,7 +240,7 @@ for graphSize = sizesToRun
                     end
                 end
                 disp(['Finished all trials, m = ' num2str(i)])
-                vorAvgError(i, d) = vorError/nTrials;
+                vorAvgError(i, d) = vorError/(nVorPreTrials*nVorTrials);
             end
             vorAvgAccuracy(:,d) = mean(mean(vorAccuracy, 2), 3);
             
