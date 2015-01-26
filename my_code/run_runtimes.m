@@ -4,8 +4,6 @@ function fin = run_runtimes(dataset, maxSizeInd)
 
 experiment_setup;
 
-%dataset = 'GENP';
-
 paramsFilename = ...
     ['./my_code/data/params_', dataset];
 load(paramsFilename);
@@ -15,10 +13,10 @@ load(paramsFilename);
 
 %sizeInd = 1;
 
-doStandard = 0;
-doSampleLast = 0;
-doSampleFirst = 0;
-doVoronoi = 0;
+doStandard = 1;
+doSampleLast = 1;
+doSampleFirst = 1;
+doVoronoi = 1;
 doWL = 1;
 doGraphlets = 1;
 

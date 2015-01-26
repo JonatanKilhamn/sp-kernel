@@ -17,10 +17,10 @@ if sizeInd ~= 0
     
     sizesToRun = sizes(sizeInd);
     
-    doStandard = 0;
-    doSampling = 0;
-    doVoronoi = 0;
-    doWL = 0;
+    doStandard = 1;
+    doSampling = 1;
+    doVoronoi = 1;
+    doWL = 1;
     doGraphlets = 1;
     
     for graphSize = sizesToRun
