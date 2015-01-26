@@ -5,16 +5,16 @@ dataset = 'TEST';
 doCreateData = 1;
 doStoreParams = 1;
 
-%sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
-sizes = 10;
+sizes = [100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+%sizes = 10;
 nSizes = length(sizes);
 nGraphs = 100;
 
 p1 = 0.1;
 p2 = 0.109;
 
-%sizesToRun = sizes(1:6);
-sizesToRun = sizes(1);
+sizesToRun = sizes(1:6);
+%sizesToRun = sizes(1);
 
 if doCreateData
     for graphSize = sizesToRun
