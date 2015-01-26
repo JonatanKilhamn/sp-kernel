@@ -221,7 +221,7 @@ for graphSize = sizesToRun
         
         hmax = max(hs);
         % compute WL kernel
-        [wlKrnValues, wlRunTimes] = WL(Graphs',hmax,0);
+        [wlKrnValues, wlRunTimes] = WL(Graphs,hmax,0);
         disp(['Finished W-L kernel for for h-values 0 through ' ...
             num2str(hmax)]);
     
