@@ -92,7 +92,7 @@ else
   end
 end
 L=label_counter-1;
-disp(['Number of original labels: ',num2str(L)]);
+%disp(['Number of original labels: ',num2str(L)]);
 clear Graphs;
 K{1}=full(phi'*phi);
 
@@ -100,7 +100,7 @@ K{1}=full(phi'*phi);
 iter=1;
 new_labels=labels;
 while iter<=h
-  disp(['iter=',num2str(iter)]);
+  %disp(['iter=',num2str(iter)]);
   % create an empty lookup table
   label_lookup=containers.Map();
   label_counter=uint32(1);
@@ -128,7 +128,7 @@ while iter<=h
     phi(new_labels{i},i)=phi(new_labels{i},i)+aux(new_labels{i});
   end
   L=label_counter-1;
-  disp(['Number of compressed labels: ',num2str(L)]);
+  %disp(['Number of compressed labels: ',num2str(L)]);
   K{iter+1}=K{iter}+full(phi'*phi);
   labels=new_labels;
   iter=iter+1;

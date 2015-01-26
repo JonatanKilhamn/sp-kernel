@@ -25,6 +25,10 @@ if doStoreParams
     nTrials = 20; % compute all sampled kernels several times
     nVorPreTrials = 5;
     nVorTrials = 10;
+        
+    hs = 0:4;
+    nhValues = length(hs);
+    
     %nTrials = 1;
     %ms = [10 20 40 80 140 200];
     ms = [10 200];
@@ -39,5 +43,5 @@ if doStoreParams
         ['./my_code/data/params_', dataset];
     save(paramsFilename, 'sizes', 'nSizes', 'nTrials', 'nVorPreTrials', ...
         'nVorTrials', 'ms', 'nGraphs', 'nMValues', 'densityFactors', ...
-        'nDensityFactors');
+        'nDensityFactors', 'hs', 'nhValues');
 end

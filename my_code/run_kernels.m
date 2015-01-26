@@ -1,6 +1,6 @@
 %% Setup
 function fin = run_kernels(dataset, sizeInd, doStandard, doSampleLast, ...
-    doSampleFirst, doVoronoi, doSaveDists)
+    doSampleFirst, doVoronoi, doWL, doGraphlets, doSaveDists)
 
 experiment_setup;
 
@@ -24,6 +24,7 @@ densityFactorsToRun = densityFactors(1:3);
 %doSampleLast = 0;
 %doSampleFirst = 1;
 %doVoronoi = 1;
+
 
 %doSaveDists = 1;
 
@@ -74,10 +75,7 @@ for graphSize = sizesToRun
             'standardKernelRuntime', 'stdDists');
     end
     
-    %% Sampling
-   
-   
-    
+    %% Our kernels
     
     smpLstKrnValues = cell(nMValues, nTrials);
     smpLstDists = cell(nMValues, nTrials);
@@ -92,6 +90,14 @@ for graphSize = sizesToRun
     vorDists = cell(nMValues, nVorPreTrials, nVorTrials);
     vorRunTimes = zeros(nMValues, nVorPreTrials, nVorTrials);
     vorOps = zeros(nMValues, nVorPreTrials, nVorTrials);
+    
+    %% Reference kernels
+    
+    %no need to preallocate wlKrnValues
+    
+    graphletKrnValues = cell(nMValues, nTrials);
+    graphletRunTimes = zeros(nMValues, nTrials);
+
     
     %%
     if doSampleLast
@@ -151,6 +157,8 @@ for graphSize = sizesToRun
         end
     end
     
+
+    
     if doVoronoi
         disp('Voronoi kernel:')
         for density = densityFactorsToRun
@@ -204,6 +212,47 @@ for graphSize = sizesToRun
             end
             
         end
+    end
+    
+    %% Weisfeiler-Lehman
+    
+    if doWL
+        disp('Weisfeiler-Lehman kernel:')
+        
+        hmax = max(hs);
+        % compute WL kernel
+        [wlKrnValues, wlRunTimes] = WL(Graphs',hmax,0);
+        disp(['Finished W-L kernel for for h-values 0 through ' ...
+            num2str(hmax)]);
+    
+        wlValuesFilename = ...
+            ['./my_code/data/wlKrnVal_', dataset ...
+            num2str(graphSize)];
+        save(wlValuesFilename, 'wlKrnValues', ...
+            'wlRunTimes');
+        
+    end
+    
+    %% Graphlet kernel
+    
+    if doGraphlets
+        disp('Graphlet sampling kernel:')
+        % compute WL kernel
+        for i = 1:nMValues
+            for j = 1:nTrials
+                [graphletKrnValues{i,j}, graphletRunTimes(i,j)] = ...
+                    gestkernel3(Graphs',ms(i));
+            end
+            disp(['Finished graphlet kernel for for m-value ' ...
+                num2str(ms(i))])
+        end
+        graphletValuesFilename = ...
+            ['./my_code/data/graphletKrnVal_', dataset ...
+            num2str(graphSize)];
+        save(graphletValuesFilename, 'graphletKrnValues', ...
+            'graphletRunTimes');
+        
+        
     end
     
 end

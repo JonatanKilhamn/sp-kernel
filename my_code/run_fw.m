@@ -73,7 +73,7 @@ end
 
 fin = 1;
 
-run_kernels(dataset, sizeInd, 1, 1, 0, 0, 1);
+run_kernels(dataset, sizeInd, 1, 1, 0, 0, 0, 0, 1);
 
 
 end

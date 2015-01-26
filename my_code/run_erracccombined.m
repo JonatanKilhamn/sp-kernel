@@ -16,10 +16,11 @@ doStandard = 1;
 doSampleFirst = 1;
 doSampleLast = 1;
 doVoronoi = 1;
+doWL = 1;
+doGraphlets = 1;
 
 
 %%
-
 
 stdAccuracy = zeros(1, nSizes);
 smpFstAccuracies = zeros(nMValues, nSizes);
@@ -34,13 +35,16 @@ vorErrors = zeros(nMValues, nSizes, nDensityFactors);
 vorAccuracies = zeros(nMValues, nSizes, nDensityFactors);
 vorDistErrors = zeros(nMValues, nSizes, nDensityFactors);
 
+wlAccuracy = zeros(1, nSizes);
+graphletAccuracies = zeros(nMValues, nSizes);
+
 errAccFilename = ['./my_code/data/errAcc_', dataset];
 
 
 save(errAccFilename, 'stdAccuracy', 'smpFstAccuracies', ...
     'smpFstErrors', 'smpFstDistErrors', 'smpLstAccuracies', ...
     'smpLstErrors', 'smpLstDistErrors', 'vorErrors', 'vorAccuracies', ...
-    'vorDistErrors');
+    'vorDistErrors', 'wlAccuracy', 'graphletAccuracies');
 
 
 disp('Saved blank file')
@@ -65,8 +69,8 @@ for i = 1:maxSizeInd
     accFilename = ['./my_code/data/accVal_', dataset ...
         num2str(graphSize)];
     load(accFilename)
-    % we now have smpFstAvgAccuracy, smpLstAvgAccuracy and vorAvgAccuracy
-    % loaded
+    % we now have smpFstAvgAccuracy, smpLstAvgAccuracy, vorAvgAccuracy,
+    % wlKrnAccuracy and graphletAvgAccuracy loaded
     stdAccFilename = ['./my_code/data/stdAcc_', dataset ...
         num2str(graphSize)];
     load(stdAccFilename)
@@ -105,6 +109,14 @@ for i = 1:maxSizeInd
         end
     end
     
+    if doWL
+        wlAccuracy(i) = wlKrnAccuracy;
+    end
+    
+    if doGraphlets
+        graphletAccuracies(:, i) = graphletAvgAccuracy;
+    end
+    
     
 end
 
@@ -113,7 +125,7 @@ end
 save(errAccFilename, 'stdAccuracy', 'smpFstAccuracies', ...
     'smpFstErrors', 'smpFstDistErrors', 'smpLstAccuracies', ...
     'smpLstErrors', 'smpLstDistErrors', 'vorErrors', 'vorAccuracies', ...
-    'vorDistErrors');
+    'vorDistErrors', 'wlAccuracy', 'graphletAccuracies');
 
 disp('Saved final results')
 

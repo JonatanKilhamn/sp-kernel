@@ -15,10 +15,12 @@ load(paramsFilename);
 
 %sizeInd = 1;
 
-doStandard = 1;
-doSampleLast = 1;
-doSampleFirst = 1;
-doVoronoi = 1;
+doStandard = 0;
+doSampleLast = 0;
+doSampleFirst = 0;
+doVoronoi = 0;
+doWL = 1;
+doGraphlets = 1;
 
 
 %%
@@ -46,13 +48,17 @@ vorQueryRuntimes = zeros(nMValues, nSizes, nDensityFactors);
 vorPrepOps = zeros(nMValues, nSizes, nDensityFactors);
 vorQueryOps = zeros(nMValues, nSizes, nDensityFactors);
 
+wlRuntimes = zeros(1, nSizes);
+graphletRuntimes = zeros(nMValues, nSizes);
+
 runtimesFilename = ['./my_code/data/runtimes_', dataset];
 
 
 save(runtimesFilename, 'stdPrepRuntimes', 'stdQueryRuntimes', ...
     'smpFstPrepRuntimes', 'smpFstQueryRuntimes', 'smpLstPrepRuntimes', ...
     'smpLstQueryRuntimes', 'vorPrepRuntimes', 'vorQueryRuntimes', ...
-    'smpFstPrepOps', 'smpFstQueryOps', 'vorPrepOps', 'vorQueryOps')
+    'smpFstPrepOps', 'smpFstQueryOps', 'vorPrepOps', 'vorQueryOps', ...
+    'wlRuntimes', 'graphletRuntimes')
 
 disp('Saved blank file')
 
@@ -100,7 +106,21 @@ for i = 1:maxSizeInd
         % we now have standardKernelValues and standardKernelRuntime loaded
     end
     
+    if doWL
+        wlKrnFilename = ['./my_code/data/wlKrnVal_', dataset ...
+            num2str(graphSize)];
+        load(wlKrnFilename)
+        % we now have wlKrnValues and wlRunTimes loaded
+    end
     
+    if doGraphlets
+        graphletKrnFilename = ['./my_code/data/graphletKrnVal_', dataset ...
+            num2str(graphSize)];
+        load(graphletKrnFilename)
+        % we now have graphletKrnValues and graphletRunTimes loaded
+    end
+    
+    %%
     
     
     if doStandard
@@ -147,12 +167,22 @@ for i = 1:maxSizeInd
         
     end
     
+    if doWL
+        wlRuntimes(i) = wlRunTimes;
+    end
+    
+    if doGraphlets
+        graphletRuntimes(:, i) = mean(graphletRunTimes, 2);
+    end
+    
 end
 
 save(runtimesFilename, 'stdPrepRuntimes', 'stdQueryRuntimes', ...
     'smpFstPrepRuntimes', 'smpFstQueryRuntimes', 'smpLstPrepRuntimes', ...
     'smpLstQueryRuntimes', 'vorPrepRuntimes', 'vorQueryRuntimes', ...
-    'smpFstPrepOps', 'smpFstQueryOps', 'vorPrepOps', 'vorQueryOps')
+    'smpFstPrepOps', 'smpFstQueryOps', 'vorPrepOps', 'vorQueryOps', ...
+    'wlRuntimes', 'graphletRuntimes')
+
 disp('Saved final results')
 
 fin = 1;
