@@ -12,6 +12,7 @@ path(genpath('dijkstra_heap'), path);
 path(genpath('voronoi'), path);
 path(genpath('road-data'), path);
 path(genpath('graph_gen'), path);
+path(genpath('gauss'), path);
 path(genpath('graphsampling'), path);
 
 
