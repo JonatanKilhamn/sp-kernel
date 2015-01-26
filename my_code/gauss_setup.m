@@ -10,8 +10,8 @@ sizes = [100, 200, 500, 1000, 2000, 4000];
 nSizes = length(sizes);
 nGraphs = 200;
 
-p1 = 0.1;
-p2 = 0.109;
+p1 = 0.5;
+p2 = 0.4;
 
 sizesToRun = sizes(1:6);
 %sizesToRun = sizes(1);
