@@ -8,10 +8,10 @@ doStoreParams = 1;
 sizes = [100, 200, 500, 1000, 2000, 4000];
 %sizes = 10;
 nSizes = length(sizes);
-nGraphs = 200;
+nGraphs = 100;
 
-p1 = 0.5;
-p2 = 0.4;
+p1 = 0.1;
+p2 = 0.15;
 
 sizesToRun = sizes(1:6);
 %sizesToRun = sizes(1);
