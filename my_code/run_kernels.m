@@ -221,7 +221,7 @@ for graphSize = sizesToRun
         
         hmax = max(hs);
         % compute WL kernel
-        [wlKrnValues, wlRunTimes] = WL(Graphs,hmax,0);
+        [wlKrnValues, wlRunTimes] = WL(Graphs, hmax,0);
         disp(['Finished W-L kernel for for h-values 0 through ' ...
             num2str(hmax)]);
     
@@ -237,11 +237,14 @@ for graphSize = sizesToRun
     
     if doGraphlets
         disp('Graphlet sampling kernel:')
+        
+        UnweightedGraphs = makeGraphsUnweighted(Graphs);
+        
         % compute WL kernel
         for i = 1:nMValues
             for j = 1:nTrials
                 [graphletKrnValues{i,j}, graphletRunTimes(i,j)] = ...
-                    gestkernel3(Graphs',ms(i));
+                    gestkernel3(UnweightedGraphs, ms(i));
             end
             disp(['Finished graphlet kernel for for m-value ' ...
                 num2str(ms(i))])
