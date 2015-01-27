@@ -20,6 +20,7 @@ doVoronoi = 1;
 for graphSize = sizesToRun
     %% Pick out the data
     
+    appending = 0;
 
     smpFstFilename = ['./my_code/data/smpFstKrnVal_', dataset ...
         num2str(graphSize)];
@@ -62,6 +63,8 @@ for graphSize = sizesToRun
         end
         %
         
+        appending = 1;
+        
     end %of "if doSampling"
     
     % store the error values:
@@ -89,22 +92,26 @@ for graphSize = sizesToRun
             
             for i = 1:nMValues
                 vorError = 0;
-                for j = 1:nTrials
-                    
-                voronoiDists = vorDists{i,j};
-                vorError = vorError + ...
-                    avgDistError(voronoiDists, stdDists);
-
+                for j = 1:nVorPreTrials
+                    for k = 1:nVorTrials
+                        
+                        voronoiDists = vorDists{i,j,k};
+                        vorError = vorError + ...
+                            avgDistError(voronoiDists, stdDists);
+                    end
                 end
                 disp(['Finished all trials, m = ' num2str(i)])
                 vorAvgDistError(i, d) = vorError/(nVorPreTrials*nVorTrials);
             end
             
-            save(errorsFilename, 'smpLstAvgDistError', 'smpFstAvgDistError', ...
-                'vorAvgDistError');
-            
         end
-       
+        
+        if appending
+            save(errorsFilename, 'vorAvgDistError', '-append');
+        else
+            save(errorsFilename, 'vorAvgDistError');
+            appending = 1;
+        end
     end
     
     
