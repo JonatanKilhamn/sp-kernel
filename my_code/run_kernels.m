@@ -159,7 +159,7 @@ for graphSize = sizesToRun
     
 
     
-    if doVoronoi[wlKrnValues, wlRunTimes] = WL(Graphs',hmax,0);
+    if doVoronoi
         disp('Voronoi kernel:')
         for density = densityFactorsToRun
             % loading
