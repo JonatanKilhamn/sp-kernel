@@ -8,9 +8,9 @@ threshold = 5*inc;
 
 labels = [zeros(N,1); ones(N,1)];
 
-ams = cell(2*N,1);
-als = cell(2*N,1);
-nls = cell(2*N,1);
+ams = cell(1,2*N);
+als = cell(1,2*N);
+nls = cell(1,2*N);
 
 for i=1:N
     
