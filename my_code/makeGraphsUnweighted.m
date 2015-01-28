@@ -1,7 +1,7 @@
 function res = makeGraphsUnweighted(graphs)
 
 N = size(graphs, 2);
-ams = cell(N,1);
+ams = cell(1, N);
 
 for i = 1:N
     ams{i} = (graphs(i).am > 0);
