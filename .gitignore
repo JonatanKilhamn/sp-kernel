@@ -1,12 +1,19 @@
 # Matlab data files #
 #####################
 *.mat
+
+# Log files #
+#############
 *.log
+
+# Some unnecessary folders #
+############################
 oldScripts/*
 my_code/Gammalt/*
+BorgwardtData/*
 
-# But include the runtime data #
-################################
+# But include the final results #
+#################################
 !*runtimes_*.mat
 !*params_*.mat
 !*errAcc*.mat
