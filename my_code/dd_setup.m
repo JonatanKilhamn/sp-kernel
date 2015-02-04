@@ -2,22 +2,28 @@ experiment_setup;
 
 dataset = 'DD';
 
-doRenameVars = 1;
+doPruneData = 1;
 doStoreParams = 1;
 
 sizes = 1;
+graphSize = 1;
 nSizes = length(sizes);
 nGraphs = 1178;
 
-if doRenameVars
-    for graphSize = sizes
-        dataFilename = ['./my_code/data/', dataset ...
-            num2str(graphSize)];
-        load(dataFilename)
-        GRAPHS = DD;
-        lgraphs = ldd;
-        save(dataFilename, 'GRAPHS', 'lgraphs')
+if doPruneData
+    dataFilename = ['./my_code/data/', dataset ...
+        num2str(graphSize)];
+    load(dataFilename)
+    DD = GRAPHS;
+    ldd = lgraphs;
+    connectedGraphInds = zeros(1, nGraphs);
+    for i = 1:nGraphs
+        connectedGraphInds(i) = isconnected(DD(i).am);
     end
+    
+    GRAPHS = DD(connectedGraphInds==1);
+    lgraphs = ldd(connectedGraphInds==1);
+    save(dataFilename, 'GRAPHS', 'lgraphs')
 end
 
 if doStoreParams
