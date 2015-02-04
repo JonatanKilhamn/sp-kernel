@@ -157,7 +157,7 @@ for graphSize = sizesToRun
         end
     end
     
-
+    %%
     
     if doVoronoi
         disp('Voronoi kernel:')

@@ -25,15 +25,15 @@ for graphSize = sizesToRun
     smpFstFilename = ['./my_code/data/smpFstKrnVal_', dataset ...
         num2str(graphSize)];
     load(smpFstFilename)
-    % we now have smpFstKrnValues and smpFstRunTimes loaded
+    % we now have smpFstKrnValues, smpFstRunTimes and smpFstDists loaded
     smpLstFilename = ['./my_code/data/smpLstKrnVal_', dataset ...
         num2str(graphSize)];
     load(smpLstFilename)
-    % we now have smpLstKrnValues and smpLstRunTimes loaded
+    % we now have smpLstKrnValues, smpLstRunTimes and smpLstDists loaded
     stdKrnFilename = ['./my_code/data/stdKrnVal_', dataset ...
         num2str(graphSize)];
     load(stdKrnFilename)
-    % we now have stdKrnValues and standardKernelRuntime loaded
+    % we now have stdKrnValues, standardKernelRuntime and stdDists loaded
     
 
     
