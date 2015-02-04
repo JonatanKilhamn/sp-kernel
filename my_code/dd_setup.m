@@ -8,12 +8,13 @@ doStoreParams = 1;
 sizes = 1;
 graphSize = 1;
 nSizes = length(sizes);
-nGraphs = 1178;
+
 
 if doPruneData
     dataFilename = ['./my_code/data/', dataset ...
         num2str(graphSize)];
     load(dataFilename)
+    nGraphs = length(GRAPHS);
     DD = GRAPHS;
     ldd = lgraphs;
     connectedGraphInds = zeros(1, nGraphs);
@@ -24,6 +25,8 @@ if doPruneData
     GRAPHS = DD(connectedGraphInds==1);
     lgraphs = ldd(connectedGraphInds==1);
     save(dataFilename, 'GRAPHS', 'lgraphs')
+    
+    nGraphs = length(GRAPHS);
 end
 
 if doStoreParams
