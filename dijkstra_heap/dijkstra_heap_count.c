@@ -304,14 +304,18 @@ next[nEdges] = 0;
 out1[0] = d[heap_index[goalNode]];
 
 /* Second output: reconstruct path */
+/* First step: find length of path */
 int pathNode, pathLength;
 pathNode = goalNode;
 pathLength = 0;
-while (pathNode != sourceNode) {
-  pathNode = pi[pathNode];
-  pathLength++;
+if (pi[goalNode] != 0) {
+  while (pathNode != sourceNode) {
+    pathNode = pi[pathNode];
+    pathLength++;
+  }
+} else {
+  pathLength = -1;
 }
-
 
 /*plhs[2] = mxCreateDoubleMatrix(size, 1, mxREAL);
 double *out3 = mxGetPr(plhs[2]);
@@ -326,23 +330,25 @@ for (i = 1; i <= size; i++) {
 }*/
 
 
-plhs[1] = mxCreateDoubleMatrix(pathLength+1, 1, mxREAL);
-double *out2 = mxGetPr(plhs[1]);
+/*Second step:*/
+if (pathLength == -1) {
+  /*No path found*/
+  plhs[1] = mxCreateDoubleMatrix(1, 1, mxREAL);
+  double *out2 = mxGetPr(plhs[1]);
+  out2[0] = -1;
+} else {
+  /*Reconstruct path*/
+  plhs[1] = mxCreateDoubleMatrix(pathLength+1, 1, mxREAL);
+  double *out2 = mxGetPr(plhs[1]);
 
-
-pathNode = goalNode;
-out2[0] = pathNode;
-/*while (pathNode != sourceNode) {
-  pathNode = pi[pathNode];
-  out2[i] = pathNode;
-  i++;
-}*/
-int i;
-for (i = 1; i <= pathLength; i++) {
-  pathNode = pi[pathNode];
-  out2[i] = pathNode;
+  pathNode = goalNode;
+  out2[0] = pathNode;
+  int i;
+  for (i = 1; i <= pathLength; i++) {
+    pathNode = pi[pathNode];
+    out2[i] = pathNode;
+  }
 }
-
 plhs[2] = mxCreateDoubleMatrix(1, 1, mxREAL);
 double *out3 = mxGetPr(plhs[2]);
 out3[0] = *opsPtr;
