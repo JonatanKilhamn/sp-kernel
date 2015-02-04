@@ -1,4 +1,4 @@
-function plotReachableCircleGraph(am, startIndex, doPlot)
+function reached = plotReachableCircleGraph(am, startIndex, doPlot)
 
 if nargin < 3
     doPlot = 1;
