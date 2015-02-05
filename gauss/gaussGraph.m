@@ -21,13 +21,13 @@ for i = 1:n
             if distances(j) > threshold
                 am(i,j) = 0;
             else
-                am(i,j) = floor(distances(j) / inc);
+                am(i,j) = ceil(distances(j) / inc);
             end
         end
     end
     if sum(am(i,:)) == 0
         [minDist, ind] = min(distances);
-        am(i,ind) =  floor(minDist / inc);
+        am(i,ind) =  ceil(minDist / inc);
     end
 end
 
