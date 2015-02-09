@@ -30,8 +30,8 @@ if doStoreParams
     nhValues = length(hs);
     
     %nTrials = 1;
-    %ms = [10 20 40 80 140 200];
-    ms = [10 200];
+    ms = [10 20 40 80 140 200];
+    %ms = [10 200];
     %ms = [10];
     nMValues = length(ms);
     

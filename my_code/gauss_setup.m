@@ -11,7 +11,7 @@ nSizes = length(sizes);
 nGraphs = 100;
 
 p1 = 0.1;
-p2 = 0.15;
+p2 = 0.16;
 
 sizesToRun = sizes(1:5);
 %sizesToRun = sizes(1);
@@ -36,7 +36,7 @@ if doStoreParams
     hs = 0:4;
     nhValues = length(hs);
     %nTrials = 1;
-    %ms = [10 20 40 80 140 200];
+    ms = [10 20 40 80 140 200];
     ms = [10 200];
     %ms = [10];
     nMValues = length(ms);
