@@ -170,11 +170,12 @@ for graphSize = sizesToRun
             
             groupingMats = cell(nGraphs, nVorPreTrials);
             for i = 1:nGraphs
+                N = length(Graphs(i).am);
                 for j = 1:nVorPreTrials
                     nVorNodes = size(vorAdj{i, j}, 1);
                     groupingMats{i, j} = ...
                         repmat(groupings{i,j}, 1, nVorNodes) == ...
-                        repmat(1:nVorNodes, graphSize, 1);
+                        repmat(1:nVorNodes, N, 1);
                 end
             end
             
