@@ -8,7 +8,7 @@ paramsFilename = ...
 load(paramsFilename);
 
 sizesToRun = sizes(sizeInd);
-densityFacToRun = densityFactors(1:3);
+densityFacToRun = densityFactors;
 
 
 section = 1;
