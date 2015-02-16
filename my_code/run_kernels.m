@@ -206,10 +206,10 @@ for graphSize = sizesToRun
                 num2str(graphSize) '_' num2str(density) '.mat'];
             if doSaveDists
                 save(vorValuesFilename, 'vorKrnValues', ...
-                    'vorRunTimes', 'vorOps', 'vorDists');
+                    'vorRunTimes', 'vorOps', 'vorDists', 'v7.3');
             else
                 save(vorValuesFilename, 'vorKrnValues', ...
-                    'vorRunTimes', 'vorOps');
+                    'vorRunTimes', 'vorOps', 'v7.3');
             end
             
         end
