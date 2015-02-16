@@ -15,7 +15,7 @@ sizesToRun = sizes(sizeInd);
 
 
 
-densityFactorsToRun = densityFactors(1:3);
+densityFactorsToRun = densityFactors;
 
 
 %%
