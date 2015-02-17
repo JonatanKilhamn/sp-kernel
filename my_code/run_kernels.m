@@ -15,7 +15,8 @@ sizesToRun = sizes(sizeInd);
 
 
 
-densityFactorsToRun = densityFactors;
+densityFactorsToRun = densityFactors(3);
+disp(['Cleared density assignment w/ density ', num2str(densityFactorsToRun)]);
 
 
 %%
@@ -206,10 +207,10 @@ for graphSize = sizesToRun
                 num2str(graphSize) '_' num2str(density) '.mat'];
             if doSaveDists
                 save(vorValuesFilename, 'vorKrnValues', ...
-                    'vorRunTimes', 'vorOps', 'vorDists', 'v7.3');
+                    'vorRunTimes', 'vorOps', 'vorDists', '-v7.3');
             else
                 save(vorValuesFilename, 'vorKrnValues', ...
-                    'vorRunTimes', 'vorOps', 'v7.3');
+                    'vorRunTimes', 'vorOps', '-v7.3');
             end
             
         end
